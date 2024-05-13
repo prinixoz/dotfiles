@@ -1,0 +1,4 @@
+#/bin/bash
+
+location=$(whereis $(compgen -ac | dmenu) | awk '{print $2}' | xargs)
+alacritty -e nvim $location

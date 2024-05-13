@@ -1,0 +1,9 @@
+#!/bin/sh
+
+file="$HOME/.config/bm/search"
+
+content=$(cat $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%100s")|" |dmenu -nb "#0f0f0f" -i -l 8 -g 4 -p "Choose :" | awk -F "|" '{print $NF}')
+[ $content ] && term=$(echo "" | dmenu -nb "#0f0f0f" -i -p "Search :" | sed "s/\ /+/g")
+search=$(echo $content | sed "s/%s/$term/g")
+[ $term ] && librewolf -P default "$search"
+

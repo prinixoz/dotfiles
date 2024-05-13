@@ -1,0 +1,22 @@
+#!/bin/sh
+if [ $1 ];then
+    link=$1
+else
+    link=$(xclip -o)
+fi
+
+videoId=$(echo $link | awk -F "=|&" '{print $2}')
+
+url="https://www.youtube.com/watch?v=$videoId" 
+# using yt-dlp
+#yt-dlp $url -f 'bestvideo[height<=720]+bestaudio/best[height<=720]' -o - | mpv - -force-seekable=yes --fs -speed=1 
+
+#yt playurl "$url" > /dev/null &
+
+
+mpv $(yt-dlp -f 'best' --get-url "$url" | tail -1 | xargs)
+
+# Using yt-local
+#videoUrl="http://localhost:2000/https://www.youtube.com/watch?v=$videoId"
+#src=$(curl -s "$videoUrl" | grep "<source" | tail -1 | awk -F\" '{print $2}' | sed 's/&amp;/\&/g')
+#[ $src ] && mpv "http://localhost:2000$src" || notify-send "not working"

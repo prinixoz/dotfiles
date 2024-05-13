@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ $@ == "-b" ]; then
+    killall newsboat 
+    newsboat -u ~/.config/newsboat/urls.bak --cache-file=~/.config/newsboat/cache.bak.db -q
+else
+    killall newsboat
+    newsboat -q
+fi

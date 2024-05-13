@@ -1,0 +1,9 @@
+#/bin/sh
+
+bg=$(cat ~/.cache/wal/colors | sed -n '11p')
+file=$(find $HOME -type f -not -path '*/.git/*' -not -path '*/.cache/*' -not -path '*/.cert/*' -not -path '*/.pki/*' -not -path '*/.openjfx/*' \
+| dmenu -nb "#0f0f0f" -sb $bg -i -l 25 -p "Choose :")
+
+echo $file
+
+[ -e "$file" ] && curl -s -F "file=@$file" 0x0.st | xclip -selection c && notify-send "Upload Completed" "Link Copied"

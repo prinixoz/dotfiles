@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+file="$HOME/.config/bm/bm"
+content=$(sort $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%50s")|" |dmenu -nb "#0f0f0f" -i -l 8 -g 4 -p "Choose :" )
+
+link=$(echo $content | awk -F "|" '{print $2}')
+command=$(echo $content | awk -F "|" '{print $NF}' | xargs)
+exists=$(command -v $(echo $command | awk '{print $1}'))
+
+if [ $exists ] ; then
+    echo $command
+	$command $link
+else
+	[ $link ] && librewolf -P default $link
+fi

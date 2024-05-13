@@ -1,0 +1,6 @@
+#!/bin/bash
+data=~/Videos/Social/Instagram
+profilefiles=~/.config/instaloader/profiles
+cd $data
+instaloader $(cat $profilefiles | xargs) --no-captions --no-metadata --no-video-thumbnails --no-pictures -c 20
+cd -

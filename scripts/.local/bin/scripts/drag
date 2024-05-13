@@ -1,0 +1,4 @@
+#!/bin/bash
+bg=$(cat ~/.cache/wal/colors | sed -n '11p')
+path=$(find | dmenu -nb "#0f0f0f" -sb $bg -i -l 25 -p "Choose :")
+dragon-drop -x $path

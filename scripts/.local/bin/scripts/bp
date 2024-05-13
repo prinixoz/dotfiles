@@ -1,0 +1,42 @@
+#!/bin/bash
+photos(){
+    cd ~/Pendrive/
+    rclone -P sync . "drive:Personal/Pendrive"
+    cd -
+}
+
+config(){
+    cd ~/.code/
+    git add .
+    git commit -m "+"
+    git push origin main
+    cd -
+}
+
+password(){
+    rclone sync -P ~/.local/New.kdbx "drive:Personal"
+}
+
+update(){
+    paru -Syyu
+    sudo pacman -Rs $(pacman -Qqtd)
+}
+
+all(){
+    photos
+    password
+    config
+}
+
+case $1 in 
+    -p)
+        photos;;
+    -c)
+        config;;
+    -u)
+        update;;
+    -k)
+        password;;
+    *)
+        all;;
+esac

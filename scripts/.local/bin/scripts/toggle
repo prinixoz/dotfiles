@@ -1,0 +1,4 @@
+#!/bin/sh
+pgrep "$1" > /dev/null && \ 
+         killall "$1" || \
+         setsid "$1" &> /dev/null
