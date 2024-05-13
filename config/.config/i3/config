@@ -1,0 +1,268 @@
+#==============================================================================
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#   ___
+#  |  _ \  _ __ (_) _ __  (_)__  __ ___   ___
+#  | |_) || '__|| || '_ \ | |\ \/ // _ \ / __|
+#  |  __/ | |   | || | | || | >  <| (_) |\__ \
+#  |_|    |_|   |_||_| |_||_|/_/\_\\___/ |___/
+#
+#  Github :: https://github.com/prinixos
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#==============================================================================
+
+
+set_from_resource $fg i3wm.color7 
+set_from_resource $bg i3wm.color2
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff $bg       $bg
+client.focused_inactive #333333 #5f676a #ffffff #292d2e   #222222
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
+#==============================================================================
+#++++++++++++++++++++++++++++++ Workspace +++++++++++++++++++++++++++++++++++++
+#==============================================================================
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+set $ws11 "11"
+
+#==============================================================================
+#+++++++++++++++++++++++++++++++ Variable +++++++++++++++++++++++++++++++++++++
+#==============================================================================
+set $mod Mod4
+set $terminal alacritty -e
+floating_modifier $mod
+
+#==============================================================================
+#+++++++++++++++++++++++++++++ Switch Workscpace ++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+bindsym $mod+m workspace number $ws11
+
+# Change workspace with tabs like chrome
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+bindsym $mod+s exec capsescape
+
+#==============================================================================
+#+++++++++++++++ move focused container to workspace ++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+m move container to workspace number $ws11
+
+#==============================================================================
+#+++++++++++++++++++++++++ Killing window +++++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+q kill
+
+#==============================================================================
+#++++++++++++++++++++ Window Focus Movement Keys ++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym Mod1+space exec dunstctl close
+bindsym Mod1+shift+space exec dunstctl close-all
+
+bindsym Mod2+grave exec tab
+
+#==============================================================================
+#++++++++++++++++++++ Window Focus Movement Keys ++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+#==============================================================================
+#+++++++++++++++++++++++++++ Terminal Applications ++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+Return exec alacritty
+bindsym $mod+c exec alacritty -e htop
+bindsym $mod+e exec alacritty -e lfub
+bindsym $mod+shift+e exec pcmanfm 
+bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
+bindsym $mod+Shift+o exec  overview
+bindsym $mod+x exec "i3lock -c 000000"
+
+#==============================================================================
+#++++++++++++++++++++++++++++++++ Browsers++++++++++++++++++++++=++++++++++++++
+#==============================================================================
+bindsym $mod+a exec bm
+bindsym $mod+Shift+a exec watchlist -l
+bindsym $mod+w exec watchlist -a
+bindsym $mod+shift+Return exec sdmenu
+bindsym $mod+b exec alacritty -e nb
+
+#==============================================================================
+#+++++++++++++++++++++++ Toggle window focus all ++++++++++++++++++++++++++++++
+#==============================================================================
+# bindsym $mod+a focus parent
+# bindsym $mod+Shift+a focus child
+bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+n exec networkmanager_dmenu -l 40 -nb '#0f0f0f'
+bindsym $mod+n exec bluetooth
+
+#==============================================================================
+#+++++++++++++++++++++++++++ Move Window Keys +++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+#==============================================================================
+#+++++++++++++++++++++++++++ Volume Keybindings +++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id volume down
+bindsym XF86AudioMute exec --no-startup-id volume mute
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+#==============================================================================
+#+++++++++++++++++++++++++++ Media Keybindings +++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPrev exec playerctl previos
+bindsym XF86AudioNext exec playerctl next
+
+#==============================================================================
+#+++++++++++++++++++++++++++++++ Keyboard +++++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+F1 exec librewolf -P stream "https://open.spotify.com/" 
+bindsym $mod+F2 exec --no-startup-id volume down
+bindsym $mod+F3 exec --no-startup-id volume up
+bindsym $mod+F4 exec --no-startup-id volume mute
+
+#==============================================================================
+#+++++++++++++++++++++++++++ Brightness Keybindings +++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym XF86MonBrightnessDown exec brightness down 
+bindsym XF86MonBrightnessUp exec brightness up
+bindsym $mod+F6 exec brightness down
+bindsym $mod+F7 exec brightness up
+
+#==============================================================================
+#++++++++ change container layout (stacked, tabbed, toggle split) +++++++++++++
+#==============================================================================
+bindsym $mod+comma layout tabbed
+bindsym $mod+period layout toggle split
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+shift+s sticky toggle
+
+#==============================================================================
+#++++++++++++++++++ VERTICLE AND HOWRIZONTAL SPLIT ++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+semicolon split h
+bindsym $mod+apostrophe split v
+
+#==============================================================================
+#++++++++++++++++++++++++ RESIZING with <,> +++++++++++++++++++++++++++++++++++
+#==============================================================================
+#bindsym $mod+Shift+period resize grow width 1 px or 1 ppt
+#bindsym $mod+Shift+comma resize shrink width 1 px or 1 ppt
+
+bindsym $mod+F9 exec librewolf -P whatsapp "https://web.whatsapp.com/"
+bindsym $mod+F10 exec polywal
+bindsym $mod+Shift+r restart
+#==============================================================================
+#++++++++++++++++++++++++++++++++ Rotation ++++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+Shift+period exec xrandr -o left
+bindsym $mod+Shift+comma  exec xrandr -o normal
+
+#==============================================================================
+#++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+F5 exec mpv-yt
+bindsym $mod+F11 exec toggle polybar
+bindsym F11 fullscreen toggle
+bindsym $mod+F12 exec toggle stalonetray
+
+#==============================================================================
+#+++++++++++++++++++++++++++++ DMENU SCRIPTS ++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+d exec env LC_ALL=en_US.UTF-8 dmenu_run -l 8 -g 4 -nb "#0F0F0F" -p "Run: " 
+bindsym $mod+shift+d exec j4-dmenu-desktop --dmenu='env LC_ALL=en_US.UTF-8 dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
+bindsym $mod+shift+p exec keepmenu
+bindsym $mod+p exec links
+# bindsym $mod+Shift+n exec networkmanager_dmenu -nb "#0f0f0f" -sb "$bg" -l 40
+
+#==============================================================================
+#+++++++++++++++++++++++ Resizing keyshortcuts ++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+r mode "resize"
+mode "resize" {
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+
+#==============================================================================
+#+++++++++++++++++++++++++++ Window setting +++++++++++++++++++++++++++++++++++
+#==============================================================================
+for_window [class="mpv" instance="gl"] floating enable; exec i3-msg resize set height 500px;
+for_window [class="Dragon-drop" instance="dragon-drop"] sticky enable; exec i3-msg resize set height 500px;
+for_window [class="Yad" instance="yad"] floating enable;exec i3-msg sticky enable; exec i3-msg resize set width 300px;
+for_window [instance="Alacritty" class="Alacritty" title="pulsemixer"] floating enable
+for_window [title="tmux" instance="Alacritty" class="Alacritty"] move container to workspace number 10
+for_window [title="Spotify - Web Player: Music for everyone — LibreWolf" instance="Navigator" class="LibreWolf" ] move container to workspace number 11
+for_window [title="Spotify - Web Player: Music for everyone — LibreWolf" instance="Navigator" class="LibreWolf" ] fullscreen enable 
+
+#==============================================================================
+#+++++++++++++++++++++++++++++ Stylings +++++++++++++++++++++++++++++++++++++++
+#==============================================================================
+smart_borders no_gaps
+for_window [class=".*"] border pixel 2
+gaps inner 0
+gaps outer 1
+
+#==============================================================================
+#++++++++++++++++++++++++ RUN FILES ON STARTUP ++++++++++++++++++++++++++++++++
+#==============================================================================
+exec_always --no-startup-id ~/.config/i3/scripts/startup.sh
+
+#==============================================================================
+#+++++++++++++++++++++++++++  _____ _   _ ____   ++++++++++++++++++++++++++++++
+#+++++++++++++++++++++++++++ | ____| \ | |  _ \  ++++++++++++++++++++++++++++++
+#+++++++++++++++++++++++++++ |  _| |  \| | | | | ++++++++++++++++++++++++++++++
+#+++++++++++++++++++++++++++ | |___| |\  | |_| | ++++++++++++++++++++++++++++++
+#+++++++++++++++++++++++++++ |_____|_| \_|____/  ++++++++++++++++++++++++++++++
+#=============================================================================

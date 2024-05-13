@@ -1,0 +1,45 @@
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export ANDROID_HOME="$XDG_DATA_HOME"/android
+export STARSHIP_CONFIG=~/.starship/config.toml
+export TERM="alacritty"
+export BROWSER="librewolf -P default"
+export RUST_BACKTRACE=1
+export MANPAGER='nvim +Man!'
+export EDITOR='nvim'
+export VISUAL='nvim'
+#export TERMINAL='alacritty'
+export RUST_BACKTRACE=1
+export VIEB_DATAFOLDER=~/.local/share/Vieb/
+export TERMCMD='alacritty -e'
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export GOPATH="$XDG_DATA_HOME"/go
+export XORGCONFIG="$XDG_CONFIG_HOME"/X11/xorg
+
+
+#ZSH
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export CABAL_CONFIG="$XDG_CONFIG_HOME"/cabal/config
+export CABAL_DIR="$XDG_CACHE_HOME"/cabal
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export SCREENRC="$XDG_CONFIG_HOME"/screen/screenrc
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export RXVT_SOCKET="$XDG_RUNTIME_DIR"/urxvtd
+
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
+export GLAMOUR_STYLE="dark"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+
+export PATH="$PATH:$HOME/.local/bin/scripts"
+export PATH="$PATH:$HOME/.local/bin/polybar"
+export PATH="$PATH:$HOME/.local/bin/start"
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority

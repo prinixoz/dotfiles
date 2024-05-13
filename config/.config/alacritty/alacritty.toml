@@ -1,0 +1,75 @@
+[shell]
+program = "/bin/fish"
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#858791"
+blue = "#5686B6"
+cyan = "#7098C1"
+green = "#4B78AA"
+magenta = "#6C8CB3"
+red = "#54739A"
+white = "#bfc2d0"
+yellow = "#70839C"
+
+[colors.cursor]
+cursor = "#bfc2d0"
+text = "#0f131c"
+
+[colors.normal]
+black = "#0f131c"
+blue = "#5686B6"
+cyan = "#7098C1"
+green = "#4B78AA"
+magenta = "#6C8CB3"
+red = "#54739A"
+white = "#bfc2d0"
+yellow = "#70839C"
+
+[colors.primary]
+background = "#0f131c"
+foreground = "#bfc2d0"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 10
+
+[font.bold]
+family = "Hack"
+style = "Regular"
+
+[font.bold_italic]
+family = "Source Code Pro"
+style = "Bold Italic"
+
+[font.italic]
+family = "Source Code Pro"
+style = "Italic"
+
+[font.normal]
+family = "Hack"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 1
+
+[scrolling]
+history = 5000
+
+[window]
+dynamic_padding = false
+opacity = 0.8
+title = "Alacritty"
+
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+[window.padding]
+x = 6
+y = 6

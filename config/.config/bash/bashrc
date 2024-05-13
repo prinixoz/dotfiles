@@ -1,0 +1,30 @@
+#   ___
+#  |  _ \  _ __ (_) _ __  (_)__  __ ___   ___
+#  | |_) || '__|| || '_ \ | |\ \/ // _ \ / __|
+#  |  __/ | |   | || | | || | >  <| (_) |\__ \
+#  |_|    |_|   |_||_| |_||_|/_/\_\\___/ |___/
+#
+#  Github :: https://github.com/prinixos
+
+source ~/.config/shell/export
+source ~/.config/shell/alias
+
+PS1='[\u@\h \W]\$ '
+[[ $- != *i* ]] && return
+bind "set completion-ignore-case on"
+complete -cf doas
+
+export HISTCONTROL=ignoreboth:erasedups
+
+#starship prompt
+eval "$(starship init bash)"
+
+#shopt
+# shopt -s autocd # change to named directory
+# shopt -s cdspell # autocorrects cd misspellings
+# shopt -s cmdhist # save multi-line commands in history as single line
+# shopt -s dotglob
+# shopt -s histappend # do not overwrite history
+# shopt -s expand_aliases # expand aliases
+
+source ~/.cache/wal/colors-tty.sh
