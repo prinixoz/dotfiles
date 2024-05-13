@@ -6,9 +6,9 @@ photos(){
 }
 
 config(){
-    cd ~/.code/
+    cd ~/.dotfiles/
     git add .
-    git commit -m "+"
+    git commit -m $(date "+%D|%T")
     git push origin main
     cd -
 }
@@ -23,9 +23,9 @@ update(){
 }
 
 all(){
+    config
     photos
     password
-    config
 }
 
 case $1 in 
