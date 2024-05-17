@@ -1,6 +1,6 @@
 #!/bin/bash
 files(){
-	cd ~/Pendrive/
+	cd ~/.pendrive/
 	rclone -P sync . "drive:Personal"
 	cd -
 }
@@ -13,10 +13,6 @@ config(){
 	cd -
 }
 
-password(){
-	rclone sync -P ~/.local/New.kdbx "drive:Personal"
-}
-
 update(){
 	paru -Syyu
 	sudo pacman -Rs $(pacman -Qqtd)
@@ -25,7 +21,7 @@ update(){
 all(){
 	config
 	files 
-	password
+	update
 }
 
 case $1 in 
