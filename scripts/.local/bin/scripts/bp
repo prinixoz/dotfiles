@@ -1,42 +1,42 @@
 #!/bin/bash
-photos(){
-    cd ~/Pendrive/
-    rclone -P sync . "drive:Personal/Pendrive"
-    cd -
+files(){
+	cd ~/Pendrive/
+	rclone -P sync . "drive:Prinix"
+	cd -
 }
 
 config(){
-    cd ~/.dotfiles/
-    git add .
-    git commit -m $(date "+%D|%T")
-    git push origin main
-    cd -
+	cd ~/.dotfiles/
+	git add .
+	git commit -m $(date "+%D|%T")
+	git push origin main
+	cd -
 }
 
 password(){
-    rclone sync -P ~/.local/New.kdbx "drive:Personal"
+	rclone sync -P ~/.local/New.kdbx "drive:Personal"
 }
 
 update(){
-    paru -Syyu
-    sudo pacman -Rs $(pacman -Qqtd)
+	paru -Syyu
+	sudo pacman -Rs $(pacman -Qqtd)
 }
 
 all(){
-    config
-    photos
-    password
+	config
+	files 
+	password
 }
 
 case $1 in 
-    -p)
-        photos;;
-    -c)
-        config;;
-    -u)
-        update;;
-    -k)
-        password;;
-    *)
-        all;;
+	-f)
+		files;;
+	-c)
+		config;;
+	-u)
+		update;;
+	-k)
+		password;;
+	*)
+		all;;
 esac
