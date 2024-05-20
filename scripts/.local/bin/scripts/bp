@@ -6,7 +6,7 @@ files(){
 }
 
 config(){
-	cd ~/.dotfiles/
+	cd ~/.local/dotfiles/
 	git add .
 	git commit -m $(date "+%D|%T")
 	git push origin main

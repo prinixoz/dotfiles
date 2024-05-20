@@ -12,6 +12,7 @@ alias unlock='sudo rm /var/lib/pacman/db.lck'
 # File management
 alias untar='tar -zxvf '
 alias trash='gio trash'
+alias xdg-ninja="xdg-ninja --skip-unsupported"
 
 # Package management
 alias p='paru -S'
