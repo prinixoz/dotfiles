@@ -22,7 +22,7 @@ adda247 | https://www.adda247.com/my-purchase/57186/CUET-2024-2-0-GT-Language-Co
 ## Google
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0 | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
-chatgpt | http://chat.openai.com/ | librewolf -P google
+chatgpt | http://chat.openai.com/ | librewolf -P default
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 drive | drive.google.com | librewolf -P google
 keep | https://keep.google.com | librewolf -P google

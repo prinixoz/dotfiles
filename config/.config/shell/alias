@@ -23,7 +23,7 @@ alias pu='paru -Syu --noconfirm'
 # Configuration editing
 alias nf='$EDITOR ~/.config/fish/config.fish'
 alias vnvim='cd ~/.config/nvim/ && nvim init.lua && cd -'
-alias gum='gummy -B 3 -T 3 -P 3 -y "04:00" -u "20:00"'
+alias gum='gummy -B 3 -T 3 -P 3 -y "05:00" -u "20:00"'
 
 # Navigation shortcuts
 alias ..='cd ..'

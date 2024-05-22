@@ -156,7 +156,6 @@ bindsym XF86AudioNext exec playerctl next
 #==============================================================================
 #+++++++++++++++++++++++++++++++ Keyboard +++++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+F1 exec librewolf -P stream "https://open.spotify.com/" 
 bindsym $mod+F2 exec --no-startup-id volume down
 bindsym $mod+F3 exec --no-startup-id volume up
 bindsym $mod+F4 exec --no-startup-id volume mute
@@ -202,6 +201,7 @@ bindsym $mod+Shift+comma  exec xrandr -o normal
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
 bindsym $mod+F5 exec mpv-yt
+bindsym $mod+F1 exec "ytfzf -u mpv-yt -D -l"
 bindsym $mod+F11 exec toggle polybar
 bindsym F11 fullscreen toggle
 bindsym $mod+F12 exec toggle stalonetray
