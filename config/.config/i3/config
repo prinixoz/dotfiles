@@ -111,6 +111,7 @@ bindsym $mod+shift+e exec pcmanfm
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
 bindsym $mod+x exec "i3lock -c 000000"
+bindsym $mod+f exec touchpad
 
 #==============================================================================
 #++++++++++++++++++++++++++++++++ Browsers++++++++++++++++++++++=++++++++++++++
@@ -188,7 +189,6 @@ bindsym $mod+apostrophe split v
 #bindsym $mod+Shift+period resize grow width 1 px or 1 ppt
 #bindsym $mod+Shift+comma resize shrink width 1 px or 1 ppt
 
-bindsym $mod+F9 exec librewolf -P whatsapp "https://web.whatsapp.com/"
 bindsym $mod+F10 exec polywal
 bindsym $mod+Shift+r restart
 #==============================================================================
@@ -202,6 +202,7 @@ bindsym $mod+Shift+comma  exec xrandr -o normal
 #==============================================================================
 bindsym $mod+F5 exec mpv-yt
 bindsym $mod+F1 exec "ytfzf -u mpv-yt -D -l"
+bindsym $mod+F9 exec "youtube-music"
 bindsym $mod+F11 exec toggle polybar
 bindsym F11 fullscreen toggle
 bindsym $mod+F12 exec toggle stalonetray
@@ -244,8 +245,6 @@ for_window [class="Dragon-drop" instance="dragon-drop"] sticky enable; exec i3-m
 for_window [class="Yad" instance="yad"] floating enable;exec i3-msg sticky enable; exec i3-msg resize set width 300px;
 for_window [instance="Alacritty" class="Alacritty" title="pulsemixer"] floating enable
 for_window [title="tmux" instance="Alacritty" class="Alacritty"] move container to workspace number 10
-for_window [title="Spotify - Web Player: Music for everyone — LibreWolf" instance="Navigator" class="LibreWolf" ] move container to workspace number 11
-for_window [title="Spotify - Web Player: Music for everyone — LibreWolf" instance="Navigator" class="LibreWolf" ] fullscreen enable 
 
 #==============================================================================
 #+++++++++++++++++++++++++++++ Stylings +++++++++++++++++++++++++++++++++++++++

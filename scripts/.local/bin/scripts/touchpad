@@ -1,0 +1,8 @@
+#!/bin/sh
+status=$(xinput list-props "DELL0844:00 04F3:3074 Touchpad" | grep "Device Enabled" | awk -F : '{printf $2}' | xargs)
+
+if [ $status -eq 1 ];then
+    xinput set-prop "DELL0844:00 04F3:3074 Touchpad" 186 0
+else
+    xinput set-prop "DELL0844:00 04F3:3074 Touchpad" 186 1
+fi
