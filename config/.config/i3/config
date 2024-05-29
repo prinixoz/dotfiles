@@ -166,8 +166,8 @@ bindsym $mod+F4 exec --no-startup-id volume mute
 #==============================================================================
 bindsym XF86MonBrightnessDown exec brightness down 
 bindsym XF86MonBrightnessUp exec brightness up
-bindsym $mod+F6 exec brightness down
-bindsym $mod+F7 exec brightness up
+# bindsym $mod+F6 exec brightness down
+# bindsym $mod+F7 exec brightness up
 
 #==============================================================================
 #++++++++ change container layout (stacked, tabbed, toggle split) +++++++++++++
@@ -198,11 +198,19 @@ bindsym $mod+Shift+period exec xrandr -o left
 bindsym $mod+Shift+comma  exec xrandr -o normal
 
 #==============================================================================
+#++++++++++++++++++++++++++++++++ MUSIC +++++++++++++++++++++++++++++++++++++++
+#==============================================================================
+bindsym $mod+F6 exec playerctl previous
+bindsym $mod+F7 exec playerctl play-pause
+bindsym $mod+F8 exec playerctl next
+
+#==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
 bindsym $mod+F5 exec mpv-yt
 bindsym $mod+F1 exec "ytfzf -u mpv-yt -D -l"
 bindsym $mod+F9 exec "youtube-music"
+
 bindsym $mod+F11 exec toggle polybar
 bindsym F11 fullscreen toggle
 bindsym $mod+F12 exec toggle stalonetray
