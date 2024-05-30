@@ -207,9 +207,9 @@ bindsym $mod+F8 exec playerctl next
 #==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+F5 exec mpv-yt
 bindsym $mod+F1 exec "ytfzf -u mpv-yt -D -l"
 bindsym $mod+F9 exec "youtube-music"
+bindsym $mod+F5 exec "mpv-yt"
 
 bindsym $mod+F11 exec toggle polybar
 bindsym F11 fullscreen toggle
