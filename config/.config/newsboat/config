@@ -61,4 +61,4 @@ highlight article ":.*\\(embedded flash\\)$" magenta default
 
 
 ignore-mode "display"
-ignore-article "*" "title=~\"\#shorts\""
+ignore-article "*" "title=~\"\#\""
