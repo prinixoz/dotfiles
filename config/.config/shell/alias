@@ -3,12 +3,13 @@ alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
 alias c='clear'
+alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 # System control
 alias sys='sudo systemctl start'
 alias syst='sudo systemctl stop'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
-alias live='live-server -q --port=8000 --browser="librewolf"'
+alias live='live-server --port=8000 --browser="librewolf"'
 
 # File management
 alias untar='tar -zxvf '

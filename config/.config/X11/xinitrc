@@ -19,3 +19,4 @@ nm-applet &
 
 # Starting window manager
 exec i3
+
