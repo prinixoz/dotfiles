@@ -5,4 +5,6 @@ udiskie &
 xss-lock -- i3lock -c 000000 &
 killall -q rep
 unclutter --timeout 5 &
+nm-applet &
+battery-notify &
 #rep 60 "$HOME/.local/bin/capsesc" &

@@ -12,10 +12,6 @@
 
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY&
 xset b off &
-find &
 setxkbmap -option caps:swapescape &
-nm-applet &
-
-# Starting window manager
 exec i3
 

@@ -13,11 +13,4 @@ url="https://www.youtube.com/watch?v=$videoId"
 
 #yt playurl "$url" > /dev/null &
 
-
-mpv $(yt-dlp -f "[height<=720]" --get-url "$url" | tail -1 | xargs)
-
-
-# Using yt-local
-#videoUrl="http://localhost:2000/https://www.youtube.com/watch?v=$videoId"
-#src=$(curl -s "$videoUrl" | grep "<source" | tail -1 | awk -F\" '{print $2}' | sed 's/&amp;/\&/g')
-#[ $src ] && mpv "http://localhost:2000$src" || notify-send "not working"
+mpv $(yt-dlp -f best $url -g | xargs)
