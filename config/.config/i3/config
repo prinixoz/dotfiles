@@ -119,7 +119,7 @@ bindsym $mod+Shift+a exec watchlist -l
 bindsym $mod+w exec watchlist -a
 bindsym $mod+shift+Return exec sdmenu
 bindsym $mod+b exec alacritty -e nb
-bindsym $mod+Shift+b exec chromium --incognito
+bindsym $mod+Shift+b exec alacritty -e deluge-console
 
 #==============================================================================
 #+++++++++++++++++++++++ Toggle window focus all ++++++++++++++++++++++++++++++

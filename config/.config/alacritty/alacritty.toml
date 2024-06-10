@@ -4,33 +4,29 @@ program = "/bin/fish"
 [colors]
 draw_bold_text_with_bright_colors = true
 
-[colors.bright]
-black = "#858791"
-blue = "#5686B6"
-cyan = "#7098C1"
-green = "#4B78AA"
-magenta = "#6C8CB3"
-red = "#54739A"
-white = "#bfc2d0"
-yellow = "#70839C"
-
-[colors.cursor]
-cursor = "#bfc2d0"
-text = "#0f131c"
+[colors.primary]
+background = "#1a1b26"
+foreground = "#a9b1d6"
 
 [colors.normal]
-black = "#0f131c"
-blue = "#5686B6"
-cyan = "#7098C1"
-green = "#4B78AA"
-magenta = "#6C8CB3"
-red = "#54739A"
-white = "#bfc2d0"
-yellow = "#70839C"
+black = "#32344a"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#ad8ee6"
+cyan = "#449dab"
+white = "#787c99"
 
-[colors.primary]
-background = "#0f131c"
-foreground = "#bfc2d0"
+[colors.bright]
+black = "#444b6a"
+red = "#ff7a93"
+green = "#b9f27c"
+yellow = "#ff9e64"
+blue = "#7da6ff"
+magenta = "#bb9af7"
+cyan = "#0db9d7"
+white = "#acb0d0"
 
 [env]
 TERM = "xterm-256color"

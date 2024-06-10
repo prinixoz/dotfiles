@@ -17,7 +17,7 @@ keybr      | https://www.keybr.com/  | librewolf -P typing
 tryhackme  | https://tryhackme.com/ | librewolf -P skills
 coursera | https://www.coursera.org/learn/introduction-to-front-end-development/home/week/1 | librewolf -P skills
 skillshare | https://www.skillshare.com/ | librewolf -P skills
-adda247 | https://www.adda247.com/my-purchase/57186/CUET-2024-2-0-GT-Language-Complete-Batch-with-Hybrid-PYP-KIT-Language-Tes-General-Test-CUET-Live-Classes-by-Adda247/exams/22001/CUET%20LANGUAGE%20AND%20GENERAL%20TEST | librewolf -P google
+100x | https://app.100xdevs.com/ | librewolf -P skills
 
 ## Google
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0 | librewolf -P google
