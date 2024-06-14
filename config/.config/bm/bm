@@ -35,8 +35,8 @@ simplenote | https://app.simplenote.com/ | librewolf -P work
 
 ## Protonmail
 calander | https://calendar.proton.me/u/1/ | librewolf -P proton
-prinixoz- Protonmail | https://mail.proton.me/u/1/ | librewolf -P proton
-aliasoz - Protonmail | https://mail.proton.me/u/0/ | librewolf -P proton
+prinixoz- Protonmail | https://mail.proton.me/u/0/inbox | librewolf -P proton
+aliasoz - Protonmail | https://mail.proton.me/u/1/inbox | librewolf -P proton
 simplelogin | https://app.simplelogin.io/dashboard/ | librewolf -P proton
 
 ## Shopping
