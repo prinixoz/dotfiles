@@ -4,7 +4,7 @@ searx | https://searx.be/
 wiby | https://wiby.me/
 yandex | https://yandex.com
 startpage.com | https://www.startpage.com/
-yt | http://localhost:2000/https://youtube.com/
+yt | https://youtube.com/
 torrent | https://localhost:9091/
 activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
@@ -20,6 +20,7 @@ skillshare | https://www.skillshare.com/ | librewolf -P skills
 100x | https://app.100xdevs.com/courses/3/ | librewolf -P skills
 chadmaxx | https://superprofile.bio/ch/v/9014f1ed-3c98-4faf-8e7c-0b90f13fe62e | librewolf -P skills
 alcoders | https://web.classplusapp.com/ | librewolf -P collage
+classplus | https://web.classplusapp.com/ | librewolf -P collage
 
 ## Google
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0 | librewolf -P google
@@ -66,7 +67,7 @@ hacknation  | https://hacksnation.com/
 
 ### Social
 whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
-github | https://github.com/ | librewolf -P social
+github | https://github.com/ | librewolf -P skills
 
 ## Studies
 pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
@@ -97,7 +98,8 @@ warren | https://www.berkshirehathaway.com/letters/letters.html
 ## Others
 phone (papa) | ftp://192.168.29.242:2121/ | pcmanfm    
 phone (mummy) | ftp://192.168.29.156:2121/ | pcmanfm    
-phone | ftp://192.168.29.92:2121/ | pcmanfm
+phone (samsung) | ftp://192.168.29.92:2121/ | pcmanfm
+phone (cat) | ftp://192.168.29.230:2121/ | pcmanfm
 fraidyc | https://fraidyc.at/
 virustotal | https://www.virustotal.com/gui/home/upload
 file upload | https://file.swurl.xyz/

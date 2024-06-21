@@ -59,8 +59,9 @@ alias n='cd && clear'
 # Weather
 alias weather='clear && curl wttr.in/Jamshedpur'
 
-# Speed test
+# Utility
 alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+alias record="ffmpeg -f x11grab -s 1920x1080 -i :0.0 -r 30 -preset ultrafast /mnt/PS/output.mkv"
 
 # EDITOR
 alias valias="$EDITOR ~/.config/shell/alias"
