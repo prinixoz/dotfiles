@@ -109,7 +109,7 @@ bindsym $mod+e exec alacritty -e lfub
 bindsym $mod+shift+e exec pcmanfm 
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
-bindsym $mod+x exec "i3lock -c 000000"
+bindsym $mod+x exec lock
 bindsym $mod+f exec touchpad
 
 #==============================================================================
@@ -165,8 +165,8 @@ bindsym $mod+F4 exec --no-startup-id volume mute
 #==============================================================================
 bindsym XF86MonBrightnessDown exec brightness down 
 bindsym XF86MonBrightnessUp exec brightness up
-# bindsym $mod+F6 exec brightness down
-# bindsym $mod+F7 exec brightness up
+bindsym $mod+Shift+F2 exec brightness down
+bindsym $mod+Shift+F3 exec brightness up
 
 #==============================================================================
 #++++++++ change container layout (stacked, tabbed, toggle split) +++++++++++++

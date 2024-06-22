@@ -43,4 +43,5 @@ export XDG_STATE_HOME=$HOME/.local/state
 export PATH="$PATH:$HOME/.local/bin/scripts"
 export PATH="$PATH:$HOME/.local/bin/polybar"
 export PATH="$PATH:$HOME/.local/bin/start"
+export PATH="$PATH:$HOME/.local/bin/dmenu_scripts"
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
