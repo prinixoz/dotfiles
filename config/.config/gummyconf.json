@@ -18,20 +18,20 @@
             "backlight": {
                 "max": 1000,
                 "min": 350,
-                "mode": 0,
+                "mode": 1,
                 "val": 250
             },
             "brightness": {
                 "max": 1000,
-                "min": 350,
-                "mode": 0,
+                "min": 800,
+                "mode": 1,
                 "val": 1000
             },
             "temperature": {
                 "max": 5000,
                 "min": 2000,
                 "mode": 1,
-                "val": 6500
+                "val": 2000
             }
         }
     ],

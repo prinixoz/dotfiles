@@ -2,7 +2,7 @@ CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | dmenu -l 10)
 
 case "$CHOSEN" in
 	"Lock") lockscreen ;;
-	"Suspend") systemctl suspend-then-hibernate ;;
+	"Suspend") systemctl suspend;;
 	"Reboot") reboot ;;
 	"Shutdown") poweroff ;;
 	"Log Out") i3-msg exit ;;
