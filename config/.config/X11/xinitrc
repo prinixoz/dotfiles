@@ -11,7 +11,4 @@
 # localectl set-x11-keymap us '' '' caps:escape
 
 dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY&
-xset b off &
-setxkbmap -option caps:swapescape &
-exec i3
-
+sway

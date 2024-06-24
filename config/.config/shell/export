@@ -7,7 +7,7 @@ export RUST_BACKTRACE=1
 export MANPAGER='nvim +Man!'
 export EDITOR='nvim'
 export VISUAL='nvim'
-#export TERMINAL='alacritty'
+export TERMINAL='alacritty'
 export RUST_BACKTRACE=1
 export VIEB_DATAFOLDER=~/.local/share/Vieb/
 export TERMCMD='alacritty -e'
@@ -45,3 +45,7 @@ export PATH="$PATH:$HOME/.local/bin/polybar"
 export PATH="$PATH:$HOME/.local/bin/start"
 export PATH="$PATH:$HOME/.local/bin/dmenu_scripts"
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+
+export XKB_DEFAULT_OPTIONS=caps:escape
+export XKB_DEFAULT_OPTIONS=escape:caps
+

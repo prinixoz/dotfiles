@@ -1,3 +1,3 @@
 #!/bin/sh
 playerctl -a pause
-pidof i3lock || i3lock -c 000000
+pidof swaylock || swaylock -c 000000

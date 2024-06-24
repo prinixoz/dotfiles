@@ -11,15 +11,14 @@
 #==============================================================================
 
 
-set_from_resource $fg i3wm.color7 
-set_from_resource $bg i3wm.color2
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff $bg       $bg
+# Changed background
+output * background #000000 solid_color
 client.focused_inactive #333333 #5f676a #ffffff #292d2e   #222222
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.placeholder      #000000 #000000 #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 #==============================================================================
@@ -85,6 +84,7 @@ bindsym $mod+Shift+m move scratchpad
 #==============================================================================
 bindsym $mod+q kill
 bindsym $mod+Shift+q exec process
+bindsym $mod+Shift+r reload
 
 #==============================================================================
 #++++++++++++++++++++ Window Focus Movement Keys ++++++++++++++++++++++++++++++
@@ -189,7 +189,7 @@ bindsym $mod+apostrophe split v
 #bindsym $mod+Shift+comma resize shrink width 1 px or 1 ppt
 
 bindsym $mod+F10 exec polywal
-bindsym $mod+Shift+r restart
+#bindsym $mod+Shift+r restart
 #==============================================================================
 #++++++++++++++++++++++++++++++++ Rotation ++++++++++++++++++++++++++++++++++++
 #==============================================================================
@@ -258,6 +258,7 @@ smart_borders no_gaps
 for_window [class=".*"] border pixel 2
 gaps inner 0
 gaps outer 1
+
 
 #==============================================================================
 #++++++++++++++++++++++++ RUN FILES ON STARTUP ++++++++++++++++++++++++++++++++

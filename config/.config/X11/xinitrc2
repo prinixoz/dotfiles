@@ -9,4 +9,4 @@ xss-lock -- slock &
 #   shutdown now 
 #fi
 
-exec startxfce4
+exec i3

@@ -56,7 +56,7 @@ export PATH=$PATH:$HOME/.local/appimage
 source $HOME/.config/shell/export
 
 if [[ "$(tty)" = "/dev/tty1" ]]; then
-	startx ~/.config/X11/xinitrc
+     ~/.config/X11/xinitrc
 elif [[ "$(tty)" = "/dev/tty2" ]]; then
 	startx ~/.config/X11/xinitrc2
 fi
