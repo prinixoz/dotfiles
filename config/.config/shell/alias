@@ -5,7 +5,7 @@ alias rm='rm -v'
 alias c='clear'
 alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias unsl="alacritty -e sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target && killall xfce4-power-man"
-alias sl="alacritty -e sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target"
+alias gsl="alacritty -e sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target"
 
 # System control
 alias sys='sudo systemctl start'
