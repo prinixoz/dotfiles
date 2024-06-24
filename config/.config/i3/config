@@ -259,6 +259,11 @@ for_window [class=".*"] border pixel 2
 gaps inner 0
 gaps outer 1
 
+input type:keyboard {
+    xkb_layout us
+    xkb_options caps:swapescape
+}
+
 
 #==============================================================================
 #++++++++++++++++++++++++ RUN FILES ON STARTUP ++++++++++++++++++++++++++++++++
