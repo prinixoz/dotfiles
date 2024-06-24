@@ -12,3 +12,6 @@ cd ~/.local/
 git clone https://github.com/prinixoz/dotfiles
 cd ~/.local/dotfiles
 stow -vt ~ config/ scripts/
+
+## Install Package
+sudo pacman -S $(curl "https://raw.githubusercontent.com/prinixoz/dotfiles/main/install.txt")

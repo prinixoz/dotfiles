@@ -11,7 +11,7 @@ alias gsl="alacritty -e sudo systemctl unmask sleep.target suspend.target hibern
 alias sys='sudo systemctl start'
 alias syst='sudo systemctl stop'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
-alias live='live-server --port=8000 --browser="librewolf"'
+alias live='live-server --port=8000 --browser="brave"'
 
 # File management
 alias untar='tar -zxvf '
