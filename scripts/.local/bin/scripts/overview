@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+
+###########################################################################################################	
+#Time
+time=$(date +"%r")
+date=$(date +"%b %d, %Y")
+
 ###########################################################################################################	
 # BATTERY #################################################################################################
 
@@ -10,20 +16,6 @@ for battery in /sys/class/power_supply/BAT?*; do
 	status="$(cat "$battery/status" 2>&1)"
 done
 
-###########################################################################################################	
-# CPU #####################################################################################################	
-
-read cpu a b c previdle rest < /proc/stat
-prevtotal=$((a+b+c+previdle))
-sleep 0.5
-read cpu a b c idle rest < /proc/stat
-total=$((a+b+c+idle))
-cpu=$((100*( (total-prevtotal) - (idle-previdle) ) / (total-prevtotal) ))
-
-###########################################################################################################	
-# MEMORY ##################################################################################################
-
-mem=$(free --mebi | sed -n '2{p;q}' | awk '{printf ("%.2fGB\n", $3 / 1024)}')
 
 ###########################################################################################################	
 # VPN #####################################################################################################
@@ -50,28 +42,33 @@ function connection(){
 	fi
 
 	if [[ $(nmcli d | grep -w "connected  ") ]]; then
-		int=$(echo "Connected to $con_type : $con $vpn\nNet Traffic      Up:$(numfmt --to=iec $tx)B   Down:$(numfmt --to=iec $rx)B")
+		int=$(printf "$con_type : $con $vpn")
 	else
-		int=$(echo "You are currently offline.")
+		int=$("OFFLINE.")
 	fi
 }
+
+pkgupdate=$(paru -Qu | wc -l) 
+echo $pkgupdate
 
 run(){
 	connection
 
-	dunstify -r 9992 "System Overview" "Battery is at $capacity%[$status].
-	CPU usage is $cpu%.
-	Memory is at $mem utilization.
-	$int
-	"
+	dunstify -r 9992 "
+    Time: $time
+    Date: $date
+    Battery: $capacity%[$status]
+    Updates: $pkgupdate
+    $int 
+    "
 }
 
-
-var=0
-while [[ $var -le 5 ]]; do
-	run&
-	sleep 0.5
-	run&
-	sleep 0.5
-	((var++))
-done
+run &
+#var=0
+# while [[ $var -le 5 ]]; do
+# 	run&
+# 	sleep 0.5
+# 	run&
+# 	sleep 0.5
+# 	((var++))
+# done

@@ -47,7 +47,7 @@ floating_modifier $mod
 #++++++++++++++++++++++++++++ Touchpad ++++++++++++++++++++++++++++++++++++++++
 #==============================================================================
 
-input "1267:12404:DELL0844:00_04F3:3074_Touchpad" {
+input type:touchpad {
     dwt enabled
     tap enabled
     middle_emulation enabled
@@ -227,7 +227,7 @@ bindsym $mod+F9 exec "youtube-music"
 bindsym $mod+F5 exec "mpv-yt"
 bindsym $mod+Shift+F5 exec "mpv-audio"
 
-bindsym $mod+F11 exec toggle waybar
+bindsym $mod+F11 bar mode toggle
 bindsym F11 fullscreen toggle
 bindsym $mod+F12 exec toggle stalonetray
 
