@@ -115,7 +115,7 @@ bindsym $mod+l focus right
 bindsym $mod+Return exec alacritty
 bindsym $mod+c exec alacritty -e htop
 bindsym $mod+e exec alacritty -e lfub
-bindsym $mod+shift+e exec pcmanfm 
+bindsym $mod+shift+e exec nemo
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
 bindsym $mod+x exec lock
@@ -220,7 +220,7 @@ bindsym $mod+F9 exec "youtube-music"
 bindsym $mod+F5 exec "mpv-yt"
 bindsym $mod+Shift+F5 exec "mpv-audio"
 
-bindsym $mod+F11 exec toggle polybar
+bindsym $mod+F11 exec toggle waybar
 bindsym F11 fullscreen toggle
 bindsym $mod+F12 exec toggle stalonetray
 
@@ -228,8 +228,9 @@ bindsym $mod+F12 exec toggle stalonetray
 #+++++++++++++++++++++++++++++ DMENU SCRIPTS ++++++++++++++++++++++++++++++++++
 #==============================================================================
 set $menu tofi-run | zsh
+set $appmenu tofi-drun | zsh
 bindsym $mod+d exec $menu
-bindsym $mod+shift+d exec j4-dmenu-desktop --dmenu='dmenu-wl -l 8 -nb "#0F0F0F" -p "Run: "'
+bindsym $mod+shift+d exec $appmenu
 bindsym $mod+shift+p exec keepmenu
 bindsym $mod+p exec links
 # bindsym $mod+Shift+n exec networkmanager_dmenu -nb "#0f0f0f" -sb "$bg" -l 40
