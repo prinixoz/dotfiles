@@ -44,6 +44,15 @@ set $terminal alacritty -e
 floating_modifier $mod
 
 #==============================================================================
+#++++++++++++++++++++++++++++ Touchpad gesture ++++++++++++++++++++++++++++++++
+#==============================================================================
+bindgesture swipe:right workspace prev
+bindgesture swipe:left workspace next
+# bindgesture pinch:inward+up move up
+# bindgesture pinch:inward+down move down
+# bindgesture pinch:inward+left move left
+# bindgesture pinch:inward+right move right
+#==============================================================================
 #+++++++++++++++++++++++++++++ Switch Workscpace ++++++++++++++++++++++++++++++
 #==============================================================================
 bindsym $mod+1 workspace number $ws1
@@ -218,8 +227,9 @@ bindsym $mod+F12 exec toggle stalonetray
 #==============================================================================
 #+++++++++++++++++++++++++++++ DMENU SCRIPTS ++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+d exec env LC_ALL=en_US.UTF-8 dmenu_run -l 8 -g 4 -nb "#0F0F0F" -p "Run: " 
-bindsym $mod+shift+d exec j4-dmenu-desktop --dmenu='env LC_ALL=en_US.UTF-8 dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
+set $menu tofi-run | zsh
+bindsym $mod+d exec $menu
+bindsym $mod+shift+d exec j4-dmenu-desktop --dmenu='dmenu-wl -l 8 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+shift+p exec keepmenu
 bindsym $mod+p exec links
 # bindsym $mod+Shift+n exec networkmanager_dmenu -nb "#0f0f0f" -sb "$bg" -l 40

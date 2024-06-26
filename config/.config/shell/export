@@ -15,6 +15,7 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export GOPATH="$XDG_DATA_HOME"/go
 export XORGCONFIG="$XDG_CONFIG_HOME"/X11/xorg
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
+export menu="wofi"
 
 
 #ZSH

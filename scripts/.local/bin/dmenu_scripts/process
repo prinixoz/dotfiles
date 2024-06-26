@@ -1,0 +1,2 @@
+#!/bin/bash
+killall $(ps -A | awk '{print $4}' | tofi)

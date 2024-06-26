@@ -1,4 +1,5 @@
-CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | dmenu -l 10)
+#!/bin/bash
+CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | tofi )
 
 case "$CHOSEN" in
 	"Lock") lockscreen ;;

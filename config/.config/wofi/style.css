@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    border:0px;
+    outline:0px;
+}
+
+window {
+    border :10px solid  #0f0f00;
+}
+
+#input {}
+
+#input {
+    color:#fff;
+    background: #0f0f00;
+    outline:0px;
+}
+
+#inner-box {
+    background: #0f0f00;
+}
+
+#outer-box {
+    margin: 5px;
+}
+
+#scroll {
+    background: #0f0f00;
+}
+
+#text {
+    margin: 5px;
+    color:#fff;
+}
+
