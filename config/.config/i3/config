@@ -44,8 +44,15 @@ set $terminal alacritty -e
 floating_modifier $mod
 
 #==============================================================================
-#++++++++++++++++++++++++++++ Touchpad gesture ++++++++++++++++++++++++++++++++
+#++++++++++++++++++++++++++++ Touchpad ++++++++++++++++++++++++++++++++++++++++
 #==============================================================================
+
+input "1267:12404:DELL0844:00_04F3:3074_Touchpad" {
+    dwt enabled
+    tap enabled
+    middle_emulation enabled
+}
+
 bindgesture swipe:right workspace prev
 bindgesture swipe:left workspace next
 # bindgesture pinch:inward+up move up
