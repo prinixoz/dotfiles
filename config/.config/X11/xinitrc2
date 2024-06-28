@@ -1,6 +1,4 @@
 #!/bin/sh
-
-setxkbmap -option caps:swapescape &
 xss-lock -- slock &
 
 #shutdown -P 20:00 &

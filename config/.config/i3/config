@@ -218,6 +218,7 @@ bindsym $mod+Shift+comma  exec xrandr -o normal
 bindsym $mod+F6 exec playerctl previous
 bindsym $mod+F7 exec playerctl play-pause
 bindsym $mod+F8 exec playerctl next
+bindsym control+alt+backspace exit
 
 #==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
@@ -267,7 +268,7 @@ mode "resize" {
 #==============================================================================
 #+++++++++++++++++++++++++++ Window setting +++++++++++++++++++++++++++++++++++
 #==============================================================================
-for_window [class="mpv" instance="gl"] floating enable; exec i3-msg resize set height 500px;
+for_window [app_id="mpv"] floating enable; exec i3-msg resize set height 500px;
 for_window [class="Dragon-drop" instance="dragon-drop"] sticky enable; exec i3-msg resize set height 500px;
 
 #==============================================================================
