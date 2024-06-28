@@ -1,2 +1,2 @@
 #!/bin/bash
-killall $(ps -A | awk '{print $4}' | tofi)
+killall $(ps -A | awk '{print $4}' | dmenu -nb "#0f0f0f" -i -l 8 -g 4 -p "Choose :")

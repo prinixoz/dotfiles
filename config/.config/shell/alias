@@ -67,6 +67,7 @@ alias record="ffmpeg -f x11grab -s 1920x1080 -i :0.0 -r 30 -preset ultrafast /mn
 
 # EDITOR
 alias valias="$EDITOR ~/.config/shell/alias"
+alias vexport="$EDITOR ~/.config/shell/export"
 alias vbm="$EDITOR ~/.config/bm/bm"
 alias vsearch="$EDITOR ~/.config/bm/search"
 alias vi1="$EDITOR ~/.config/X11/xinitrc"

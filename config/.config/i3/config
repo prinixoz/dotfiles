@@ -131,10 +131,10 @@ bindsym $mod+f exec touchpad
 #==============================================================================
 #++++++++++++++++++++++++++++++++ Browsers++++++++++++++++++++++=++++++++++++++
 #==============================================================================
-bindsym $mod+a exec bm
+bindsym $mod+a exec bm $men
 bindsym $mod+Shift+a exec watchlist -l
 bindsym $mod+w exec watchlist -a
-bindsym $mod+shift+Return exec sdmenu
+bindsym $mod+shift+Return exec sdmenu $men
 bindsym $mod+b exec alacritty -e nb
 bindsym $mod+Shift+b exec alacritty -e deluge-console
 
@@ -145,7 +145,7 @@ bindsym $mod+Shift+b exec alacritty -e deluge-console
 # bindsym $mod+Shift+a focus child
 bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+n exec networkmanager_dmenu -l 40 -nb '#0f0f0f'
-bindsym $mod+n exec bluetooth
+bindsym $mod+n exec bluetooth $men -fn "Monospace-15"
 
 #==============================================================================
 #+++++++++++++++++++++++++++ Move Window Keys +++++++++++++++++++++++++++++++++
@@ -234,8 +234,9 @@ bindsym $mod+F12 exec toggle stalonetray
 #==============================================================================
 #+++++++++++++++++++++++++++++ DMENU SCRIPTS ++++++++++++++++++++++++++++++++++
 #==============================================================================
-set $menu tofi-run | zsh
-set $appmenu tofi-drun | zsh
+set $men dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "
+set $menu dmenu_run -l 8 -g 4 -nb "#0F0F0F" -p "Run: "
+set $appmenu j4-dmenu-desktop --dmenu='dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+d exec $menu
 bindsym $mod+shift+d exec $appmenu
 bindsym $mod+shift+p exec keepmenu
@@ -286,6 +287,7 @@ input type:keyboard {
 #==============================================================================
 #++++++++++++++++++++++++ RUN FILES ON STARTUP ++++++++++++++++++++++++++++++++
 #==============================================================================
+exec_always xrandr --output $(xrandr | grep -m 1 XWAYLAND | awk '{print $1;}') --primary
 exec_always --no-startup-id ~/.config/i3/scripts/startup.sh
 
 #==============================================================================

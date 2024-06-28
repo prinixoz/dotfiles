@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-EMOJI=$(sed '1,/^### DATA ###$/d' "$0" | tofi --width=100% | cut -d ' ' -f 1 | tr -d '\n')
-echo -n "$EMOJI" | xclip -selection clipboard
+EMOJI=$(sed '1,/^### DATA ###$/d' "$0" |  dmenu -nb "#0f0f0f" -i -l 8 -g 4 -p "Choose :" -fn "Noto" | cut -d ' ' -f 1 | tr -d '\n')
+echo -n "$EMOJI" | wl-copy )
 exit
 ### DATA ###
 😀 grinning face face smile happy joy :D grin

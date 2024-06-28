@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 file="$HOME/.config/bm/bm"
-content=$(sort $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%1000s")|" | tofi )
+content=$(sort $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%50s")|" | $@ )
 
 link=$(echo $content | awk -F "|" '{print $2}')
 command=$(echo $content | awk -F "|" '{print $NF}' | xargs)

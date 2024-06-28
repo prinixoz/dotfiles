@@ -15,7 +15,10 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export GOPATH="$XDG_DATA_HOME"/go
 export XORGCONFIG="$XDG_CONFIG_HOME"/X11/xorg
 export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
-export menu="wofi"
+
+
+## WAYLAND
+export QT_QPA_PLATFORM=wayland
 
 
 #ZSH
@@ -27,7 +30,7 @@ export CABAL_DIR="$XDG_CACHE_HOME"/cabal
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export SCREENRC="$XDG_CONFIG_HOME"/screen/screenrc
-export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export GTK3_RC_FILES="$XDG_CONFIG_HOME"/gtk-3.0/setting.ini
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export RXVT_SOCKET="$XDG_RUNTIME_DIR"/urxvtd

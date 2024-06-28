@@ -1,4 +1,6 @@
 #/bin/bash
 
-location=$(whereis $(compgen -ac | tofi ) | awk '{print $2}' | xargs)
-alacritty -e nvim $location
+location=$(whereis $(compgen -ac | dmenu -nb "#0f0f0f" -i -l 8 -g 4 -p "Choose :" ) | awk '{print $2}' | xargs)
+if [ $location ];then
+    alacritty -e nvim $location
+fi
