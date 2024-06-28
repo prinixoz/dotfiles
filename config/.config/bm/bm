@@ -23,7 +23,7 @@ alcoders | https://web.classplusapp.com/ | librewolf -P collage
 classplus | https://web.classplusapp.com/ | librewolf -P collage
 
 ## Google
-priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0 | librewolf -P google
+priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
 chatgpt | http://chat.openai.com/ | librewolf -P default
 gemini | http://gemini.google.com/u/1/ | librewolf -P google

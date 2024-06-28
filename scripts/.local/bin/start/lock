@@ -1,3 +1,4 @@
 #!/bin/sh
 playerctl -a pause
 pidof swaylock || swaylock -c 000000
+sleep 1

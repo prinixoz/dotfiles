@@ -2,7 +2,7 @@
 if [ $1 ];then
     link=$1
 else
-    link=$(xclip -o)
+    link=$(wl-paste)
 fi
 
 videoId=$(echo $link | awk -F "=|&" '{print $2}')
