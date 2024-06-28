@@ -12,6 +12,11 @@ url="https://www.youtube.com/watch?v=$videoId"
 #mpv $(yt-dlp -f best $url -g | xargs)
 
 # using yt-dlp
-#yt-dlp $url -f 'bestvideo[height<=720]+bestaudio/best[height<=720]' -o - | mpv - -force-seekable=yes --fs -speed=1 
+yt-dlp $url -f 'bestvideo[height<=1080]+bestaudio/best[height<=1080]' -o - | mpv - -force-seekable=yes --fs -speed=1 
 
-mpv $url
+#url="http://localhost:2000/https://www.youtube.com/watch?v=$videoId" 
+#yt_url=http://localhost:2000$( curl "$url" | grep "<source" | awk -F '"' '{print $2}' | xargs | sed 's/&amp;/\&/g')
+
+# mpv "$yt_url"
+
+# mpv $url
