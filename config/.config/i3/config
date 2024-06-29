@@ -223,8 +223,6 @@ bindsym control+alt+backspace exit
 #==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+F1 exec "ytfzf -u mpv-yt -D -l"
-bindsym $mod+F9 exec "youtube-music"
 bindsym $mod+F5 exec "mpv-yt"
 bindsym $mod+Shift+F5 exec "mpv-audio"
 

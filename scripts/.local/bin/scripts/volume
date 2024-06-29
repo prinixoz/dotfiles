@@ -13,12 +13,12 @@ case $1 in
     up)
         # Set the volume on (if it was muted)
         pamixer --unmute
-	pulsemixer --change-volume +5
+        pulsemixer --change-volume +$(( -($(pamixer --get-volume) % 5) + 5 ))
         send_notification $1
         ;;
     down)
         pamixer --unmute
-	pulsemixer --change-volume -5
+        pulsemixer --change-volume -$(( ( $(pamixer --get-volume) % 5 ) + 5))
         send_notification $1
         ;;
     mute)
