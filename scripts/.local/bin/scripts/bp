@@ -24,6 +24,16 @@ all(){
 	update
 }
 
+
+help_file(){
+    echo \
+    "    -f files ( gdrive)
+    -c config
+    -u update
+    -k password
+    --help, -h help "
+}
+
 case $1 in 
 	-f)
 		files;;
@@ -33,6 +43,10 @@ case $1 in
 		update;;
 	-k)
 		password;;
+	-h)
+		help_file;;
+	--help)
+		help_file;;
 	*)
 		all;;
 esac
