@@ -95,8 +95,17 @@ brief.bottomright = status
 F1 = help
 Home = first_file
 End = last_file
-j= prev_file
-Semicolon= next_file
+##### VIM KEYS
+Shift+k= prev_file
+Shift+j= next_file
+p= prev_file
+n= next_file
+h= step_left 10
+l= step_right 10
+k= step_up 10
+j= step_down 10
+Escape = zoom fit
+###################
 Space = next_file
 Shift+d = prev_dir
 d = next_dir
@@ -127,7 +136,6 @@ a = antialiasing
 r = reload
 i = info
 e = exec echo "Image: %"
-Escape = exit
 q = exit
 
 ################################################################################

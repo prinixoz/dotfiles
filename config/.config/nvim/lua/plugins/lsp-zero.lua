@@ -15,6 +15,9 @@ return {
     },
 
     config = function()
+
+        vim.api.nvim_create_autocmd({"BufEnter", "BufWritePre"}, {command = "lua vim.lsp.buf.format()"})
+
         local lsp_zero = require('lsp-zero')
         require('luasnip.loaders.from_vscode').lazy_load()
         vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)

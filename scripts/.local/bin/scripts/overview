@@ -1,74 +1,29 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
+getUpdate(){
+    pacman -Qu | wc -l
+}
 
 ###########################################################################################################	
 #Time
-time=$(date +"%r")
-date=$(date +"%b %d, %Y")
-
+gettime(){
+    time=$(date +"%r")
+    date=$(date +"%b %d, %Y")
+    printf "Time: $time\nDate: $date"
+}
 ###########################################################################################################	
-# BATTERY #################################################################################################
 
-for battery in /sys/class/power_supply/BAT?*; do
-	# If non-first battery, print a space separator.
-	[ -n "${capacity+x}" ] && printf " "
-	capacity="$(cat "$battery/capacity" 2>&1)"
-	status="$(cat "$battery/status" 2>&1)"
-done
-
-
-###########################################################################################################	
-# VPN #####################################################################################################
-
-con_type=$(nmcli d | grep -w "connected  " | awk '{print $2}')
-con=$(nmcli d | grep -w "connected  " | awk '{print $NF}')
-if [[ $(nmcli d | grep -w tun) ]]; then
-	vpn=[V]
-else
-	vpn=[-]
-fi
-
-###########################################################################################################	
-# INTERNET ################################################################################################
-
-function connection(){
-	if [[ $(nmcli d | grep -w "connected  ") ]]; then
-		GET="cat /proc/net/dev"
-		IF=$(nmcli d | grep -w "connected  " | awk '{print $1}')
-		RX1=`$GET | grep $IF | awk '{print $2}'`; TX1=`$GET | grep $IF | awk '{print $10}'`
-		sleep 1
-		RX2=`$GET | grep $IF | awk '{print $2}'`; TX2=`$GET | grep $IF | awk '{print $10}'`
-		rx=$((($RX2 - $RX1) * 1)); tx=$((($TX2 - $TX1) * 1))
-	fi
-
-	if [[ $(nmcli d | grep -w "connected  ") ]]; then
-		int=$(printf "$con_type : $con $vpn")
-	else
-		int=$("OFFLINE.")
-	fi
+getbattery(){
+    percentage=$(cat /sys/class/power_supply/BAT0/capacity)
+    status=$(cat /sys/class/power_supply/BAT0/status)
+    printf "Battery: $percentage%%%% [$status]"
 }
 
-pkgupdate=$(paru -Qu | wc -l) 
-echo $pkgupdate
+getbattery
 
-run(){
-	connection
-
-	dunstify -r 9992 "
-    Time: $time
-    Date: $date
-    Battery: $capacity%[$status]
-    Updates: $pkgupdate
-    $int 
-    "
+allprint(){
+    getinfo="$(gettime)\n$(getbattery)"
+    printf "\n$getinfo\n "
 }
 
-run &
-#var=0
-# while [[ $var -le 5 ]]; do
-# 	run&
-# 	sleep 0.5
-# 	run&
-# 	sleep 0.5
-# 	((var++))
-# done
+notify-send "$(allprint)"
