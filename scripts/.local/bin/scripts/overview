@@ -1,17 +1,18 @@
 #!/bin/bash
 
+################################# Updates #################################################################	
+
 getUpdate(){
     pacman -Qu | wc -l
 }
 
-###########################################################################################################	
-#Time
+###################################### Time ###############################################################	
 gettime(){
-    time=$(date +"%r")
+    time=$(date +"%I:%M %p")
     date=$(date +"%b %d, %Y")
     printf "Time: $time\nDate: $date"
 }
-###########################################################################################################	
+################################### Battery ###############################################################	
 
 getbattery(){
     percentage=$(cat /sys/class/power_supply/BAT0/capacity)
@@ -19,11 +20,18 @@ getbattery(){
     printf "Battery: $percentage%%%% [$status]"
 }
 
-getbattery
+################################## Format it ##############################################################	
+
+getUptime(){
+    upt=$(uptime -p | cut -d" " -f2- )
+    printf "Uptime: $upt"
+}
 
 allprint(){
-    getinfo="$(gettime)\n$(getbattery)"
+    getinfo="$(gettime)\n$(getbattery)\n$(getUptime)"
     printf "\n$getinfo\n "
 }
+
+
 
 notify-send "$(allprint)"

@@ -2,10 +2,10 @@
 CHOSEN=$(printf "Lock\nSuspend\nReboot\nShutdown\nLog Out" | dmenu -nb "#0f0f0f" -i -l 8 -p "Choose :" )
 
 case "$CHOSEN" in
-	"Lock") lockscreen ;;
+	"Lock") lock ;;
 	"Suspend") systemctl suspend;;
 	"Reboot") reboot ;;
 	"Shutdown") poweroff ;;
-	"Log Out") i3-msg exit ;;
+	"Log Out") swaymsg exit ;;
 	*) exit 1 ;;
 esac

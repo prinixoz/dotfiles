@@ -219,6 +219,7 @@ bindsym $mod+F6 exec playerctl previous
 bindsym $mod+F7 exec playerctl play-pause
 bindsym $mod+F8 exec playerctl next
 bindsym control+alt+backspace exit
+bindsym alt+F4 exec powermenu
 
 #==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
