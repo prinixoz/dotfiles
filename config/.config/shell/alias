@@ -7,6 +7,8 @@ alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias unsl="alacritty -e sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target && killall xfce4-power-man"
 alias gsl="alacritty -e sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target"
 
+alias yt-dl="yt-dlp -f 'bestvideo[height<=?720]+ba'"
+
 # System control
 alias sys='sudo systemctl start'
 alias syst='sudo systemctl stop'

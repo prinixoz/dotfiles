@@ -132,8 +132,7 @@ bindsym $mod+f exec touchpad
 #++++++++++++++++++++++++++++++++ Browsers++++++++++++++++++++++=++++++++++++++
 #==============================================================================
 bindsym $mod+a exec bm $men
-bindsym $mod+Shift+a exec watchlist -l
-bindsym $mod+w exec watchlist -a
+bindsym $mod+Shift+a exec killall dmenu
 bindsym $mod+shift+Return exec sdmenu $men
 bindsym $mod+b exec alacritty -e nb
 bindsym $mod+Shift+b exec alacritty -e deluge-console

@@ -2,7 +2,7 @@
 if [ $1 ];then
     link=$1
 else
-    link=$(xclip -o)
+    link=$(wl-paste)
 fi
 
 videoId=$(echo $link | awk -F "=|&" '{print $2}')
@@ -13,4 +13,4 @@ url="https://www.youtube.com/watch?v=$videoId"
 
 #yt playurl "$url" > /dev/null &
 
-mpv $(yt-dlp -f best $url -g | xargs)
+mpv "$(yt-dlp -f best $url -g | xargs)"

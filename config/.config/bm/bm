@@ -4,7 +4,7 @@ searx | https://searx.be/
 wiby | https://wiby.me/
 yandex | https://yandex.com
 startpage.com | https://www.startpage.com/
-yt | https://youtube.com/
+yt | https://youtube.com/ | librewolf -P google
 torrent | https://localhost:9091/
 activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
