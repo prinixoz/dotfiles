@@ -5,15 +5,16 @@ mkdir -p $HOME/.cache/pirokit
 if [ -z $1 ]; then
   query=$(echo "" | dmenu -p "Search Torrent: ")
 else
-  query=$1
+    if [ $1 ];then
+        query=$1
+    fi
 fi
 
 baseurl="https://1337x.to"
 cachedir="$HOME/.cache/pirokit"
 query="$(sed 's/ /+/g' <<<$query)"
 
-#curl -s https://1337x.to/category-search/$query/Movies/1/ > $cachedir/tmp.html
-curl -s https://1337x.to/search/$query/1/ > $cachedir/tmp.html
+curl -s https://1337x.to/category-search/$query/Movies/1/ > $cachedir/tmp.html
 
 # Get Titles
 grep -o '<a href="/torrent/.*</a>' $cachedir/tmp.html |
