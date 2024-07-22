@@ -1,6 +1,7 @@
 return {
-    'VonHeikemen/lsp-zero.nvim', branch = 'v3.x',
-    dependencies ={
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v3.x',
+    dependencies = {
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
         'neovim/nvim-lspconfig',
@@ -15,8 +16,7 @@ return {
     },
 
     config = function()
-
-        vim.api.nvim_create_autocmd({"BufEnter", "BufWritePre"}, {command = "lua vim.lsp.buf.format()"})
+        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePre" }, { command = "lua vim.lsp.buf.format()" })
 
         local lsp_zero = require('lsp-zero')
         require('luasnip.loaders.from_vscode').lazy_load()
@@ -24,7 +24,7 @@ return {
         vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev() end, opts)
 
         lsp_zero.on_attach(function(client, bufnr)
-            lsp_zero.default_keymaps({buffer = bufnr})
+            lsp_zero.default_keymaps({ buffer = bufnr })
         end)
         require('mason').setup({})
         require('mason-lspconfig').setup({
@@ -41,28 +41,28 @@ return {
 
         cmp.setup({
             formatting = {
-                fields = {'abbr', 'kind', 'menu'},
+                fields = { 'abbr', 'kind', 'menu' },
                 format = require('lspkind').cmp_format({
-                    mode = 'symbol', -- show only symbol annotations
-                    maxwidth = 50, -- prevent the popup from showing more than provided characters
+                    mode = 'symbol',       -- show only symbol annotations
+                    maxwidth = 50,         -- prevent the popup from showing more than provided characters
                     ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
                 })
             },
             sources = {
-                {name = 'luasnip'},
-                {name = 'path'},
+                { name = 'luasnip' },
+                { name = 'path' },
                 { name = 'buffer' },
-                {name = 'nvim_lsp'},
+                { name = 'nvim_lsp' },
             },
 
             mapping = {
                 ['<C-Space>'] = cmp.mapping.complete(),
                 ['<Tab>'] = cmp_action.tab_complete(),
                 ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
-                ['<CR>'] = cmp.mapping.confirm({select = true}),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-e>'] = cmp.mapping.abort(),
-                ['<Up>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
-                ['<Down>'] = cmp.mapping.select_next_item({behavior = 'select'}),
+                ['<Up>'] = cmp.mapping.select_prev_item({ behavior = 'select' }),
+                ['<Down>'] = cmp.mapping.select_next_item({ behavior = 'select' }),
             },
             snippet = {
                 expand = function(args)
@@ -70,6 +70,5 @@ return {
                 end,
             },
         })
-
     end
 }
