@@ -243,7 +243,8 @@ set $appmenu j4-dmenu-desktop --dmenu='dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+d exec $menu
 bindsym $mod+shift+d exec $appmenu
 bindsym $mod+shift+p exec keepmenu
-bindsym $mod+p exec links
+bindsym $mod+p exec alacritty -e nvim -c "Neorg workspace notes"
+
 # bindsym $mod+Shift+n exec networkmanager_dmenu -nb "#0f0f0f" -sb "$bg" -l 40
 
 #==============================================================================
