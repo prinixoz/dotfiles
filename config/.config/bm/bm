@@ -12,7 +12,7 @@ opensourcealternative | https://www.opensourcealternative.to/
 
 ### Skill
 typingclub | https://www.edclub.com/sportal/ | surf
-monkeytype | https://monkeytype.com/  | librewolf -P typing
+monkeytype | https://monkeytype.com/  | brave
 keybr      | https://www.keybr.com/  | librewolf -P typing
 tryhackme  | https://tryhackme.com/ | librewolf -P skills
 coursera | https://www.coursera.org/learn/introduction-to-front-end-development/home/week/1 | librewolf -P skills
@@ -97,7 +97,7 @@ warren | https://www.berkshirehathaway.com/letters/letters.html
 ## Others
 phone (papa) | ftp://192.168.29.242:2121/ | pcmanfm    
 phone (mummy) | ftp://192.168.29.156:2121/ | pcmanfm    
-phone (samsung) | ftp://192.168.0.103:2121/ | pcmanfm
+phone (samsung) | ftp://192.168.0.101:2121/ | pcmanfm
 phone (cat) | ftp://192.168.29.230:2121/ | pcmanfm
 fraidyc | https://fraidyc.at/
 virustotal | https://www.virustotal.com/gui/home/upload

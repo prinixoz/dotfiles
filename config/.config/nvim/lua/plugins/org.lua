@@ -1,24 +1,16 @@
 return {
-    "nvim-neorg/neorg",
-    lazy = false,
-    version = "*",
+    'nvim-orgmode/orgmode',
+    event = 'VeryLazy',
+    ft = { 'org' },
     config = function()
-        require("neorg").setup {
-            load = {
-                ["core.defaults"] = {},
-                ["core.concealer"] = {},
-                ["core.dirman"] = {
-                    config = {
-                        workspaces = {
-                            notes = "~/.pendrive/Notes/",
-                        },
-                        default_workspace = "notes",
-                    },
-                },
-            },
-        }
-
-        vim.wo.foldlevel = 99
-        vim.wo.conceallevel = 2
+        -- Setup orgmode
+        require('orgmode').setup({
+            org_agenda_files = '~/orgfiles/**/*',
+            org_default_notes_file = '~/orgfiles/refile.org',
+        })
+        require('nvim-treesitter.configs').setup({
+            ensure_installed = 'all',
+            ignore_install = { 'org' },
+        })
     end,
 }
