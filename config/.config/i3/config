@@ -37,6 +37,11 @@ set $ws10 "10"
 set $ws11 "11"
 
 #==============================================================================
+#++++++++++++++++++++++++++++ Default Browser +++++++++++++++++++++++++++++++++
+#==============================================================================
+set $default_browser librewolf -P default
+
+#==============================================================================
 #+++++++++++++++++++++++++++++++ Variable +++++++++++++++++++++++++++++++++++++
 #==============================================================================
 set $mod Mod4
@@ -168,7 +173,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 #==============================================================================
 #+++++++++++++++++++++++++++ Media Keybindings +++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPlay exec playerctl --player=mpv play-pause
 bindsym XF86AudioPrev exec playerctl previos
 bindsym XF86AudioNext exec playerctl next
 
@@ -219,7 +224,7 @@ bindsym $mod+Shift+comma  exec xrandr -o normal
 #++++++++++++++++++++++++++++++++ MUSIC +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
 bindsym $mod+F6 exec playerctl previous
-bindsym $mod+F7 exec playerctl play-pause
+bindsym $mod+F7 exec playerctl --player=mpv play-pause
 bindsym $mod+F8 exec playerctl next
 bindsym control+alt+backspace exit
 bindsym alt+F4 exec powermenu

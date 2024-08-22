@@ -16,6 +16,7 @@ alias sys='sudo systemctl start'
 alias syst='sudo systemctl stop'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 alias live='live-server --port=8000 --browser="brave"'
+alias pd='sudo protonvpn d'
 
 # File management
 alias untar='tar -zxvf '

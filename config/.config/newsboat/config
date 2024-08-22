@@ -35,7 +35,7 @@ color article white default bold
 
 browser linkhandler
 macro , open-in-browser
-macro a set browser "librewolf -P default https://localhost:2000/"; open-in-browser
+macro o set browser "setsid -f mpv-audio"; open-in-browser
 macro t set browser "qndl" ; open-in-browser ; set browser linkhandler
 macro m set browser "setsid -f mpv" ; open-in-browser ; set browser linkhandler
 macro s set browser "setsid -f nsxiv" ; open-in-browser ; set browser linkhandler
