@@ -68,6 +68,7 @@ hacknation  | https://hacksnation.com/
 ### Social
 whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
 github | https://github.com/ | librewolf -P skills
+linkedin | https://linkedin.com/ | librewolf -P social
 
 ## Studies
 pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
@@ -88,7 +89,7 @@ ethical hacking | https://hacksnation.com/d/667-learn-ethical-hacking-from-0-to-
 
 
 #courses
-edx | https://edx.org/ | librewolf -P courses
+edx | https://edx.org/ | brave --profile-directory="CS50"
 
 ## Tutotuals
 c lang | https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html
@@ -99,7 +100,7 @@ warren | https://www.berkshirehathaway.com/letters/letters.html
 phone (papa) | ftp://192.168.29.242:2121/ | pcmanfm    
 phone (mummy) | ftp://192.168.29.156:2121/ | pcmanfm    
 phone (samsung) | ftp://192.168.0.100:2121/ | pcmanfm
-phone (cat) | ftp://192.168.29.230:2121/ | pcmanfm
+phone (cat) | ftp://192.168.0.114:2121/ | pcmanfm
 fraidyc | https://fraidyc.at/
 virustotal | https://www.virustotal.com/gui/home/upload
 file upload | https://file.swurl.xyz/
