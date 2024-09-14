@@ -34,6 +34,9 @@ home | https://home.google.com/u/3/ | librewolf -P google
 ## Work
 simplenote | https://app.simplenote.com/ | librewolf -P work
 
+## Learn
+learn prompt | https://www.howtoprompt.in/resources | librewolf -P default
+
 ## Protonmail
 calander | https://calendar.proton.me/u/1/ | librewolf -P proton
 prinixoz- Protonmail | https://mail.proton.me/u/0/inbox | librewolf -P proton
@@ -89,7 +92,8 @@ ethical hacking | https://hacksnation.com/d/667-learn-ethical-hacking-from-0-to-
 
 
 #courses
-edx | https://edx.org/ | brave --profile-directory="CS50"
+edx | https://learning.edx.org/course/course-v1:HarvardX+CS50+X/block-v1:HarvardX+CS50+X+type@sequential+block@70c79506693243c48cdca2729da5de2d/block-v1:HarvardX+CS50+X+type@vertical+block@2fec985d64e943f99c21d7bb6cd34426s | brave --profile-directory="CS50"
+cs50 | https://cs50.harvard.edu/x/2024/psets/4/ | brave --profile-directory="CS50"
 
 ## Tutotuals
 c lang | https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html
