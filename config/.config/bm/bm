@@ -45,6 +45,8 @@ simplelogin | https://app.simplelogin.io/dashboard/ | librewolf -P proton
 
 ## Shopping
 amazon | https://amazon.in/ | librewolf -P shopping
+blinkit | https://blinkit.com/ | librewolf -P shopping
+zepto | https://www.zeptonow.com/ | librewolf -P shopping
 flipkart | https://flipkart.com/
 etsy | etsy.com/
 
@@ -103,7 +105,7 @@ warren | https://www.berkshirehathaway.com/letters/letters.html
 ## Others
 phone (papa) | ftp://192.168.29.242:2121/ | pcmanfm    
 phone (mummy) | ftp://192.168.29.156:2121/ | pcmanfm    
-phone (samsung) | ftp://192.168.0.100:2121/ | pcmanfm
+phone (samsung) | ftp://192.168.0.112:2121/ | pcmanfm
 phone (cat) | ftp://192.168.0.114:2121/ | pcmanfm
 fraidyc | https://fraidyc.at/
 virustotal | https://www.virustotal.com/gui/home/upload
