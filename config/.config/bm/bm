@@ -12,8 +12,8 @@ alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
 
 ### Skill
-typingclub | https://www.edclub.com/sportal/ | surf
-monkeytype | https://monkeytype.com/  |  brave --profile-directory=typing
+typingclub | https://www.edclub.com/sportal/ | librewolf -P typing
+monkeytype | https://monkeytype.com/  | librewolf -P typing
 keybr      | https://www.keybr.com/  | librewolf -P typing
 tryhackme  | https://tryhackme.com/ | librewolf -P skills
 coursera | https://www.coursera.org/learn/introduction-to-front-end-development/home/week/1 | librewolf -P skills
@@ -47,6 +47,9 @@ simplelogin | https://app.simplelogin.io/dashboard/ | librewolf -P proton
 amazon | https://amazon.in/ | librewolf -P shopping
 blinkit | https://blinkit.com/ | librewolf -P shopping
 zepto | https://www.zeptonow.com/ | librewolf -P shopping
+eatsure | https://www.eatsure.com/ | librewolf -P shopping
+zomato | https://www.zomato.com/ | librewolf -P shopping
+swiggy | https://www.swiggy.com/ | librewolf -P shopping
 flipkart | https://flipkart.com/
 etsy | etsy.com/
 
