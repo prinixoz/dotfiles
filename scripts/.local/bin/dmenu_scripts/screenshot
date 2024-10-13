@@ -1,0 +1,31 @@
+#/bin/bash
+
+option=$1
+[ $option ] || option=$(printf "Select\nScreen" | dmenu |  tr '[:upper:]' '[:lower:]')
+[ $option ] || exit
+
+case "$option" in
+    screen) 
+        grim - | wl-copy
+    ;;
+    select) 
+        grim -g "$(slurp)" - | wl-copy
+    ;;
+    *) 
+        grim -g "$(slurp)" - | wl-copy
+    ;;
+esac
+
+type=$(printf "Copy\nSave" | dmenu |  tr '[:upper:]' '[:lower:]')
+
+case "$type" in
+    "save") 
+    dir="/mnt/PS/Picture/Sreenshot/"
+    [ -d "$dir" ] || mkdir $dir
+    wl-paste --type image/png > "$dir$(date +'Sreenshot %d-%m-%Y %T.png')"
+    notify-send "Saved to $dir$(date +'Sreenshot %d-%m-%Y %T.png')"
+    ;;
+    *) 
+    notify-send "Screenshot copied to clipboard"
+    ;;
+esac

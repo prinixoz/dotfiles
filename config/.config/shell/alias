@@ -43,8 +43,8 @@ alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
 
 # Misc utilities
-alias sl='exa --icons --classify --group-directories-first'
-alias ls='exa --icons --classify --group-directories-first'
+alias sl='exa --icons --classify --group-directories-first --long'
+alias ls='exa --icons --classify --group-directories-first --long'
 alias la='exa -all --icons --classify --group-directories-first'
 alias tree='exa -1 --group-directories-first --icons --classify --tree'
 
