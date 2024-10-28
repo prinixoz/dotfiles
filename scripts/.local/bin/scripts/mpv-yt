@@ -13,4 +13,4 @@ url="https://www.youtube.com/watch?v=$videoId"
 
 #yt playurl "$url" > /dev/null &
 
-librewolf -P default "$url"
+mpv "$(yt-dlp -f best $url -g | xargs)"

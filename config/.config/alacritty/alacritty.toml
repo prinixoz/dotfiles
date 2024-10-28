@@ -1,4 +1,4 @@
-[shell]
+[terminal.shell]
 program = "/bin/fish"
 
 [colors]
@@ -69,3 +69,5 @@ instance = "Alacritty"
 [window.padding]
 x = 6
 y = 6
+
+[terminal]

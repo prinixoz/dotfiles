@@ -10,6 +10,7 @@ torrent | https://localhost:9091/
 activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
+notion |  https://notion.so/ | brave --profile-directory="Notion" 
 
 ### Skill
 typingclub | https://www.edclub.com/sportal/ | librewolf -P typing
@@ -76,7 +77,9 @@ hacknation  | https://hacksnation.com/
 ### Social
 whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
 github | https://github.com/ | librewolf -P skills
+roadmap | https://roadmap.sh/ | librewolf -P skills
 linkedin | https://linkedin.com/ | librewolf -P social
+instagram | https://instagram.com/ | brave --profile-directory="Instagram"
 
 ## Studies
 pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
