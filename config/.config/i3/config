@@ -218,8 +218,8 @@ bindsym $mod+F10 exec polywal
 #==============================================================================
 #++++++++++++++++++++++++++++++++ Rotation ++++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+Shift+period exec xrandr -o left
-bindsym $mod+Shift+comma  exec xrandr -o normal
+bindsym $mod+Shift+period exec swaymsg "output * transform 270"
+bindsym $mod+Shift+comma  exec swaymsg "output * transform 0"
 
 #==============================================================================
 #++++++++++++++++++++++++++++++++ MUSIC +++++++++++++++++++++++++++++++++++++++
