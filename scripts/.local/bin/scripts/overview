@@ -8,7 +8,7 @@ getUpdate(){
 
 ###################################### Time ###############################################################	
 gettime(){
-    time=$(date +"%I:%M %p")
+    time=$(date +"%I:%M %p, %A")
     date=$(date +"%b %d, %Y")
     printf "Time: $time\nDate: $date"
 }

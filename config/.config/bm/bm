@@ -79,7 +79,6 @@ whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
 github | https://github.com/ | librewolf -P skills
 roadmap | https://roadmap.sh/ | librewolf -P skills
 linkedin | https://linkedin.com/ | librewolf -P social
-instagram | https://instagram.com/ | brave --profile-directory="Instagram"
 
 ## Studies
 pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
@@ -118,7 +117,8 @@ virustotal | https://www.virustotal.com/gui/home/upload
 file upload | https://file.swurl.xyz/
 
 ## RANDOM
-heaventree | https://heaventree.xyz/ | surf
+heaventree | https://heaventree.xyz/ | librewolf -P default
+codepen.io | https://codepen.io/pen | librewolf -P default
 
 ## HACKING
 overthewire | https://overthewire.org/wargames/bandit/
