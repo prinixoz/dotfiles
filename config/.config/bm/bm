@@ -78,6 +78,7 @@ hacknation  | https://hacksnation.com/
 whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
 github | https://github.com/ | librewolf -P skills
 roadmap | https://roadmap.sh/ | librewolf -P skills
+reddit | https://reddit.com/ | librewolf -P reddit
 linkedin | https://linkedin.com/ | librewolf -P social
 
 ## Studies
