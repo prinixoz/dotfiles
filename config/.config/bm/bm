@@ -80,6 +80,7 @@ github | https://github.com/ | librewolf -P skills
 roadmap | https://roadmap.sh/ | librewolf -P skills
 reddit | https://reddit.com/ | librewolf -P reddit
 linkedin | https://linkedin.com/ | librewolf -P social
+anilist | https://anilist.co/ | librewolf -P reddit
 
 ## Studies
 pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
