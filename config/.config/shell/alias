@@ -28,6 +28,8 @@ alias p='paru -S'
 alias pi='paru -Si'
 alias pr='paru -Rns'
 alias pu='paru -Syu --noconfirm'
+alias pacman-delete-orphan='sudo pacman -Rns $(pacman -Qdtq)'
+alias pacman-delete-cache='sudo pacman -Scc'
 
 # Configuration editing
 alias nf='$EDITOR ~/.config/fish/config.fish'
