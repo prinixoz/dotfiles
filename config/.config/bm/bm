@@ -20,13 +20,14 @@ tryhackme  | https://tryhackme.com/ | librewolf -P skills
 coursera | https://www.coursera.org/learn/introduction-to-front-end-development/home/week/1 | librewolf -P skills
 skillshare | https://www.skillshare.com/ | librewolf -P skills
 100x | https://app.100xdevs.com/courses/3/ | librewolf -P skills
+udemy | https://udemy.com/ | librewolf -P skills
 chadmaxx | https://superprofile.bio/ch/v/9014f1ed-3c98-4faf-8e7c-0b90f13fe62e | librewolf -P skills
 alcoders  classplus | https://web.classplusapp.com/ | librewolf -P collage
 
 ## Google
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
-chatgpt | https://chatgpt.com/ | librewolf -P default
+chatgpt | https://chatgpt.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 drive | drive.google.com | librewolf -P google
 keep | https://keep.google.com | librewolf -P google
@@ -83,7 +84,7 @@ linkedin | https://linkedin.com/ | librewolf -P social
 anilist | https://anilist.co/ | librewolf -P reddit
 
 ## Studies
-pomodoro | https://app.pomodorotimer.online/ | librewolf -P stream
+pomodoro | https://app.pomodorotimer.online/ | librewolf -P default
 
 ### Docs
 archwiki | https://wiki.archlinux.org 
