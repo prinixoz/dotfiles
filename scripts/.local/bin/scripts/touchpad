@@ -1,8 +1,12 @@
 #!/bin/sh
-status=$(xinput list-props "DELL0844:00 04F3:3074 Touchpad" | grep "Device Enabled" | awk -F : '{printf $2}' | xargs)
 
-if [ $status -eq 1 ];then
-    xinput set-prop "DELL0844:00 04F3:3074 Touchpad" 186 0
+# Check the status of the touchpad using libinput
+status=$(swaymsg -t get_inputs -r | jq '.[] | select(.type == "pointer" and .identifier | test("touchpad")) | .enabled')
+
+# If the touchpad is enabled, disable it; if disabled, enable it
+if [ "$status" = "true" ]; then
+    swaymsg input "*" touchpad disable
 else
-    xinput set-prop "DELL0844:00 04F3:3074 Touchpad" 186 1
+    swaymsg input "*" touchpad enable
 fi
+
