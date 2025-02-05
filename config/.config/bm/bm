@@ -11,6 +11,7 @@ activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
 notion |  https://notion.so/ | brave --profile-directory="Notion" 
+habit tracker | https://docs.google.com/spreadsheets/d/16P1xb8hNJx118b_VCe5MlJi71FWw61kgwzYU_NlyWj8/ | librewolf -P google
 
 ### Skill
 typingclub | https://www.edclub.com/sportal/ | librewolf -P typing
@@ -28,6 +29,7 @@ alcoders  classplus | https://web.classplusapp.com/ | librewolf -P collage
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
 chatgpt | https://chatgpt.com/ | librewolf -P google
+deepseek | https://chat.deepseek.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 drive | drive.google.com | librewolf -P google
 keep | https://keep.google.com | librewolf -P google
