@@ -1,0 +1,11 @@
+#!/bin/bash
+cd /mnt/PS/Music/
+URL="$1"
+if [ $URL] ; then
+    yt-dlp -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" "$URL"
+else
+    
+    yt-dlp -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" "$(wl-paste)"
+fi
+
+notify-send "Download Completed"
