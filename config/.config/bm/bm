@@ -12,6 +12,7 @@ alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
 notion |  https://notion.so/ | brave --profile-directory="Notion" 
 habit tracker | https://docs.google.com/spreadsheets/d/16P1xb8hNJx118b_VCe5MlJi71FWw61kgwzYU_NlyWj8/ | librewolf -P google
+money | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7RFBoOn8TY_w | librewolf -P google
 
 ### Skill
 typingclub | https://www.edclub.com/sportal/ | librewolf -P typing
@@ -29,6 +30,7 @@ alcoders  classplus | https://web.classplusapp.com/ | librewolf -P collage
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
 chatgpt | https://chatgpt.com/ | librewolf -P google
+daily log | https://chatgpt.com/c/67c9d662-9008-800c-b21b-4765d1e20cf5/ | librewolf -P google
 deepseek | https://chat.deepseek.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 drive | drive.google.com | librewolf -P google
@@ -74,7 +76,7 @@ chess | https://chess.com/ | librewolf -P typing
 ### Torrent
 nyaa | https://nyaa.si/
 subsplease | https://subsplease.org/
-thepiratebay | https://thepiratebay.org/index.html | torbrowser-launcher
+thepiratebay | https://thepiratebay.org/index.html | librewolf -P default
 hacknation  | https://hacksnation.com/
 1337x | https://1337x.to/
 

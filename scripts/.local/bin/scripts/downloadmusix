@@ -1,11 +1,47 @@
 #!/bin/bash
 cd /mnt/PS/Music/
+FILE="$HOME/.config/music/database"
 URL="$1"
-if [ $URL] ; then
-    yt-dlp -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" "$URL"
-else
+
+#!/bin/bash
+
+# Function to check if a URL is from YouTube or YouTube Music
+check_youtube_url() {
+    local url="$1"
     
-    yt-dlp -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" "$(wl-paste)"
+    # Regular expressions for matching YouTube and YouTube Music URLs
+    youtube_regex="https?://(www\.)?youtube\.com"
+    youtube_music_regex="https?://(music\.)?youtube\.com"
+    
+    if [[ "$url" =~ $youtube_music_regex ]]; then
+
+        echo no
+        return 0  # true (YouTube Music URL)
+    elif [[ "$url" =~ $youtube_regex ]]; then
+        
+        echo no
+        return 0  # true (YouTube URL)
+    else
+        echo no
+        return 1  # false (Neither YouTube nor YouTube Music URL)
+    fi
+}
+
+
+download (){
+    if [ $(check_youtube_url $1) ] ; then
+        echo "$1 # $(date)" >> $FILE
+        yt-dlp -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" "$1"
+        notify-send "Download Completed"
+    else
+        notify-send "Invalid URL"
+    fi
+}
+
+
+if [ $URL ] ; then
+    download $URL
+else
+    download $(wl-paste)
 fi
 
-notify-send "Download Completed"
