@@ -1,6 +1,6 @@
 return {
     "OXY2DEV/markview.nvim",
-    lazy = false,
+    lazy = true,
     config = {
         vim.api.nvim_create_autocmd("User", {
             pattern = "MarkviewAttach",
@@ -13,4 +13,3 @@ return {
         }),
     },
 }
-

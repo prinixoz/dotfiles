@@ -29,6 +29,8 @@ alcoders  classplus | https://web.classplusapp.com/ | librewolf -P collage
 ## Google
 priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | librewolf -P google
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
+@msijanakpuri.com | https://mail.google.com/mail/u/0/ | librewolf -P collage
+unidays | https://www.myunidays.com/ | librewolf -P collage
 chatgpt | https://chatgpt.com/ | librewolf -P google
 daily log | https://chatgpt.com/c/67c9d662-9008-800c-b21b-4765d1e20cf5/ | librewolf -P google
 deepseek | https://chat.deepseek.com/ | librewolf -P google
@@ -107,7 +109,7 @@ ethical hacking | https://hacksnation.com/d/667-learn-ethical-hacking-from-0-to-
 
 
 #courses
-edx | https://learning.edx.org/course/course-v1:HarvardX+CS50+X/block-v1:HarvardX+CS50+X+type@sequential+block@70c79506693243c48cdca2729da5de2d/block-v1:HarvardX+CS50+X+type@vertical+block@2fec985d64e943f99c21d7bb6cd34426s | brave --profile-directory="CS50"
+edx | https://cs50.harvard.edu/x/2025/ | brave --profile-directory="CS50"
 cs50 | https://cs50.harvard.edu/x/2024/psets/4/ | brave --profile-directory="CS50"
 
 ## Tutotuals
