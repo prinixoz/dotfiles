@@ -7,6 +7,7 @@ alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias unsl="alacritty -e sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target && killall xfce4-power-man"
 alias gsl="alacritty -e sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target"
 alias make50='make CC=clang CFLAGS="-fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow" LDLIBS="-lcrypt -lcs50 -lm"'
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 alias yt-dl="yt-dlp -f 'bestvideo[height<=?720]+ba'"
 alias yt-dl-playlist="yt-dlp -f 'bestvideo[height<=?720]+ba' --output '%(playlist_index)s %(title)s.%(ext)s'"
