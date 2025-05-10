@@ -1,3 +1,6 @@
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
 #==============================================================================
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #   ___
@@ -11,6 +14,9 @@
 #==============================================================================
 
 
+exec --no-startup-id /usr/lib/xdg-document-portal-wlr &
+exec --no-startup-id /usr/lib/xdg-document-portal -r
+ 
 
 # class                 border  backgr. text    indicator child_border
 # Changed background
@@ -131,7 +137,7 @@ bindsym $mod+l focus right
 bindsym $mod+Return exec alacritty
 bindsym $mod+c exec alacritty -e htop
 bindsym $mod+e exec alacritty -e lfub
-bindsym $mod+shift+e exec nemo
+bindsym $mod+shift+e exec pcmanfm 
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
 bindsym $mod+x exec lock

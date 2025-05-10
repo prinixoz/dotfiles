@@ -11,7 +11,6 @@ activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
 notion |  https://notion.so/ | brave --profile-directory="Notion" 
-habit tracker | https://docs.google.com/spreadsheets/d/16P1xb8hNJx118b_VCe5MlJi71FWw61kgwzYU_NlyWj8/ | librewolf -P google
 money | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7RFBoOn8TY_w | librewolf -P google
 
 ### Skill
@@ -23,7 +22,7 @@ coursera | https://www.coursera.org/learn/introduction-to-front-end-development/
 skillshare | https://www.skillshare.com/ | librewolf -P skills
 100x | https://app.100xdevs.com/courses/3/ | librewolf -P skills
 udemy | https://udemy.com/ | librewolf -P skills
-chadmaxx | https://superprofile.bio/ch/v/9014f1ed-3c98-4faf-8e7c-0b90f13fe62e | librewolf -P skills
+.chadmaxx | https://superprofile.bio/ch/v/9014f1ed-3c98-4faf-8e7c-0b90f13fe62e | librewolf -P skills
 alcoders  classplus | https://web.classplusapp.com/ | librewolf -P collage
 
 ## Google
@@ -31,13 +30,14 @@ priyanshu.sharma1207@gmail.com | https://mail.google.com/mail/u/0/#inbox | libre
 prinixoz@gmail.com | https://mail.google.com/mail/u/1 | librewolf -P google
 @msijanakpuri.com | https://mail.google.com/mail/u/0/ | librewolf -P collage
 unidays | https://www.myunidays.com/ | librewolf -P collage
-chatgpt | https://chatgpt.com/ | librewolf -P google
+chatgpt | https://chatgpt.com/?temporary-chat=true | librewolf -P google
 daily log | https://chatgpt.com/c/67c9d662-9008-800c-b21b-4765d1e20cf5/ | librewolf -P google
 deepseek | https://chat.deepseek.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 drive | drive.google.com | librewolf -P google
 keep | https://keep.google.com | librewolf -P google
 home | https://home.google.com/u/3/ | librewolf -P google
+habit tracker | https://www.lifeofdiscipline.com/my-habits | librewolf -P google
 
 ## Work
 simplenote | https://app.simplenote.com/ | librewolf -P work

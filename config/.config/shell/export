@@ -19,6 +19,7 @@ export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 
 ## WAYLAND
 export QT_QPA_PLATFORM=wayland
+export XDG_CURRENT_DESKTOP=sway
 
 export CC="clang"
 export CFLAGS="-fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow"
@@ -47,7 +48,6 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
-export XDG_CURRENT_DESKTOP=sway
 
 export PATH="$PATH:$HOME/.local/bin/scripts"
 export PATH="$PATH:$HOME/.local/bin/polybar"
