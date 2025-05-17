@@ -14,6 +14,8 @@ deluge
 lf
 bluez
 bluez-utils
+battery-notify
+bat
 brightnessctl
 playerctl
 libnotify
