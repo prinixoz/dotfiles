@@ -1,5 +1,7 @@
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+
+# exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+# exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 #==============================================================================
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -316,3 +318,5 @@ exec_always --no-startup-id ~/.config/i3/scripts/startup.sh
 #+++++++++++++++++++++++++++ | |___| |\  | |_| | ++++++++++++++++++++++++++++++
 #+++++++++++++++++++++++++++ |_____|_| \_|____/  ++++++++++++++++++++++++++++++
 #=============================================================================
+
+include /etc/sway/config.d/*
