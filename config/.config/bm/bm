@@ -10,7 +10,8 @@ torrent | https://localhost:9091/
 activity watch | http://localhost:5600/#/timeline  | surf
 alternativeto.net | alternativeto.net
 opensourcealternative | https://www.opensourcealternative.to/
-notion |  https://notion.so/ | brave --profile-directory="Notion" 
+notion |  https://notion.so/ | librewolf -P trackers
+todoist |https://app.todoist.com/app/ | librewolf -P trackers
 money | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7RFBoOn8TY_w | librewolf -P google
 
 ### Skill
