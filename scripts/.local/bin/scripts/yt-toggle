@@ -6,5 +6,5 @@ if [ $proces ];then
     kill $proces
 else
     #python ~/.local/share/yt-local/server.py
-    python ~/.local/share/youtube-local/server.py
+    python ~/.local/share/yt-local/server.py
 fi

@@ -53,6 +53,7 @@ set $default_browser librewolf -P default
 #+++++++++++++++++++++++++++++++ Variable +++++++++++++++++++++++++++++++++++++
 #==============================================================================
 set $mod Mod4
+set $mod2 Mod4
 set $terminal alacritty -e
 floating_modifier $mod
 
@@ -79,17 +80,17 @@ bindgesture swipe:down scratchpad show
 #==============================================================================
 #+++++++++++++++++++++++++++++ Switch Workscpace ++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
-bindsym $mod+m scratchpad show
+bindsym $mod2+1 workspace number $ws1
+bindsym $mod2+2 workspace number $ws2
+bindsym $mod2+3 workspace number $ws3
+bindsym $mod2+4 workspace number $ws4
+bindsym $mod2+5 workspace number $ws5
+bindsym $mod2+6 workspace number $ws6
+bindsym $mod2+7 workspace number $ws7
+bindsym $mod2+8 workspace number $ws8
+bindsym $mod2+9 workspace number $ws9
+bindsym $mod2+0 workspace number $ws10
+bindsym $mod2+m scratchpad show
 
 # Change workspace with tabs like chrome
 bindsym $mod+Tab workspace next
@@ -116,7 +117,7 @@ bindsym $mod+Shift+m move scratchpad
 #+++++++++++++++++++++++++ Killing window +++++++++++++++++++++++++++++++++++++
 #==============================================================================
 bindsym $mod+q kill
-bindsym $mod+Shift+q exec process
+bindsym $mod+Shift+q exec process $men
 bindsym $mod+Shift+r reload
 
 #==============================================================================
@@ -150,7 +151,6 @@ bindsym $mod+f exec touchpad
 #++++++++++++++++++++++++++++++++ Browsers++++++++++++++++++++++=++++++++++++++
 #==============================================================================
 bindsym $mod+a exec bm $men
-bindsym $mod+Shift+a exec killall dmenu
 bindsym $mod+shift+Return exec sdmenu $men
 bindsym $mod+b exec alacritty -e nb
 bindsym $mod+Shift+b exec alacritty -e deluge-console
@@ -252,8 +252,9 @@ bindsym $mod+F12 exec downloadmusix
 #==============================================================================
 #+++++++++++++++++++++++++++++ DMENU SCRIPTS ++++++++++++++++++++++++++++++++++
 #==============================================================================
-set $men dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "
-set $menu killall dmenu || dmenu_run -l 8 -g 4 -nb "#0F0F0F" -p "Run: "
+set $men dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: " -i
+# set $men dmenu-wl 
+set $menu killall dmenu || dmenu_run -l 8 -g 4 -nb "#0F0F0F" -p "Run: " -i
 set $appmenu j4-dmenu-desktop --dmenu='dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+d exec  $menu
 bindsym $mod+shift+d exec $appmenu

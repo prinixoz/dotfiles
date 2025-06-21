@@ -57,3 +57,4 @@ udisks2
 
 xdg-ninja
 yt-dlp
+xorg-xwayland

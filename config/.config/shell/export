@@ -20,6 +20,7 @@ export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 ## WAYLAND
 export QT_QPA_PLATFORM=wayland
 export XDG_CURRENT_DESKTOP=sway
+export MENU='dmenu -l 8 -p "Choose: "'
 
 export CC="clang"
 export CFLAGS="-fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow"
