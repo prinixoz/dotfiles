@@ -14,6 +14,7 @@ selfi | https://space.crunchlabs.com/selfie/KZiONdC
 
 ### tracker
 notion |  https://notion.so/ | librewolf -P trackers
+habit tracker|  https://www.lifeofdiscipline.com/my-habits | librewolf -P trackers
 todoist |https://app.todoist.com/app/ | librewolf -P trackers
 money | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7RFBoOn8TY_w | librewolf -P google
 
@@ -44,7 +45,6 @@ gemini | http://gemini.google.com/u/1/ | librewolf -P google
 
 unidays | https://www.myunidays.com/ | librewolf -P collage
 daily log | https://chatgpt.com/c/67c9d662-9008-800c-b21b-4765d1e20cf5/ | librewolf -P google
-habit tracker | https://www.lifeofdiscipline.com/my-habits | librewolf -P google
 
 ## Work
 
