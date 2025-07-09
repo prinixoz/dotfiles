@@ -48,6 +48,7 @@ swaybg
 swayimg
 swayidle
 swaylock-effects
+ly
 wl-clipboard
 dunst
 ttf-hack

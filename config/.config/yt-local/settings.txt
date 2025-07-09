@@ -82,9 +82,9 @@ embed_page_mode = True
 
 autocheck_subscriptions = True
 
-include_shorts_in_subscriptions = 0
+include_shorts_in_subscriptions = False
 
-include_shorts_in_channel = 1
+include_shorts_in_channel = True
 
 # Save all responses from youtube for debugging
 debugging_save_responses = False

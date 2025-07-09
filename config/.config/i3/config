@@ -242,7 +242,7 @@ bindsym alt+F4 exec powermenu
 #==============================================================================
 #++++++++++++++++++++++++++++++++ YTFZF +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
-bindsym $mod+F5 exec "mpv-yt"
+bindsym $mod+F5 exec "mpv $(wl-paste)"
 bindsym $mod+Shift+F5 exec "mpv-audio"
 
 bindsym $mod+F11 bar mode toggle

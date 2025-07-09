@@ -30,4 +30,4 @@ Include = /etc/pacman.d/chaotic-mirrorlist
 " >> /etc/pacman.conf
 
 ## Install Package
-sudo pacman -S $(cat install.txt)
+paru -S $(cat install.txt) --needed
