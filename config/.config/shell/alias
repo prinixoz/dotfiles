@@ -11,6 +11,7 @@ alias make50='make CC=clang CFLAGS="-fsanitize=signed-integer-overflow -fsanitiz
 alias yt-dl="yt-dlp -f 'bestvideo[height<=?720]+ba'"
 alias yt-dl-playlist="yt-dlp -f 'bestvideo[height<=?720]+ba' --output '%(playlist_index)s %(title)s.%(ext)s'"
 alias myip="ip route get 1.1.1.1 | awk '{print $7}'"
+alias wol="wakeonlan $(cat ~/.config/mac) -q"
 
 # System control
 alias sys='sudo systemctl start'
