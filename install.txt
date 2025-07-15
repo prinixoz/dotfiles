@@ -1,6 +1,5 @@
 alacritty
-tofi
-librewolf
+librewolf-bin
 brave-bin
 torbrowser-launcher
 zathura
@@ -12,6 +11,7 @@ zsh
 eza
 deluge
 lf
+ueberzugpp
 bluez
 bluez-utils
 battery-notify
@@ -55,6 +55,10 @@ ttf-hack
 ttf-hack-nerd
 udiskie
 udisks2
+
+grim
+slurp
+wlsunset
 
 xdg-ninja
 yt-dlp

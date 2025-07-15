@@ -296,7 +296,8 @@ for_window [class="Dragon-drop" instance="dragon-drop"] sticky enable; exec i3-m
 #+++++++++++++++++++++++++++++ Stylings +++++++++++++++++++++++++++++++++++++++
 #==============================================================================
 smart_borders no_gaps
-for_window [class=".*"] border pixel 2
+default_border pixel 2
+hide_edge_borders smart
 gaps inner 0
 gaps outer 1
 

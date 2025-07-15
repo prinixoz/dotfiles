@@ -29,6 +29,7 @@ export LDLIBS="-lcrypt -lcs50 -lm"
 
 #ZSH
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export BASH_CONFIG_PATH=~/.config/bash/bashrc
 
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export CABAL_CONFIG="$XDG_CONFIG_HOME"/cabal/config

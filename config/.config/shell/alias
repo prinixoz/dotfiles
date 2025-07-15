@@ -21,8 +21,8 @@ alias live='live-server --port=8000 --browser="librewolf"'
 alias pd='sudo protonvpn d'
 
 # sudo to doas
-alias sudo='doas'
-alias sudoedit='doas nvim'
+#alias sudo='doas'
+#alias sudoedit='doas nvim'
 
 # File management
 alias untar='tar -zxvf '
