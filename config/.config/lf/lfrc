@@ -91,7 +91,7 @@ cmd copyto ${{
 }}
 
 cmd setbg "$1"
-cmd bulkrename $vidir
+cmd bulkrename $edir
 
 # Bindings
 map <c-f> $lf -remote "send $id select '$(fzf)'"

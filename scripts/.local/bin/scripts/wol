@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
 
 # --- CONFIGURATION ---
-TARGET_IP="$(cat ~/.config/mac | head -1 | xargs)"            # Your laptop's IP
-TARGET_MAC="$(cat ~/.config/mac | tail -1 | xargs)"           # Your laptop's MAC address
-SSH_USER="$(cat ~/.config/mac | head -2 | tail -1 | xargs)"   # Your SSH user
+source ~/.config/mac
 
 echo "Sending Wake-on-LAN magic packet... ✨"
-wakeonlan $TARGET_MAC
+wakeonlan "$TARGET_MAC"
 
 # --- STEP 2: Wait for ping response ---
 notify-send "Waiting for $TARGET_IP to wake up... ⏳"

@@ -10,7 +10,6 @@ fish
 zsh
 eza
 deluge
-lf
 ueberzugpp
 bluez
 bluez-utils
@@ -21,22 +20,27 @@ playerctl
 libnotify
 git
 github-cli
-htop
+htim
 pulsemixer
 
 
 
 keepassxc
-keepmenu
+keepmenu-git
 wtype
 ydotool
 libinput-gestures
 micro
 mpv-mpris
 nemo
-neovim
 newsboat
+
+ttf-adobe-source-code-pro-fonts
+ttf-hack-nerd
 noto-fonts-emoji
+neovim
+lf
+edir
 npm
 pamixer
 rclone
@@ -63,3 +67,6 @@ wlsunset
 xdg-ninja
 yt-dlp
 xorg-xwayland
+
+wakeonlan
+nsxiv

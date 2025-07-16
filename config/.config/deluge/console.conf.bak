@@ -15,7 +15,7 @@
         "third_tab_lists_all": false,
         "torrents_per_tab_press": 15
     },
-    "first_run": false,
+    "first_run": true,
     "language": "",
     "ring_bell": false,
     "torrentview": {
