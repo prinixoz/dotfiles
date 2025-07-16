@@ -40,6 +40,7 @@ simplenote | https://app.simplenote.com/ | librewolf -P work
 
 ### Chatbots
 chatgpt | https://chatgpt.com/?temporary-chat=true | librewolf -P google
+duckai  | https://duckduckgo.com/?q=C&ia=chat  
 deepseek | https://chat.deepseek.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 

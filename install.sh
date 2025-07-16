@@ -31,3 +31,8 @@ Include = /etc/pacman.d/chaotic-mirrorlist
 
 ## Install Package
 paru -S $(cat install.txt) --needed
+
+
+# installing all the fonts available in Package Manager
+# sudo pacman -S (sudo pacman -Ss ttf -q)
+fc-cache -fv
