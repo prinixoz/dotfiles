@@ -1,52 +1,37 @@
-alacritty
+#### BROWSER ####
 librewolf-bin
 brave-bin
 torbrowser-launcher
+
+#### OFFICE APPLICATIONS ####
+onlyoffice-bin
 zathura
 zathura-pdf-poppler
-onlyoffice-bin
 
+#### TERMINAL ####
+alacritty
 fish
 zsh
+starship
 eza
 deluge
 ueberzugpp
+bat
+htim
+playerctl
+repgrep
+
+#### SYSTEM UTILITIES ####
+brightnessctl
+libnotify
+pulsemixer
 bluez
 bluez-utils
 battery-notify
-bat
-brightnessctl
-playerctl
-libnotify
-git
-github-cli
-htim
-pulsemixer
+udiskie
+udisks2
 
-
-
-keepassxc
-keepmenu-git
-wtype
-ydotool
-libinput-gestures
-micro
-mpv-mpris
-nemo
-newsboat
-
-ttf-adobe-source-code-pro-fonts
-ttf-hack-nerd
-noto-fonts-emoji
-neovim
-lf
-edir
-npm
-pamixer
-rclone
-repgrep
-starship
-stow
+#### WINDOW MANAGER ####
 sway
 swaybg
 swayimg
@@ -54,19 +39,46 @@ swayidle
 swaylock-effects
 ly
 wl-clipboard
+wtype
 dunst
-ttf-hack
-ttf-hack-nerd
-udiskie
-udisks2
 
+#### PASSWORD MANAGEMENT ####
+keepassxc
+keepmenu-git
+
+#### TERMINAL UTILITIES ####
+micro
+mpv-mpris
+newsboat
+yt-dlp
+neovim
+
+#### FILE MANAGER ####
+lf
+edir
+pcmanfm
+thunar
+
+#### PROGRAMMING LANGUAGES AND TOOLS ####
+npm
+python
+meason
+clang
+
+#### SCREENSHOT AND DISPLAY MANAGEMENT ####
 grim
 slurp
 wlsunset
 
+#### FILE MANAGEMENT AND BACKUP ####
+rclone
+stow
+git
+github-cli
 xdg-ninja
-yt-dlp
-xorg-xwayland
-
 wakeonlan
-nsxiv
+
+#### GESTURES AND INPUT ####
+xdg-desktop-portal-wlr
+xorg-xwayland
+libinput-gestures

@@ -20,19 +20,21 @@ sudo pacman-key --lsign-key 3056513887B78AEB
 sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
 sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 
-sudo echo "
+echo "
 ###################################################################################################
 
 [chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist
 
 ###################################################################################################
-" >> /etc/pacman.conf
+" | sudo tee -a /etc/pacman.conf
 
 ## Install Package
-paru -S $(cat install.txt) --needed
+paru -S (sed '/^#/d'  install.txt ) --needed
 
+fonts(){
+ sudo pacman -S (sudo pacman -Ss ttf -q)
+}
 
-# installing all the fonts available in Package Manager
-# sudo pacman -S (sudo pacman -Ss ttf -q)
 fc-cache -fv
+sudo pacman -Syyu
