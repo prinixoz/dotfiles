@@ -38,3 +38,5 @@ fonts(){
 
 fc-cache -fv
 sudo pacman -Syyu
+
+curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | sudo tee /etc/hosts
