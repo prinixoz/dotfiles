@@ -7,6 +7,7 @@ torbrowser-launcher
 onlyoffice-bin
 zathura
 zathura-pdf-poppler
+hyprpicker
 
 #### TERMINAL ####
 alacritty
@@ -20,6 +21,8 @@ bat
 htim
 playerctl
 repgrep
+entr
+ani-cli
 
 #### SYSTEM UTILITIES ####
 brightnessctl

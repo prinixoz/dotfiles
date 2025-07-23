@@ -32,6 +32,14 @@ Include = /etc/pacman.d/chaotic-mirrorlist
 ## Install Package
 paru -S (sed '/^#/d'  install.txt ) --needed
 
+echo "
+###### LOGIN TO WINDOW MANAGER ######
+if [ -f "/home/user/.config/bash/bashrc" ]; then
+    source /home/user/.config/bash/bashrc
+fi
+#####################################
+" | sudo tee -a /etc/profile /etc/bash.bashrc
+
 fonts(){
  sudo pacman -S (sudo pacman -Ss ttf -q)
 }
@@ -40,3 +48,5 @@ fc-cache -fv
 sudo pacman -Syyu
 
 curl https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts | sudo tee /etc/hosts
+
+

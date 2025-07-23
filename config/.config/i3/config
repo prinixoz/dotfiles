@@ -140,7 +140,7 @@ bindsym $mod+l focus right
 bindsym $mod+Return exec alacritty
 bindsym $mod+c exec alacritty -e htop
 bindsym $mod+e exec alacritty -e lfub
-bindsym $mod+shift+e exec pcmanfm 
+bindsym $mod+shift+e exec nemo
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
 bindsym $mod+x exec lock

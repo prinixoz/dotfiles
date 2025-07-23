@@ -1,4 +1,4 @@
-yt | http://laptop.com:2000/youtube.com/results?search_query=%s
+yt | https://youtube.com/results?search_query=%s
 yt | http://localhost:2000/youtube.com/results?search_query=%s
 piped | https://piped.kavin.rocks/results?search_query=%s
 amazon | https://www.amazon.in/s?k=%s 

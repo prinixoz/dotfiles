@@ -19,7 +19,7 @@ alias unlock='sudo rm /var/lib/pacman/db.lck'
 alias live='live-server --port=8000 --browser="librewolf"'
 alias pd='sudo protonvpn d'
 
-alias installfv="nvim ~/.local/dotfiles/install.txt"
+alias vinstallf="nvim ~/.local/dotfiles/install.txt"
 alias installf="paru -S (sed '/^#/d'  ~/.local/dotfiles/install.txt ) --needed"
 
 # sudo to doas

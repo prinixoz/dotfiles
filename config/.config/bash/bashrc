@@ -17,14 +17,10 @@ complete -cf doas
 export HISTCONTROL=ignoreboth:erasedups
 
 #starship prompt
-eval "$(starship init bash)"
+#eval "$(starship init bash)"
 
-#shopt
-# shopt -s autocd # change to named directory
-# shopt -s cdspell # autocorrects cd misspellings
-# shopt -s cmdhist # save multi-line commands in history as single line
-# shopt -s dotglob
-# shopt -s histappend # do not overwrite history
-# shopt -s expand_aliases # expand aliases
+## login
+if [[ "$(tty)" = "/dev/tty1" ]]; then
+     ~/.config/X11/xinitrc
+fi
 
-source ~/.cache/wal/colors-tty.sh

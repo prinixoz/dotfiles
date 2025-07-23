@@ -10,8 +10,7 @@ getUpdate(){
 gettime(){
     time=$(date +"%I:%M %p, %A")
     date=$(date +"%b %d, %Y")
-    weather=$(inxi -w | grep "temperature:.*)" -o)
-    printf "Time: $time\nDate: $date\n$weather"
+    printf "Time: $time\nDate: $date"
 }
 ################################### Battery ###############################################################	
 

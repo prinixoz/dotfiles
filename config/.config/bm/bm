@@ -38,6 +38,8 @@ aliasoz - Protonmail | https://mail.proton.me/u/1/inbox | librewolf -P proton
 @msijanakpuri.com | https://mail.google.com/mail/u/0/ | librewolf -P collage
 simplenote | https://app.simplenote.com/ | librewolf -P work
 
+home | https://home.google.com/ | librewolf -P home
+
 ### Chatbots
 chatgpt | https://chatgpt.com/?temporary-chat=true | librewolf -P google
 duckai  | https://duckduckgo.com/?q=C&ia=chat  
