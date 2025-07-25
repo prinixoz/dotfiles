@@ -38,6 +38,7 @@ udisks2
 sway
 swaybg
 swayimg
+j4-dmenu-desktop
 swayidle
 swaylock-effects
 feh

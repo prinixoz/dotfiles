@@ -1,0 +1,7 @@
+[Default Applications]
+image/jpeg=nsxiv.desktop
+x-scheme-handler/http=librewolf.desktop
+x-scheme-handler/https=librewolf.desktop
+
+[Added Associations]
+image/jpeg=nsxiv.desktop;
