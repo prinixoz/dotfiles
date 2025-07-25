@@ -1,42 +1,43 @@
-vim = vim
+-- === Global Leader Keys ===
+vim.g.mapleader = " "      -- Space as leader key
+vim.g.maplocalleader = "," -- Comma as local leader key
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = ','
+-- === Normal Mode Keymaps ===
 
--- No Normal keys only vim keys are allowed;
+-- Encourage using h/j/k/l instead of arrow keys
 vim.keymap.set("n", "<Up>", ":echo 'use k instead' <CR>")
 vim.keymap.set("n", "<Down>", ":echo 'use j instead' <CR>")
 vim.keymap.set("n", "<Left>", ":echo 'use h instead' <CR>")
 vim.keymap.set("n", "<Right>", ":echo 'use l instead' <CR>")
 
+-- Copy to end of line with capital Y (like D and C)
+vim.keymap.set("n", "Y", "y$")
 
-vim.keymap.set("n", "Y", "y$") -- Copy the whole line with capital Y;
+-- Buffer navigation
+vim.keymap.set("n", "L", ":bn<CR>") -- Next buffer
+vim.keymap.set("n", "H", ":bp<CR>") -- Previous buffer
+vim.keymap.set("n", "<leader>w", ":bd<CR>") -- Close current buffer
+vim.api.nvim_set_keymap("n", "<Tab>", "<c-^>'”zz", { noremap = true, silent = true }) -- Toggle to previous buffer
 
--- terminal
-vim.api.nvim_set_keymap('n', '<leader>t', ':terminal<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+-- Indent entire file quickly
+vim.keymap.set("n", "<leader>f", "m7ggVG=`7") -- Re-indent entire file and return cursor
 
--- Moving the whole line in visual mode;
+-- === Visual Mode Keymaps ===
+
+-- Move selected line(s) up and down
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
--- Changing buffers;
-vim.keymap.set("n", "L", ":bn<CR>")
-vim.keymap.set("n", "H", ":bp<CR>")
-vim.api.nvim_set_keymap('n', '<Tab>', '<c-^>\'”zz', { silent = true, noremap = true }) -- Toggling betwen buffers prev and current;
-vim.keymap.set("n", "<leader>w", ":bd<CR>")
--- Line indenting
-vim.keymap.set("n", "<leader>f", "m7ggVG=`7")
 
--- Explorer
+-- === Terminal Keymaps ===
 
--- Store the last opened directory and window height when closing netrw
-vim.api.nvim_create_autocmd("BufWinLeave", {
-  pattern = "netrw://*",
-  callback = function()
-    vim.g.netrw_last_dir = vim.fn.getcwd()
-    vim.g.netrw_winheight = vim.api.nvim_win_get_height(0)
-  end
-})
+-- Open terminal in normal mode
+vim.api.nvim_set_keymap("n", "<leader>t", ":terminal<CR>", { noremap = true, silent = true })
 
+-- Exit terminal mode with Esc
+vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 
-
+vim.api.nvim_set_keymap('i', '(', '()<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '[', '[]<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '{', '{}<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '"', '""<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', "'", "''<Left>", { noremap = true })

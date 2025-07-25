@@ -28,12 +28,30 @@ return {
         end)
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = {},
-            handlers = {
-                function(server_name)
-                    require('lspconfig')[server_name].setup({})
-                end,
-            },
+            -- ensure_installed = {
+            --     "tsserver",
+            --     "pyright",
+            --     "gopls",
+            --     "rust_analyzer",
+            --     "clangd",
+            --     "lua_ls",
+            --     "intelephense",
+            --     "jdtls",
+            --     "bashls",
+            --     "yamlls",
+            --     "jsonls",
+            --     "html",
+            --     "cssls",
+            --     "dockerls",
+            --     "sqlls",
+            --     "marksman",
+            --     "lemminx",
+            -- },
+            -- handlers = {
+            --     function(server_name)
+            --         require('lspconfig')[server_name].setup({})
+            --     end,
+            -- },
         })
 
         local cmp = require('cmp')
