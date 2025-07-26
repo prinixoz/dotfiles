@@ -18,9 +18,18 @@ update(){
 	sudo pacman -Rs $(pacman -Qqtd)
 }
 
+notes(){
+    cd /mnt/PS/Notes/
+	git add .
+	git commit -m $(date "+%D|%T")
+	git push origin main
+	cd -
+}
+
 all(){
 	config
 	files 
+    notes
 	update
 }
 
