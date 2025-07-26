@@ -289,7 +289,8 @@ mode "resize" {
 #==============================================================================
 #+++++++++++++++++++++++++++ Window setting +++++++++++++++++++++++++++++++++++
 #==============================================================================
-for_window [app_id="mpv"] floating enable; exec i3-msg resize set height 500px;
+for_window [app_id="mpv"] floating enable; exec swaymsg resize set height 500px;
+for_window [instance="com.github.th_ch.youtube_music"] floating enable; exec swaymsg move window to scratchpad
 for_window [class="Dragon-drop" instance="dragon-drop"] sticky enable; exec i3-msg resize set height 500px;
 
 #==============================================================================

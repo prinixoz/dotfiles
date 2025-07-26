@@ -5,7 +5,6 @@ c.tabs.show = "never"
 c.statusbar.show = "never"
 
 # Disable history
-c.url.auto_search = "never"
 c.url.default_page = "about:blank"
 c.url.start_pages = ["about:blank"]
 
@@ -37,3 +36,8 @@ c.content.cookies.accept = "no-3rdparty"
 c.content.headers.referer = "same-domain"
 c.content.webgl = False
 c.content.canvas_reading = False
+
+{
+    "DEFAULT": "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/?q={}",
+    "wa": "https://wiki.archlinux.org/?search={}",
+}
