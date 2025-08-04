@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
+
 file="$HOME/.config/bm/bm"
-content=$(sort $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%50s")|" | $@ )
 
-link=$(echo $content | awk -F "|" '{print $2}')
-command=$(echo $content | awk -F "|" '{print $NF}' | xargs)
-exists=$(command -v $(echo $command | awk '{print $1}'))
+# Format and choose a line using fzf
+selected=$(sort $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%50s")|" | $@ )
 
-if [ $exists ] ; then
-    echo $command
-	$command $link
+# Exit if nothing selected
+[ -z "$selected" ] && exit 1
+
+# Parse fields
+link=$(echo "$selected" | awk -F "|" '{print $2}' | xargs)
+command=$(echo "$selected" | awk -F "|" '{print $NF}' | xargs)
+cmd_exec=$(echo "$command" | awk '{print $1}')
+
+# Check if command exists
+if command -v "$cmd_exec" > /dev/null 2>&1; then
+    echo "Running: $command $link"
+    eval "$command \"$link\""
 else
-	[ $link ] && librewolf -P default $link
+    echo "Fallback: opening in librewolf"
+    librewolf -P default "$link"
 fi
+

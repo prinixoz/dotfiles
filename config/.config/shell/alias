@@ -1,8 +1,8 @@
 # Basic aliases
 alias cp='cp -v'
+alias c="cd /mnt/PS/"
 alias mv='mv -v'
 alias rm='rm -v'
-alias c='clear'
 alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias unsl="sudo sed -i 's/^#\?HandleLidSwitch=.*/HandleLidSwitch=ignore/' /etc/systemd/logind.conf && sudo systemctl restart systemd-logind"
 alias gsl="sudo sed -i 's/^HandleLidSwitch=ignore/#HandleLidSwitch=suspend/' /etc/systemd/logind.conf && sudo systemctl restart systemd-logind"

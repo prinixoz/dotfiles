@@ -14,6 +14,7 @@ alacritty
 fish
 zsh
 starship
+tmux
 eza
 deluge
 ueberzugpp
@@ -61,8 +62,9 @@ neovim
 #### FILE MANAGER ####
 lf
 edir
-pcmanfm
 thunar
+mtpfs 
+gvfs-mtp
 
 #### PROGRAMMING LANGUAGES AND TOOLS ####
 npm

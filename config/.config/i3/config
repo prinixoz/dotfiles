@@ -140,7 +140,7 @@ bindsym $mod+l focus right
 bindsym $mod+Return exec alacritty
 bindsym $mod+c exec alacritty -e htop
 bindsym $mod+e exec alacritty -e lfub
-bindsym $mod+shift+e exec nemo
+bindsym $mod+shift+e exec thunar
 bindsym $mod+o exec  alacritty --title=pulsemixer -e pulsemixer
 bindsym $mod+Shift+o exec  overview
 bindsym $mod+x exec lock
@@ -259,7 +259,6 @@ set $appmenu j4-dmenu-desktop --dmenu='dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+d exec  $menu
 bindsym $mod+shift+d exec $appmenu
 bindsym $mod+shift+p exec keepmenu
-bindsym $mod+p exec alacritty -e nvim -c "Neorg workspace notes"
 bindsym Print exec screenshot select
 bindsym Shift+Print exec screenshot screen
 

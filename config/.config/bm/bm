@@ -20,8 +20,8 @@ money | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7
 
 ### Skill
 typingclub | https://www.edclub.com/sportal/ | librewolf -P typing
-monkeytype | https://monkeytype.com/  | librewolf -P typing
-keybr      | https://www.keybr.com/  | librewolf -P typing
+monkeytype | https://monkeytype.com/  | qutebrowser -B ~/.local/share/qutebrowser/typing/ 
+keybr      | https://www.keybr.com/  | qutebrowser -B ~/.local/share/qutebrowser/typing/  
 coursera | https://www.coursera.org/learn/introduction-to-front-end-development/home/week/1 | librewolf -P skills
 skillshare | https://www.skillshare.com/ | librewolf -P skills
 100x | https://app.100xdevs.com/courses/3/ | librewolf -P skills
@@ -42,7 +42,7 @@ home | https://home.google.com/ | librewolf -P home
 
 ### Chatbots
 chatgpt | https://chatgpt.com/?temporary-chat=true | librewolf -P google
-duckai  | https://duckduckgo.com/?q=C&ia=chat  
+duckai  | https://duck.ai
 deepseek | https://chat.deepseek.com/ | librewolf -P google
 gemini | http://gemini.google.com/u/1/ | librewolf -P google
 
@@ -93,6 +93,7 @@ hacknation  | https://hacksnation.com/
 whatsapp | https://web.whatsapp.com/ | librewolf -P whatsapp
 github | https://github.com/ | librewolf -P skills
 leetcode | https://leetcode.com/ | librewolf -P skills
+needcode | https://neetcode.io/roadmap | librewolf -P skills
 roadmap | https://roadmap.sh/ | librewolf -P skills
 reddit | https://reddit.com/ | librewolf -P reddit
 twitter | https://x.com/ | librewolf -P reddit
