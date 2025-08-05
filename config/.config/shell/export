@@ -57,6 +57,7 @@ export PATH="$PATH:$HOME/.local/bin/scripts"
 export PATH="$PATH:$HOME/.local/bin/polybar"
 export PATH="$PATH:$HOME/.local/bin/start"
 export PATH="$PATH:$HOME/.local/bin/dmenu_scripts"
+export PATH="$PATH:$HOME/.local/share/cargo/bin"
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 
 export XKB_DEFAULT_OPTIONS=caps:escape

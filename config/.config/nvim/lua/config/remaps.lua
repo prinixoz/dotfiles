@@ -10,6 +10,9 @@ vim.keymap.set("n", "<Down>", ":echo 'use j instead' <CR>")
 vim.keymap.set("n", "<Left>", ":echo 'use h instead' <CR>")
 vim.keymap.set("n", "<Right>", ":echo 'use l instead' <CR>")
 
+vim.keymap.set("n", "j", "gj")
+vim.keymap.set("n", "k", "gk")
+
 -- Copy to end of line with capital Y (like D and C)
 vim.keymap.set("n", "Y", "y$")
 

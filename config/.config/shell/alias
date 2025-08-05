@@ -78,6 +78,7 @@ alias weather='clear && curl wttr.in/Jamshedpur'
 
 # Utility
 alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+alias glp='git clone $(wl-paste)'
 alias record="ffmpeg -f x11grab -s 1920x1080 -i :0.0 -r 30 -preset ultrafast /mnt/PS/output.mkv"
 
 # EDITOR

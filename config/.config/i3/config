@@ -259,6 +259,7 @@ set $appmenu j4-dmenu-desktop --dmenu='dmenu -l 8 -g 4 -nb "#0F0F0F" -p "Run: "'
 bindsym $mod+d exec  $menu
 bindsym $mod+shift+d exec $appmenu
 bindsym $mod+shift+p exec keepmenu
+bindsym $mod+p exec wizdmenu
 bindsym Print exec screenshot select
 bindsym Shift+Print exec screenshot screen
 

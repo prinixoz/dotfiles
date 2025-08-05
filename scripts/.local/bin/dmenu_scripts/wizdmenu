@@ -1,0 +1,25 @@
+#!/bin/bash
+source ~/.config/mac
+commad=$(printf "0: Brightness\n1: Scene\n2: ON\n3: OFF" | dmenu -l 8 -p "Choose: " | awk -F ':' '{printf $1}')
+
+case "$commad" in
+    0)
+        value=$(wizctl dynamic --help | grep -oP "possible values: \K.*?(?=\])" | sed 's/,/\n/g' | sed 's/ //g' | dmenu -l 8 -p "Choose: " | xargs)
+        brightness=$(seq 100 | dmenu -l 8 -p "Choose: ")
+        wizctl -i $WIZ_IP dynamic $value 10 $brightness
+        ;;
+    1) 
+        value=$(wizctl dynamic --help | grep -oP "possible values: \K.*?(?=\])" | sed 's/,/\n/g' | sed 's/ //g' | dmenu -l 8 -p "Choose: ")
+        wizctl -i $WIZ_IP dynamic $value
+        ;;
+    2)
+        wizctl -i $WIZ_IP on
+        ;;
+    3)
+        wizctl -i $WIZ_IP off
+        ;;
+    *) echo default
+        ;;
+esac
+
+
