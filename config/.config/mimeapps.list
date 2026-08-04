@@ -1,0 +1,36 @@
+[Default Applications]
+image/jpeg=nsxiv.desktop
+x-scheme-handler/http=librewolf.desktop
+x-scheme-handler/https=librewolf.desktop
+x-scheme-handler/figma=figma-linux.desktop
+x-scheme-handler/freetube=FreeTube.desktop
+x-scheme-handler/chrome=librewolf.desktop
+text/html=librewolf.desktop
+application/x-extension-htm=librewolf.desktop
+application/x-extension-html=librewolf.desktop
+application/x-extension-shtml=librewolf.desktop
+application/xhtml+xml=librewolf.desktop
+application/x-extension-xhtml=librewolf.desktop
+application/x-extension-xht=librewolf.desktop
+application/octet-stream=neovim.desktop
+x-scheme-handler/bruno=bruno.desktop
+x-scheme-handler/noutube=noutube.desktop
+inode/directory=kitty-open.desktop
+x-scheme-handler/hydralauncher=hydralauncher.desktop
+
+[Added Associations]
+image/jpeg=nsxiv.desktop;
+application/pdf=org.pwmt.zathura-pdf-poppler.desktop;
+video/mp4=vlc.desktop;
+image/png=nsxiv.desktop;
+x-scheme-handler/http=librewolf.desktop;
+x-scheme-handler/https=librewolf.desktop;
+x-scheme-handler/chrome=librewolf.desktop;
+text/html=librewolf.desktop;
+application/x-extension-htm=librewolf.desktop;
+application/x-extension-html=librewolf.desktop;
+application/x-extension-shtml=librewolf.desktop;
+application/xhtml+xml=librewolf.desktop;
+application/x-extension-xhtml=librewolf.desktop;
+application/x-extension-xht=librewolf.desktop;
+application/octet-stream=neovim.desktop;

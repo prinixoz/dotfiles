@@ -1,0 +1,266 @@
+#!/bin/bash
+
+# Configuration
+CACHE_DIR="$HOME/.cache/system_status"
+UPDATE_CACHE="$CACHE_DIR/pacman_updates"
+WEATHER_CACHE="$CACHE_DIR/weather_cache"
+WEATHER_LOCK="$CACHE_DIR/weather_cache.lock"
+UPDATE_LOCK="$CACHE_DIR/pacman_updates.lock"
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+
+# Geographic Coordinates (Jamshedpur)
+LAT="22.80"
+LON="86.20"
+
+mkdir -p "$CACHE_DIR"
+TODAY=$(date +%F)
+CURRENT_HOUR=$(date +%H)
+
+# Global Variables to prevent heavy subshell forks
+OUT_BATTERY="N/A"
+OUT_UPDATES="updating..."
+OUT_UPTIME="N/A"
+OUT_WEATHER="updating..."
+OUT_MEMORY="N/A"
+OUT_TEMP="N/A"
+OUT_DISK="N/A"
+
+################################# Updates #################################################################	
+
+daily(){
+    rm -f "$UPDATE_CACHE" "$WEATHER_CACHE"
+    load_data
+}
+
+_fetch_updates() {
+    if command -v checkupdates >/dev/null 2>&1; then
+        checkupdates 2>/dev/null | wc -l
+    else
+        pacman -Qu 2>/dev/null | wc -l
+    fi
+}
+
+load_updates(){
+    if [[ ! -f "$UPDATE_CACHE" ]]; then
+        OUT_UPDATES="updating..."
+        if [[ ! -f "$UPDATE_LOCK" ]]; then
+            touch "$UPDATE_LOCK"
+            # Completely detach background subshell to prevent process grouping delays
+            (
+                local count
+                count=$(_fetch_updates)
+                echo "$TODAY $count" > "$UPDATE_CACHE"
+                rm -f "$UPDATE_LOCK"
+            ) &>/dev/null &
+        fi
+        return
+    fi
+
+    local saved_date count
+    read -r saved_date count < "$UPDATE_CACHE"
+    OUT_UPDATES="$count"
+
+    if [[ "$saved_date" != "$TODAY" ]]; then
+        if [[ ! -f "$UPDATE_LOCK" ]]; then
+            touch "$UPDATE_LOCK"
+            (
+                local new_count
+                new_count=$(_fetch_updates)
+                echo "$TODAY $new_count" > "$UPDATE_CACHE"
+                rm -f "$UPDATE_LOCK"
+            ) &>/dev/null &
+        fi
+    fi
+}
+
+################################## WEATHER ################################################################
+
+_decode_wmo() {
+    case "$1" in
+        0) echo "Clear" ;;
+        1|2|3) echo "Partly Cloudy" ;;
+        45|48) echo "Foggy" ;;
+        51|53|55) echo "Drizzle" ;;
+        61|63|65) echo "Rainy" ;;
+        71|73|75) echo "Snowy" ;;
+        80|81|82) echo "Showers" ;;
+        95|96|99) echo "Thunderstorm" ;;
+        *) echo "Weather" ;;
+    esac
+}
+
+_fetch_weather() {
+    local url="https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,apparent_temperature,weather_code&forecast_days=1"
+    local raw_json
+    raw_json=$(curl -s --connect-timeout 3 --max-time 8 "$url" 2>/dev/null)
+
+    if ! echo "$raw_json" | jq -e . >/dev/null 2>&1; then
+        return 1
+    fi
+
+    echo "$raw_json" | jq -r '
+        try (
+          .hourly | [
+            { slot: "00", temp: .temperature_2m[0],  feels: .apparent_temperature[0],  code: .weather_code[0]  },
+            { slot: "01", temp: .temperature_2m[1],  feels: .apparent_temperature[1],  code: .weather_code[1]  },
+            { slot: "02", temp: .temperature_2m[2],  feels: .apparent_temperature[2],  code: .weather_code[2]  },
+            { slot: "03", temp: .temperature_2m[3],  feels: .apparent_temperature[3],  code: .weather_code[3]  },
+            { slot: "04", temp: .temperature_2m[4],  feels: .apparent_temperature[4],  code: .weather_code[4]  },
+            { slot: "05", temp: .temperature_2m[5],  feels: .apparent_temperature[5],  code: .weather_code[5]  },
+            { slot: "06", temp: .temperature_2m[6],  feels: .apparent_temperature[6],  code: .weather_code[6]  },
+            { slot: "07", temp: .temperature_2m[7],  feels: .apparent_temperature[7],  code: .weather_code[7]  },
+            { slot: "08", temp: .temperature_2m[8],  feels: .apparent_temperature[8],  code: .weather_code[8]  },
+            { slot: "09", temp: .temperature_2m[9],  feels: .apparent_temperature[9],  code: .weather_code[9]  },
+            { slot: "10", temp: .temperature_2m[10], feels: .apparent_temperature[10], code: .weather_code[10] },
+            { slot: "11", temp: .temperature_2m[11], feels: .apparent_temperature[11], code: .weather_code[11] },
+            { slot: "12", temp: .temperature_2m[12], feels: .apparent_temperature[12], code: .weather_code[12] },
+            { slot: "13", temp: .temperature_2m[13], feels: .apparent_temperature[13], code: .weather_code[13] },
+            { slot: "14", temp: .temperature_2m[14], feels: .apparent_temperature[14], code: .weather_code[14] },
+            { slot: "15", temp: .temperature_2m[15], feels: .apparent_temperature[15], code: .weather_code[15] },
+            { slot: "16", temp: .temperature_2m[16], feels: .apparent_temperature[16], code: .weather_code[16] },
+            { slot: "17", temp: .temperature_2m[17], feels: .apparent_temperature[17], code: .weather_code[17] },
+            { slot: "18", temp: .temperature_2m[18], feels: .apparent_temperature[18], code: .weather_code[18] },
+            { slot: "19", temp: .temperature_2m[19], feels: .apparent_temperature[19], code: .weather_code[19] },
+            { slot: "20", temp: .temperature_2m[20], feels: .apparent_temperature[20], code: .weather_code[20] },
+            { slot: "21", temp: .temperature_2m[21], feels: .apparent_temperature[21], code: .weather_code[21] },
+            { slot: "22", temp: .temperature_2m[22], feels: .apparent_temperature[22], code: .weather_code[22] },
+            { slot: "23", temp: .temperature_2m[23], feels: .apparent_temperature[23], code: .weather_code[23] }
+          ] | .[] | "\(.slot)|\(.code)|\(.temp)|\(.feels)"
+        )
+    ' 2>/dev/null
+}
+
+load_weather() {
+    if [[ ! -f "$WEATHER_CACHE" ]]; then
+        OUT_WEATHER="updating..."
+        if [[ ! -f "$WEATHER_LOCK" ]]; then
+            touch "$WEATHER_LOCK"
+            (
+                local new_data
+                new_data=$(_fetch_weather)
+                if [[ -n "$new_data" ]]; then
+                    printf "%s\n%s\n" "$TODAY" "$new_data" > "$WEATHER_CACHE"
+                fi
+                rm -f "$WEATHER_LOCK"
+            ) &>/dev/null &
+        fi
+        return
+    fi
+
+    local saved_date line
+    saved_date=$(head -n 1 "$WEATHER_CACHE" 2>/dev/null)
+    
+    declare -A weather_map
+    while IFS='|' read -r hour code temp feels; do
+        [[ -z "$hour" ]] && continue
+        weather_map["$hour"]="$(_decode_wmo "$code") ${temp}°C (feels ${feels}°C)"
+    done < <(tail -n +2 "$WEATHER_CACHE")
+
+    if [[ "$saved_date" == "$TODAY" ]]; then
+        OUT_WEATHER="${weather_map[$CURRENT_HOUR]:-updating...}"
+    else
+        OUT_WEATHER="${weather_map[$CURRENT_HOUR]:-updating...}"
+        if [[ ! -f "$WEATHER_LOCK" ]]; then
+            touch "$WEATHER_LOCK"
+            (
+                local async_data
+                async_data=$(_fetch_weather)
+                if [[ -n "$async_data" ]]; then
+                    printf "%s\n%s\n" "$TODAY" "$async_data" > "$WEATHER_CACHE"
+                fi
+                rm -f "$WEATHER_LOCK"
+            ) &>/dev/null &
+        fi
+    fi
+}
+
+################################### System Stats ##########################################################	
+
+load_battery(){
+    local bat_dir="/sys/class/power_supply/BAT0"
+    [[ ! -d "$bat_dir" ]] && bat_dir=$(find /sys/class/power_supply/ -name "BAT*" -print -quit)
+
+    if [[ -n "$bat_dir" ]]; then
+        local percentage status
+        percentage=$(cat "$bat_dir/capacity" 2>/dev/null)
+        status=$(cat "$bat_dir/status" 2>/dev/null)
+        OUT_BATTERY="${percentage}% [${status}]"
+    fi
+}
+
+load_uptime(){
+    OUT_UPTIME=$(uptime -p | cut -d" " -f2-)
+}
+
+load_memory() {
+    local name value unit total available
+    while read -r name value unit; do
+        case "$name" in
+            MemTotal:) total=$value ;;
+            MemAvailable:) available=$value ;;
+        esac
+    done < /proc/meminfo
+
+    local used=$(( (total - available) / 1024 ))
+    total=$(( total / 1024 ))
+    OUT_MEMORY="${used}MB / ${total}MB"
+}
+
+load_temperature() {
+    if [[ -f /sys/class/thermal/thermal_zone0/temp ]]; then
+        local raw_temp
+        raw_temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+        OUT_TEMP="$(( raw_temp / 1000 ))°C"
+    else
+        OUT_TEMP="N/A"
+    fi
+}
+
+load_disk() {
+    OUT_DISK=$(df -h / | awk 'NR==2 {print $5 " full (" $4 " free)"}')
+}
+
+load_data() {
+    load_battery
+    load_updates
+    load_uptime
+    load_weather
+    load_memory
+    load_temperature
+    load_disk
+}
+
+################################## Presentation ###########################################################	
+
+allprint(){
+    load_data
+    printf "%-8s : %s\n" "Time"     "$(date +"%I:%M %p, %A")"
+    printf "%-8s : %s\n" "Date"     "$(date +"%b %d, %Y")"
+    printf "%-8s : %s\n" "Battery"  "$OUT_BATTERY"
+    printf "%-8s : %s\n" "Uptime"   "$OUT_UPTIME"
+    printf "%-8s : %s\n" "RAM"      "$OUT_MEMORY"
+    printf "%-8s : %s\n" "CPU Temp" "$OUT_TEMP"
+    printf "%-8s : %s\n" "Disk"     "$OUT_DISK"
+    
+    if [[ "$OUT_UPDATES" != "updating..." ]]; then
+        printf "%-8s : %s\n" "Updates" "$OUT_UPDATES"
+    fi
+    
+    if [[ "$OUT_WEATHER" != "updating..." ]]; then
+        printf "%-8s : %s\n" "Weather" "$OUT_WEATHER"
+    fi
+}
+
+print(){
+    notify-send "$(allprint)"
+}
+
+func_name="${1:-print}"
+
+if declare -f "$func_name" > /dev/null; then
+    "$func_name"
+else
+    echo "Error: Function '$func_name' does not exist." >&2
+    exit 1
+fi

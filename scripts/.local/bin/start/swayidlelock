@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+swayidle -w \
+    timeout 600 "$HOME/.local/bin/start/lock -v -s 1800" \
+    before-sleep "$HOME/.local/bin/start/lock -v"

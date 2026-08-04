@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Bookmarks</title>
+    <link>http://localhost:2000</link>
+    <description>Feed of YouTube URLs</description>
+    <item>
+      <title>Video 1</title>
+      <link>https://www.youtube.com/watch?v=vlDghD69_xU</link>
+    </item>
+    <item>
+      <title>Video 2</title>
+      <link>https://www.youtube.com/watch?v=KcaVhMt71qE</link>
+    </item>
+  </channel>
+</rss>
+

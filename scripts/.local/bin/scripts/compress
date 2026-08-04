@@ -1,0 +1,279 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DENSITY=120
+MAX_SIZE=""
+JOBS=$(nproc)
+
+# -----------------------------
+# Help
+# -----------------------------
+show_help() {
+  cat <<EOF
+Usage: compress [OPTIONS] <files...>
+
+Options:
+  -s, --max-size SIZE   Target max file size (e.g. 3M, 500K)
+  -j, --jobs N          Parallel jobs (default: CPU cores)
+  -h, --help            Show this help
+EOF
+}
+
+# -----------------------------
+# Utils
+# -----------------------------
+log(){ echo "[*] $*"; }
+warn(){ echo "[!] $*" >&2; }
+
+parse_size() {
+  size="$1"
+  if [[ "$size" =~ ^([0-9]+)([KkMm])$ ]]; then
+    num="${BASH_REMATCH[1]}"
+    unit="${BASH_REMATCH[2]}"
+    [[ "$unit" =~ [Mm] ]] && echo $((num * 1024 * 1024)) || echo $((num * 1024))
+  else
+    echo "$size"
+  fi
+}
+
+safe_output() {
+  filename="$(basename "$1")"
+  dir="$(dirname "$1")"
+  base="$dir/compressed_$filename"
+
+  i=1
+  while [ -e "$base" ]; do
+    base="$dir/compressed_${i}_$filename"
+    ((i++))
+  done
+
+  echo "$base"
+}
+
+# -----------------------------
+# Binary search quality
+# -----------------------------
+find_best_quality() {
+  local input="$1"
+  local output="$2"
+  local resize="$3"
+
+  local low=40
+  local high=100
+  local best=40
+
+  while [ $low -le $high ]; do
+    local mid=$(( (low + high) / 2 ))
+
+    magick "$input" \
+      -density "$DENSITY" \
+      -resize "${resize}%" \
+      -sampling-factor 4:2:0 -strip \
+      -compress jpeg -quality "$mid" \
+      "$output"
+
+    local size
+    size=$(wc -c < "$output")
+
+    if [ "$size" -le "$MAX_SIZE" ]; then
+      best=$mid
+      low=$((mid + 1))
+    else
+      high=$((mid - 1))
+    fi
+  done
+
+  echo "$best"
+}
+
+# -----------------------------
+# Image compression
+# -----------------------------
+compress_image() {
+  input="$1"
+  output="$2"
+
+  orig=$(wc -c < "$input")
+
+  if [ -n "$MAX_SIZE" ] && [ "$orig" -le "$MAX_SIZE" ]; then
+    log "$input already under target → skipping"
+    cp "$input" "$output"
+    return
+  fi
+
+  best_resize=100
+  best_quality=100
+  best_diff=999999999
+
+  for resize in 100 90 80 70 60 50; do
+    q=$(find_best_quality "$input" "$output" "$resize")
+
+    magick "$input" \
+      -density "$DENSITY" \
+      -resize "${resize}%" \
+      -sampling-factor 4:2:0 -strip \
+      -compress jpeg -quality "$q" \
+      "$output"
+
+    size=$(wc -c < "$output")
+    diff=$(( MAX_SIZE - size ))
+
+    if [ $diff -ge 0 ] && [ $diff -lt $best_diff ]; then
+      best_diff=$diff
+      best_resize=$resize
+      best_quality=$q
+    fi
+  done
+
+  log "Best → resize=${best_resize}% quality=${best_quality}"
+
+  magick "$input" \
+    -density "$DENSITY" \
+    -resize "${best_resize}%" \
+    -sampling-factor 4:2:0 -strip \
+    -compress jpeg -quality "$best_quality" \
+    "$output"
+}
+
+# -----------------------------
+# PDF → image pipeline (best)
+# -----------------------------
+compress_pdf_images() {
+  input="$1"
+  output="$2"
+
+  tmpdir=$(mktemp -d)
+
+  log "PDF looks image-based → using image pipeline"
+
+  magick -density 150 "$input" "$tmpdir/page_%03d.jpg"
+
+  for img in "$tmpdir"/*.jpg; do
+    magick "$img" \
+      -sampling-factor 4:2:0 -strip \
+      -quality 60 \
+      "$img"
+  done
+
+  magick "$tmpdir"/page_*.jpg "$output"
+
+  rm -rf "$tmpdir"
+}
+
+# -----------------------------
+# Ghostscript fallback
+# -----------------------------
+compress_pdf_gs() {
+  input="$1"
+  output="$2"
+
+  log "Using Ghostscript fallback"
+
+  gs -sDEVICE=pdfwrite \
+     -dCompatibilityLevel=1.4 \
+     -dNOPAUSE -dQUIET -dBATCH \
+     -dDetectDuplicateImages=true \
+     -dCompressImages=true \
+     -dDownsampleColorImages=true \
+     -dColorImageResolution=120 \
+     -dGrayImageResolution=120 \
+     -dMonoImageResolution=120 \
+     -dJPEGQ=60 \
+     -sOutputFile="$output" \
+     "$input"
+}
+
+# -----------------------------
+# Detect PDF type
+# -----------------------------
+is_image_pdf() {
+  input="$1"
+
+  # crude but effective heuristic
+  pages=$(pdfinfo "$input" 2>/dev/null | awk '/Pages/ {print $2}')
+  images=$(pdfimages -list "$input" 2>/dev/null | wc -l)
+
+  # if lots of images relative to pages → image PDF
+  if [ "$images" -gt "$pages" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# -----------------------------
+# Process file
+# -----------------------------
+process_file() {
+  input="$1"
+
+  [ ! -f "$input" ] && { warn "Skipping $input"; return; }
+
+  ext="$(echo "${input##*.}" | tr '[:upper:]' '[:lower:]')"
+  output="$(safe_output "$input")"
+
+  log "Processing: $input"
+
+  case "$ext" in
+    jpg|jpeg|png|webp)
+      compress_image "$input" "$output"
+      ;;
+    pdf)
+      if is_image_pdf "$input"; then
+        compress_pdf_images "$input" "$output"
+      else
+        compress_pdf_gs "$input" "$output"
+      fi
+      ;;
+    *)
+      warn "Unsupported: $input"
+      return
+      ;;
+  esac
+
+  if [ -f "$output" ]; then
+    orig=$(wc -c < "$input")
+    new=$(wc -c < "$output")
+    log "Saved → $output"
+    log "Size: $((orig/1024))KB → $((new/1024))KB"
+  else
+    warn "Failed: $input"
+  fi
+
+  echo "----------------------"
+}
+
+export -f process_file compress_image compress_pdf_images compress_pdf_gs find_best_quality safe_output log warn is_image_pdf
+export DENSITY MAX_SIZE
+
+# -----------------------------
+# Parse args
+# -----------------------------
+FILES=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -s|--max-size)
+      MAX_SIZE=$(parse_size "$2")
+      shift 2
+      ;;
+    -j|--jobs)
+      JOBS="$2"
+      shift 2
+      ;;
+    -h|--help)
+      show_help
+      exit 0
+      ;;
+    *)
+      FILES+=("$1")
+      shift
+      ;;
+  esac
+done
+
+[ ${#FILES[@]} -eq 0 ] && { show_help; exit 1; }
+
+# -----------------------------
+# Run parallel
+# -----------------------------
+printf "%s\n" "${FILES[@]}" | xargs -P "$JOBS" -I{} bash -c 'process_file "$@"' _ {}

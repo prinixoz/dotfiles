@@ -1,0 +1,3 @@
+user ALL=(ALL) NOPASSWD: /usr/bin/pacman -Syuw
+user ALL=(ALL) NOPASSWD: /usr/bin/pacman -Syu
+user ALL=(ALL) NOPASSWD: /usr/bin/pacman -Sy

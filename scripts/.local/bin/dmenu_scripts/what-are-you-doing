@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+BASE="$HOME/.local/share/what-am-i-doing"
+LOGDIR="$BASE/logs"
+LOCKFILE="/tmp/what-am-i-doing.lock"
+
+mkdir -p "$LOGDIR"
+
+INTERVAL=$((20 * 60)) 
+
+while true; do
+    # wait first
+    sleep "$INTERVAL"
+
+    # skip if swaylock is running
+    if pgrep -x swaylock >/dev/null; then
+        continue
+    fi
+
+    # prevent multiple prompts
+    if [ -f "$LOCKFILE" ]; then
+        continue
+    fi
+
+    touch "$LOCKFILE"
+
+    TODAY=$(date +%F)
+    FILE="$LOGDIR/$TODAY.csv"
+
+    # create csv header
+    if [ ! -f "$FILE" ]; then
+        echo "time,activity" > "$FILE"
+    fi
+
+    TIME=$(date +%T)
+
+    ANSWER=$(echo "" | dmenu --prompt "What are you doing right now?")
+
+    # if user answered something
+    if [ -n "$ANSWER" ]; then
+        echo "$TIME,\"$ANSWER\"" >> "$FILE"
+        notify-send "Logged" "$ANSWER"
+    fi
+
+    rm -f "$LOCKFILE"
+done

@@ -1,0 +1,2 @@
+#!/bin/bash
+pcmanfm $(dunstctl history | jq .data[][].urls.data --raw-output | grep ftp:// | tail -1)

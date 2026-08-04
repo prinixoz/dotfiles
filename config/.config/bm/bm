@@ -1,0 +1,144 @@
+#basic                          |                                                                                       |
+00                              | about:newtab                                                                          | librewolf -P default --new-window
+01                              | http://localhost:2000/youtube.com/subscriptions                                       | librewolf -P default
+searx                           | https://searx.be/                                                                     |
+wiby                            | https://wiby.me/                                                                      |
+yandex                          | https://yandex.com                                                                    |
+startpage.com                   | https://www.startpage.com/                                                            |
+activity watch                  | http://localhost:5600/#/timeline                                                      | surf
+alternativeto.net               | alternativeto.net                                                                     |
+opensourcealternative           | https://www.opensourcealternative.to/                                                 |
+selfi                           | https://space.crunchlabs.com/selfie/KZiONdC                                           |
+
+
+################################################### COLLEGE ###################################################################################################
+result                          | https://arkajainuniversity.ac.in/academics/notice/result/                             |
+neptl                           | https://onlinecourses.nptel.ac.in/e-learning/course/noc26_mg129?unitId=25             | librewolf -P google
+
+################################################### JAPANESE ##################################################################################################
+jlpt practice                   | https://www.japanesejlpt.com/learn-japanese/katakana-practice/                        |
+### tracker                     |                                                                                       |
+habit tracker                   | https://www.lifeofdiscipline.com/my-habits                                            | librewolf -P trackers
+todoist                         | https://app.todoist.com/app/                                                          | librewolf -P trackers
+money                           | https://docs.google.com/spreadsheets/d/1YOTBs1uNbQ7GLrWTylaTyxh04IZjNie7RFBoOn8TY_w   | librewolf -P google
+
+### Skill                       |                                                                                       |
+100x                            | https://app.100xdevs.com/courses/3/                                                   | librewolf -P developer
+harkirat                        | https://harkirat.classx.co.in/new-courses/24/content?activeTab=Content                | librewolf -P developer
+typingclub                      | https://www.edclub.com/sportal/                                                       | librewolf -P developer
+monkeytype                      | https://monkeytype.com/                                                               | librewolf -P developer
+keybr                           | https://www.keybr.com/                                                                | librewolf -P developer
+
+japtype                         | https://prinixoz.github.io/japtype/                                                   |
+coursera                        | https://www.coursera.org/my-purchases/financial-aid                                   | librewolf -P google
+developerhare                   | https://www.skillshare.com/                                                           | librewolf -P skills
+udemy                           | https://www.udemy.com/course/100-days-of-python/learn/                                | librewolf -P google
+
+## Google and Mail :(           |                                                                                       |
+priyanshu.sharma1207@gmail.com  | https://mail.google.com/mail/u/0/#inbox                                               | librewolf -P google
+home                            | https://home.google.com/u/0/                                                          | librewolf -P google
+groww                           | https://groww.in/                                                                     | librewolf -P google
+prinixoz@gmail.com              | https://mail.google.com/mail/u/1                                                      | librewolf -P google
+tasks                           | https://tasks.google.com/u/1                                                          | librewolf -P google
+drive                           | drive.google.com                                                                      | librewolf -P google
+#### ProtonMail :)              |                                                                                       |
+aliasoz - Protonmail            | https://mail.proton.me/u/0/inbox                                                      | librewolf -P proton
+moon.prick - Protonmail         | https://mail.proton.me/u/1/inbox                                                      | librewolf -P proton
+prinixoz - Protonmail           | https://mail.proton.me/u/2/inbox                                                      | librewolf -P proton
+simplelogin                     | https://app.simplelogin.io/dashboard/                                                 | librewolf -P proton
+### Chatbots                    |                                                                                       |
+chatgpt                         | https://chatgpt.com/?temporary-chat=true                                              | librewolf -P google
+duckai                          | https://duck.ai                                                                       |
+deepseek                        | https://chat.deepseek.com/                                                            | librewolf -P google
+gemini                          | http://gemini.google.com/u/0/                                                         | librewolf -P google
+notebooklm                      | https://notebooklm.google.com/                                                        | librewolf -P google
+## Shopping                     |                                                                                       |
+amazon                          | https://amazon.in/                                                                    | librewolf -P shopping
+flipkart                        | https://flipkart.com/                                                                 | librewolf -P shopping
+beminimalist                    | https://beminimalist.co/                                                              | librewolf -P shopping
+blinkit                         | https://blinkit.com/                                                                  | librewolf -P shopping
+amul                            | https://shop.amul.com/en/browse/protein                                               | librewolf -P shopping
+bigbasket                       | http://bigbasket.com/                                                                 | librewolf -P shopping
+zepto                           | https://www.zeptonow.com/                                                             | librewolf -P shopping
+eatsure                         | https://www.eatsure.com/                                                              | librewolf -P shopping
+zomato                          | https://www.zomato.com/                                                               | librewolf -P shopping
+instamart                       | https://www.swiggy.com/instamart                                                      | librewolf -P shopping
+swiggy                          | https://www.swiggy.com/restaurants                                                      | librewolf -P shopping
+etsy                            | etsy.com/                                                                             |
+### Games                       |                                                                                       |
+schulte                         | https://drafterleo.github.io/schulte/                                                 |
+breating                        | https://zenmix.io/breathing-timer/                                                    |
+chess                           | https://chess.com/                                                                    | librewolf -P typing
+### Torrent                     |                                                                                       |
+
+### DATA STRUCTURE AND ALGORITHMS
+notion                          | https://notion.so/                                                                    | librewolf -P developer
+github                          | https://github.com/                                                                   | librewolf -P developer
+leetcode                        | https://leetcode.com/                                                                 | librewolf -P developer
+neetcode                        | https://neetcode.io/roadmap                                                           | librewolf -P developer
+codewars                        | https://www.codewars.com/                                                             | librewolf -P developer
+roadmap                         | https://roadmap.sh/                                                                   | librewolf -P developer
+yt                              | https://youtube.com/?theme=dark                                                       | librewolf -P developer
+
+### Social                      |                                                                                       |
+whatsapp                        | https://web.whatsapp.com/                                                             | librewolf -P meta
+reddit                          | https://reddit.com/                                                                   | librewolf -P social
+twitter                         | https://x.com/                                                                        | librewolf -P reddit
+pintrest                        | https://pintrest.com/                                                                 | librewolf -P social
+linkedin                        | https://linkedin.com/                                                                 | librewolf -P google
+
+########################################################       MEDIA     #####################################################################
+moctale                         | https://moctale.in/                                                                   | librewolf -P media
+anilist                         | https://anilist.co/                                                                   | librewolf -P media
+anichart                        | https://anichart.net/                                                                 | librewolf -P media
+
+### PIRACY
+nyaa                            | https://nyaa.si/                                                                      |
+subsplease                      | https://subsplease.org/                                                               |
+thepiratebay                    | https://thepiratebay.org/index.html                                                   | librewolf -P default-null
+hacknation                      | https://hacksnation.com/                                                              |
+1337x                           | https://1337x.to/                                                                     | librewolf -P default-null
+monochrome                      | https://monochrome.tf/                                                                | librewolf -P default
+
+### WEEB                        |                                                                                       |
+jjk                             | https://ww5.readjujutsukaisen.com/manga/jujutsu-kaisen-modulo-spoilers-raw/           |
+kayoanime                       | https://kayoanime.com/                                                                | librewolf -P google 
+nekobt                          | https://nekobt.to/                   
+anikai                          | https://anikai.to/
+
+### Docs                        |                                                                                       |
+archwiki                        | https://wiki.archlinux.org                                                            |
+bashwiki                        | https://wiki.bash-hackers.org                                                         |
+rclone                          | https://rclone.org                                                                    |
+linux docs                      | https://linux.die.net                                                                 |
+linuxjourney                    | https://linuxjourney.com                                                              |
+libredirect                     | https://libredirect.github.io                                                         |
+wikiversity                     | https://en.wikiversity.org                                                            |
+ffmpeg docs                     | https://amiaopensource.github.io/ffmprovisr                                           |
+c lang                          | https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html                           |
+## Others                       |                                                                                       |
+virustotal                      | https://www.virustotal.com/gui/home/upload                                            |
+file upload                     | https://file.swurl.xyz/                                                               |
+meet                            | https://meet.google.com/zxb-wbxo-yma                                                  | brave --profile-directory="prinixoz"
+timer                           | https://www.bigtimer.net/?minutes=3                                                   | brave --profile-directory="prinixoz"
+rating sheet                    | https://docs.google.com/spreadsheets/d/15eseC-TvbG0RCLAfcW1uPyYiG60EKDEM6MNJKmM6gp0/  | brave --profile-directory="prinixoz"
+mit                             | file:///home/user/Downloads/6.0001-fall-2016/video_galleries/lecture-videos/index.html|
+
+## Server                       
+yt-local                        | http://localhost:2000                                                                 |
+radarr movies                   | http://laptop:7878                                                                    |
+sonarr series                   | http://laptop:8989                                                                    |
+prowlarr                        | http://laptop:9696                                                                    |
+synthing                        | http://localhost:8384                                                                 |
+qbittorrent                     | http://localhost:8080                                                                    |
+jellyfin                        | http://laptop:8096/                                                                   |
+
+# Courses
+### free courses list
+free harvard courses list       | https://pll.harvard.edu/catalog/free                                                  |
+free harvard course list for it | https://www.classcentral.com/report/harvard-cs50-guide/                               |
+tech giants free certificates   | https://www.classcentral.com/report/big-tech-free-courses/                            |
+
+# Data
+#@Internship
+internia                        |https://internia.io/                                                                   |

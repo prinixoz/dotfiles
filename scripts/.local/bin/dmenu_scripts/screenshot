@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# 1. Select the screenshot target (Screen or Select)
+option=$1
+[ -z "$option" ] && option=$(printf "Select\nScreen" | dmenu -p "Capture:" | tr '[:upper:]' '[:lower:]')
+[ -z "$option" ] && exit 1
+
+# Create a temporary file to hold the screenshot initially
+tmp_img=$(mktemp /tmp/screenshot.XXXXXX.png)
+
+case "$option" in
+    screen) 
+        grim "$tmp_img"
+        ;;
+    select|*) 
+        # If slurp is cancelled (Esc), exit without proceeding
+        geometry=$(slurp) || { rm "$tmp_img"; exit 1; }
+        grim -g "$geometry" "$tmp_img"
+        ;;
+esac
+
+# 2. Select the action (Copy or Save)
+type=$(printf "Copy\nSave" | dmenu -p "Action:" | tr '[:upper:]' '[:lower:]')
+
+case "$type" in
+    save) 
+        dir="/mnt/PS/Picture/Sreenshot"
+        [ -d "$dir" ] || mkdir -p "$dir"
+        
+        # Generate timestamp once to prevent filename mismatch
+        filename="Sreenshot $(date +'%d-%m-%Y %T').png"
+        filepath="$dir/$filename"
+        
+        mv "$tmp_img" "$filepath"
+        notify-send "Screenshot Saved" "Location: $filepath"
+        ;;
+    copy|*) 
+        wl-copy < "$tmp_img"
+        rm "$tmp_img"
+        notify-send "Screenshot" "Copied to clipboard"
+        ;;
+esac

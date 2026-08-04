@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>YouTube Watch Later (Custom)</title>
+    <description>A custom RSS feed for YouTube videos to watch later.</description>
+    <link>https://www.youtube.com/</link>
+    <lastBuildDate>Mon, 08 Dec 2025 12:00:00 +0000</lastBuildDate>
+
+    <!-- Example Item 1 -->
+    <item>
+      <title>Sample Video 1</title>
+      <link>https://www.youtube.com/watch?v=VIDEO_ID_1</link>
+      <description>A description for Video 1.</description>
+      <pubDate>Mon, 08 Dec 2025 11:30:00 +0000</pubDate>
+    </item>
+
+    <!-- Example Item 2 -->
+    <item>
+      <title>Sample Video 2</title>
+      <link>https://www.youtube.com/watch?v=VIDEO_ID_2</link>
+      <description>A description for Video 2.</description>
+      <pubDate>Mon, 08 Dec 2025 11:31:00 +0000</pubDate>
+    </item>
+
+  </channel>
+</rss>
+

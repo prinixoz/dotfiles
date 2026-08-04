@@ -1,0 +1,49 @@
+#!/bin/bash
+NOTESPATH="/mnt/PS/Notes/Notes/randomnotes"
+
+picker(){
+    CHOOOSENOTES=$(ls "$NOTESPATH" | dmenu)  
+    [ ! -f "$NOTESPATH/$CHOOOSENOTES" ] && exit
+    wl-copy < "$NOTESPATH/$CHOOOSENOTES"
+}
+
+create(){
+    FILENAME=$(echo "" | dmenu -p "filename: ")
+    # Safely check if filename is empty (e.g., user pressed Esc)
+    [ -z "$FILENAME" ] && exit
+    wl-paste > "$NOTESPATH/$FILENAME"
+}
+
+delete(){
+    CHOOOSENOTES=$(ls "$NOTESPATH" | dmenu)  
+    [ ! -f "$NOTESPATH/$CHOOOSENOTES" ] && exit
+    # Optional: Removed the wl-copy here so your clipboard isn't overwritten by trash
+    rm "$NOTESPATH/$CHOOOSENOTES"
+}
+
+edit(){
+    CHOOOSENOTES=$(ls "$NOTESPATH" | dmenu)  
+    kitty nvim "$NOTESPATH/$CHOOOSENOTES"
+}
+
+# Use "$1" instead of "$@" to capture the first command argument reliably
+COMMAND=$1
+
+# If no argument was provided, prompt with dmenu
+[ -z "$COMMAND" ] && COMMAND=$(printf "picker\ncreate\ndelete\nedit" | dmenu -p "Action: ")
+
+case "$COMMAND" in
+    picker) picker ;;
+    create) create ;;
+    delete) delete ;;
+    edit) edit ;;
+    help) 
+        printf "picker - for picking notes.\n"
+        printf "create - creating a note from clipboard content.\n"
+        printf "delete - deleting a note.\n"
+    ;;
+    *) 
+        printf "Not a valid command: %s\n" "$COMMAND"
+        exit 1
+    ;;
+esac

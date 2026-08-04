@@ -1,0 +1,22 @@
+#!/bin/bash
+
+list=$(dmenu_path)
+
+# Try dmenu
+cmd=$(printf "%s\n" "$list" | dmenu -nb "#0f0f0f" -i -l 8 -p "Choose :" 2>/dev/null)
+
+# If dmenu failed → fallback to fzf
+if [ $? -ne 0 ] || [ -z "$cmd" ]; then
+    cmd=$(printf "%s\n" "$list" | fzf --prompt="Choose > ")
+fi
+
+location=$(command -v "$cmd")
+
+if [ -n "$location" ]; then
+    # Use GUI terminal only if available
+    if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+        kitty nvim "$location"
+    else
+        nvim "$location"
+    fi
+fi

@@ -1,0 +1,206 @@
+# ============================================================================
+#  THE ULTIMATE LF ICON CONFIGURATION (Hyper-Complete & Refined)
+# ============================================================================
+
+# Core Unix File & Directory Types
+di 📁   # Directory
+fi 🗒️   # Regular file
+ln 🔗   # Symbolic link
+ex 🚀   # Executable binary
+or ❌   # Orphan / Broken symlink
+tw 👥   # Sticky and other-writable directory
+ow 🔓   # Other-writable directory
+st 📌   # Sticky bit directory
+pi 📟   # FIFO / Named pipe
+so 🔌   # Socket
+bd 💾   # Block device
+cd 🎛️   # Character device
+
+# Project Foundations & Exact Filenames
+README              📖
+README.md           📖
+LICENSE             ⚖️
+LICENSE.md          ⚖️
+CHANGELOG           📜
+CHANGELOG.md        📜
+Makefile            🏗️
+CMakeLists.txt      🏗️
+Rakefile            💎
+Procfile            🍇
+
+# Git & Version Control
+.git                🌿
+.gitignore          🚫
+.gitattributes      🌿
+.gitmodules         🌿
+*.patch             🩹
+*.diff              🩹
+
+# Docker, Cloud & Containerization
+Dockerfile          🐳
+.dockerignore       🐳
+docker-compose.yml  🚢
+docker-compose.yaml 🚢
+Jenkinsfile         🏗️
+Vagrantfile         📦
+
+# Web Development Ecosystem & Lockfiles
+package.json        📦
+package-lock.json   🔒
+yarn.lock           🔒
+pnpm-lock.yaml      🔒
+bun.lockb           🔒
+cargo.toml          🦀
+cargo.lock          🔒
+go.mod              🐹
+go.sum              🐹
+mix.exs             💧
+Gemfile             💎
+Gemfile.lock        🔒
+composer.json       🐘
+composer.lock       🔒
+
+# Configuration & Hidden Environment Files
+.env                🔑
+.env.local          🔑
+.env.production     🔑
+.env.example        📋
+*.conf              🛠️
+*.config            🛠️
+*.ini               🛠️
+*.toml              🧱
+*.yaml              ⚙️
+*.yml               ⚙️
+
+# Documents, Office & Logs
+*.txt               📝
+*.md                ✍️
+*.pdf               🎯
+*.doc               📄
+*.docx              💙
+*.xls               📄
+*.xlsx              💚
+*.ppt               📄
+*.pptx              🧡
+*.csv               📊
+*.tsv               📈
+*.epub              📖
+*.mobi              📖
+*.log               🪵
+
+# Programming Languages (Source & Scripts)
+*.py                🐍
+*.pyc               🐍
+*.js                🟨
+*.mjs               🟨
+*.cjs               🟨
+*.ts                🟦
+*.tsx               ⚛️
+*.jsx               ⚛️
+*.vue               💚
+*.svelte            🧡
+*.astro             🚀
+*.java              ☕
+*.class             ☕
+*.jar               ☕
+*.c                 🦾
+*.cpp               ⚙️
+*.h                 🔑
+*.hpp               🔑
+*.cs                💜
+*.rs                🦀
+*.go                🐹
+*.php               🐘
+*.rb                💎
+*.lua               🌙
+*.sh                🐚
+*.zsh               🐚
+*.bash              🐚
+*.bat               ⚡
+*.ps1               💙
+*.swift             🧡
+*.kt                🟪
+*.dart              🎯
+*.pl                🐪
+*.r                 📊
+*.scala             ❤️
+*.hs                ➿
+*.ex                💧
+*.exs               💧
+*.zig               ⚡
+*.nim               👑
+
+# Frontend & Design Assets
+*.html              🌐
+*.htm               🌐
+*.css               🎨
+*.scss              💅
+*.sass              💅
+*.less              💅
+*.json              📋
+*.xml               🏷️
+*.wasm              ⚡
+*.graphql           🕸️
+*.svg               📐
+*.fig               🎨
+
+# Raster Images & Media Graphics
+*.png               🖼️
+*.jpg               📸
+*.jpeg              📸
+*.gif               🎞️
+*.webp              🌐
+*.avif              🖼️
+*.ico               🎯
+*.bmp               🎨
+*.tiff              🖼️
+*.psd               🟦
+*.ai                🟧
+*.xd                🟪
+
+# Video formats
+*.mp4               🎬
+*.mkv               🎥
+*.avi               🎞️
+*.mov               🍏
+*.webm              🌐
+*.flv               📺
+*.wmv               📺
+
+# Audio formats
+*.mp3               🎵
+*.flac              🎧
+*.wav               📻
+*.ogg               🔮
+*.m4a               🎵
+*.aac               🎵
+*.opus              🎙️
+*.m3u8              📜
+
+# Databases
+*.sql               🗄️
+*.db                💾
+*.sqlite            🪶
+*.sqlite3           🪶
+
+# Archives & Disk Images
+*.zip               🗜️
+*.tar               📦
+*.gz                🗜️
+*.tgz               📦
+*.bz2               🗜️
+*.xz                🗜️
+*.7z                🤐
+*.rar               📦
+*.iso               💿
+*.dmg               🍏
+
+# Executables, System Packages & Security Keys
+*.exe               ⚙️
+*.msi               📦
+*.apk               🤖
+*.ipa               📱
+*.crt               🔒
+*.pem               🔒
+*.pub               🔑
+*.key               🔑

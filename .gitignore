@@ -1,0 +1,9 @@
+./config/.config/deluge/auth
+./config/.config/deluge/hostlist.conf
+.stfolder/
+.stversions/
+
+# Syncthing
+.stfolder/
+.stversions/
+*.sync-conflict-*

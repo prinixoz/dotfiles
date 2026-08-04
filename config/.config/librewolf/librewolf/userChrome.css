@@ -1,0 +1,185 @@
+/* ==UserStyle==
+@name         LibreWolf Strict Monochrome - Full Blackout Fix
+@description  Stripped monochrome theme that perfectly forces the search dropdown to pure black.
+==/UserStyle== */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* Force main interface frames to pure black background */
+#content,
+#appcontent,
+.browserContainer,
+browser {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}
+
+@-moz-document url("chrome://browser/content/browser.xhtml") {
+  
+  /* Black Top Bar */
+  #nav-bar {
+    background-color: #000000 !important;
+    background-image: none !important;
+  }
+
+  /* Force Search Bar and all dropdown suggestion wrappers to ABSOLUTE BLACK */
+  #urlbar,
+  #urlbar-background,
+  .urlbar-background,
+  #urlbar[focused] #urlbar-background,
+  #urlbar[open] #urlbar-background,
+  .urlbarView,
+  .urlbarView-body-outer,
+  .urlbarView-body-inner,
+  .urlbarView-body-container,
+  #urlbar-results {
+    background-color: #000000 !important;
+    background: #000000 !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    
+    /* Completely kill internal blue/gray theme tokens */
+    --toolbar-field-background: #000000 !important;
+    --toolbar-field-focus-background: #000000 !important;
+    --urlbar-popup-blur-background: #000000 !important;
+  }
+
+  /* Force all input text and drop-down texts to pure White */
+  #urlbar-input,
+  #urlbar-input::placeholder,
+  .urlbarView-row,
+  .urlbarView-title,
+  .urlbarView-url,
+  .urlbar-icon,
+  .search-one-offs-engine-button {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  /* Desaturate search engine branding icons to flat white/gray */
+  .urlbar-search-mode-indicator,
+  .urlbar-page-action,
+  #urlbar-engine-button,
+  .search-one-offs-engine-button,
+  .urlbarView-favicon {
+    filter: grayscale(100%) brightness(200%) !important;
+  }
+
+  /* Clean subtle gray highlight bar while typing instead of bright blue */
+  .urlbarView-row[selected] {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .urlbarView-row[selected] .urlbarView-title,
+  .urlbarView-row[selected] .urlbarView-url {
+    color: #ffffff !important;
+  }
+
+  /* Black out Vertical Sidebar Frame */
+  #sidebar-box,
+  #sidebar-main,
+  #sidebar,
+  #sidebar-header,
+  #sidebar-footer,
+  .sidebar-panel,
+  #tabbrowser-arrowscrollbox,
+  .vertical-tabs-container {
+    background-color: #000000 !important;
+    background: #000000 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* ==========================================
+     STRICT HOVER REVEALS (ALL BUTTONS HIDDEN)
+     ========================================== */
+
+  /* Hide top utility navigation elements by default */
+  #back-button, 
+  #forward-button, 
+  #reload-button,
+  #unified-extensions-button, 
+  #sidebar-button,
+  #alltabs-button, 
+  #PanelUI-menu-button {
+    opacity: 0 !important;
+    transition: opacity 0.2s ease-in-out !important;
+  }
+
+  /* Hide the custom side panel settings and all sidebar custom moz-buttons */
+  #sidebar-main moz-button,
+  #sidebar-footer,
+  .sidebar-footer-buttons {
+    opacity: 0 !important;
+    transition: opacity 0.2s ease-in-out !important;
+  }
+
+  /* Reveal top navigation elements cleanly on hover */
+  #back-button:hover, 
+  #forward-button:hover, 
+  #reload-button:hover,
+  #unified-extensions-button:hover, 
+  #sidebar-button:hover,
+  #alltabs-button:hover, 
+  #PanelUI-menu-button:hover {
+    opacity: 1 !important;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  /* Reveal side panel buttons on hover (Triggers on wrapper node to pierce shadow root) */
+  #sidebar-main moz-button:hover,
+  #sidebar-footer:hover,
+  .sidebar-footer-buttons:hover {
+    opacity: 1 !important;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  /* ==========================================
+     STRIP ALL COLOR FROM MENUS & POPUPS
+     ========================================== */
+  
+  #DownloadsPanel,
+  #allTabsMenu-allTabsPopup,
+  #unified-extensions-panel,
+  #customizationui-widget-panel,
+  #PermissionPopup,
+  #identity-popup,
+  panelview,
+  .panel-arrowcontent,
+  .panel-subviewbody,
+  arrowscrollbox,
+  menupopup,
+  menuitem,
+  .vertical-tabs-popup {
+    background-color: #000000 !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+
+  panel label, 
+  panel text,
+  panel description,
+  .toolbarbutton-text,
+  .subviewbutton,
+  .menu-text,
+  .menu-iconic-text {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+
+  .menu-iconic-icon,
+  .menu-right,
+  .subviewbutton-nav::after {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  .subviewbutton:hover,
+  menuitem:hover,
+  .widget-hover:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  
+}

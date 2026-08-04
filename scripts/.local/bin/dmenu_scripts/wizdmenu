@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# 1. Fetch available light IDs dynamically
+mapfile -t LIGHT_IDS < <(wizctl id | tail -n +2 | awk '{print $1}')
+NUM_LIGHTS=${#LIGHT_IDS[@]}
+
+if [ "$NUM_LIGHTS" -eq 0 ]; then
+    notify-send "Wiz Control" "No lights found!"
+    exit 1
+fi
+
+# 2. Define the 4 core actions
+ACTIONS=("ON" "OFF" "Brightness" "Scene")
+
+# 3. Build a clean menu without IDs.
+# We append unique trailing spaces to each column item so we can identify
+# which light column was clicked afterward, without showing numbers to you.
+MENU_ITEMS=""
+for id_idx in "${!LIGHT_IDS[@]}"; do
+    # Generate a string of unique spaces for this column index
+    spaces=$(printf '%*s' "$((id_idx + 1))" "")
+    for action in "${ACTIONS[@]}"; do
+        MENU_ITEMS+="${action}${spaces}\n"
+    done
+done
+
+# 4. Prompt the grid menu
+SELECTION=$(echo -ne "$MENU_ITEMS" | dmenu -l 4 -g "$NUM_LIGHTS" -p "Run Control:")
+
+# 5. Process the selection if it wasn't cancelled
+if [ ! -z "$SELECTION" ]; then
+    # Count the trailing spaces to determine which column (Light ID) was picked
+    # We strip all non-space characters to count the spaces
+    space_count=$(echo -n "$SELECTION" | tr -d -c ' ' | wc -c)
+    
+    # Map the space count back to the target Light ID array index
+    target_idx=$((space_count - 1))
+    target_id="${LIGHT_IDS[$target_idx]}"
+    
+    # Clean the action text by stripping trailing spaces
+    chosen_action=$(echo "$SELECTION" | xargs)
+
+    case "$chosen_action" in
+        "ON")
+            wizctl id "$target_id" on
+            ;;
+        "OFF")
+            wizctl id "$target_id" off
+            ;;
+        "Brightness")
+            brightness=$(seq 100 | dmenu -l 8 -p "Brightness (1-100): ")
+            if [ ! -z "$brightness" ]; then
+                wizctl id "$target_id" static 255 255 255 "$brightness"
+            fi
+            ;;
+        "Scene")
+            selected_scene=$(wizctl dynamic | dmenu -i -l 15 -p "Scene: ")
+            if [ ! -z "$selected_scene" ]; then
+                wizctl id "$target_id" dynamic "$selected_scene"
+            fi
+            ;;
+    esac
+fi

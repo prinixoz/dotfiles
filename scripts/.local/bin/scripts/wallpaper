@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -o pipefail
+
+export PATH="$HOME/.local/bin:/usr/bin:/bin"
+export XDG_RUNTIME_DIR=/run/user/1000
+export WAYLAND_DISPLAY=wayland-1
+export SWAYSOCK=/run/user/1000/sway-ipc.1000.841.sock
+
+WALLPAPER_PATH="/home/user/.cache/wallpaper.png"
+EDITED_WALLPAPER="/home/user/.cache/wallpaper_modified.png"
+
+# --- NEW: Check if the wallpaper was already updated today ---
+if [ -f "$EDITED_WALLPAPER" ]; then
+    LAST_MODIFIED=$(date -r "$EDITED_WALLPAPER" +%Y-%m-%d)
+    TODAY=$(date +%Y-%m-%d)
+    
+    if [ "$LAST_MODIFIED" = "$TODAY" ]; then
+        echo "Wallpaper was already generated today ($TODAY). Exiting."
+        exit 0
+    fi
+fi
+# ------------------------------------------------------------
+
+# 0. Kill ALL existing swaybg instances right at the start
+pkill -x swaybg 2>/dev/null || true
+
+# 1. Run your calendar generator
+if /home/user/.local/bin/scripts/lifecalendar; then
+    if [ -f "$WALLPAPER_PATH" ]; then
+        
+        # 2. Calculate dates and percentages
+        CURRENT_DAY=$(date +%j)
+        TOTAL_DAYS=$(date -d "Dec 31" +%j)
+        DAYS_LEFT=$((TOTAL_DAYS - CURRENT_DAY))
+        PERCENTAGE=$(awk "BEGIN {printf \"%.0f\", ($CURRENT_DAY / $TOTAL_DAYS) * 100}")
+        
+        # 3. Create the styled text using Pango markup
+        PANGO_TEXT="<span font='Hack 15' foreground='#d65d0e'>${DAYS_LEFT}d left</span><span font='hack 15' foreground='#666666'>·${PERCENTAGE}%</span>"
+        
+        # 4. Composite the text onto the image
+        magick "$WALLPAPER_PATH" \
+            \( -background none pango:"$PANGO_TEXT" \) \
+            -gravity South \
+            -geometry +0+40 \
+            -composite \
+            "$EDITED_WALLPAPER"
+        
+        # 5. Start swaybg in the background
+        swaybg -i "$EDITED_WALLPAPER" -m fill &
+        
+    else
+        echo "Error: Wallpaper image file not found at $WALLPAPER_PATH" >&2
+        exit 1
+    fi
+else
+    echo "Wallpaper generation failed" >&2
+    exit 1
+fi

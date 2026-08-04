@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+
+# ====================================================
+# CONFIG
+# ====================================================
+
+# Dates
+START="2025-12-25"
+END="2026-12-25"
+
+# Canvas
+W=1920
+H=1080
+
+# Grid style
+SPACING_X=60
+SPACING_Y=60
+R=15
+
+# Colors
+BG="#000000"
+FG="#e6e6e6"
+FUTURE="#2a2a2a"
+HIGHLIGHT="#f06a3e"
+
+# Text settings
+ENABLE_TEXT=false
+TEXT_ALIGN="left"   # right | left | center
+TEXT_SIZE=28
+FONT="Hack-Nerd-Font-Regular"
+
+# Text content toggles
+SHOW_DAYS_LEFT=true
+SHOW_PERCENT=true
+
+# Output config
+OUTPUT_DIR="/home/user/.cache/"
+OUTPUT_NAME="wallpaper.png"
+
+# ====================================================
+# TIME CALC
+# ====================================================
+
+start_ts=$(date -d "$START" +%s)
+end_ts=$(date -d "$END" +%s)
+today_ts=$(date +%s)
+
+days=$(( (end_ts - start_ts) / 86400 + 1 ))
+today_index=$(( (today_ts - start_ts) / 86400 ))
+
+if (( today_index < 0 || today_index >= days )); then
+  today_index=-1
+fi
+
+total_span=$(( end_ts - start_ts ))
+
+remaining=$(( (end_ts - today_ts) / 86400 ))
+((remaining < 0)) && remaining=0
+
+if (( total_span > 0 )); then
+  progress=$(( (today_ts - start_ts) * 100 / total_span ))
+else
+  progress=100
+fi
+
+((progress < 0)) && progress=0
+((progress > 100)) && progress=100
+
+# ====================================================
+# GRID
+# ====================================================
+
+isqrt() {
+  local n=$1 x=0
+  while (( x*x <= n )); do ((x++)); done
+  echo $((x-1))
+}
+
+tmp=$(( days * W / H ))
+COLS=$(isqrt "$tmp")
+((COLS < 1)) && COLS=1
+ROWS=$(( (days + COLS - 1) / COLS ))
+
+grid_w=$(( (COLS - 1) * SPACING_X + 2*R ))
+grid_h=$(( (ROWS - 1) * SPACING_Y + 2*R ))
+
+start_x=$(( (W - grid_w) / 2 + R ))
+start_y=$(( (H - grid_h) / 2 + R ))
+
+# ====================================================
+# DOTS
+# ====================================================
+
+args=()
+count=0
+
+for ((i=0; i<ROWS; i++)); do
+  for ((j=0; j<COLS; j++)); do
+    ((count >= days)) && break 2
+
+    x=$(( start_x + j * SPACING_X ))
+    y=$(( start_y + i * SPACING_Y ))
+
+    if (( count < today_index )); then
+      color=$FG
+    elif (( count == today_index )); then
+      color=$HIGHLIGHT
+    else
+      color=$FUTURE
+    fi
+
+    args+=("-fill" "$color" "-stroke" "none" \
+           "-draw" "circle $x,$y $((x+R)),$y")
+
+    ((count++))
+  done
+done
+
+# ====================================================
+# TEXT BUILD
+# ====================================================
+
+text_args=()
+
+if [ "$ENABLE_TEXT" = true ]; then
+
+  case "$TEXT_ALIGN" in
+    right)   gravity="southeast" ;;
+    left)    gravity="southwest" ;;
+    center)  gravity="south" ;;
+    *)       gravity="southeast" ;;
+  esac
+
+  if [ "$SHOW_PERCENT" = true ]; then
+    percent_text="${progress}%"
+  else
+    percent_text=""
+  fi
+
+  if [ "$SHOW_DAYS_LEFT" = true ]; then
+    days_text="${remaining}d left"
+  else
+    days_text=""
+  fi
+
+  if [ -n "$percent_text" ]; then
+    width=$(magick -font "$FONT" -pointsize $TEXT_SIZE label:"$percent_text" -format "%w" info:)
+  else
+    width=0
+  fi
+
+  gap=20
+  offset_days=$((40 + width + gap))
+
+  text_args=(
+    -gravity "$gravity"
+    -font "$FONT"
+    -pointsize "$TEXT_SIZE"
+  )
+
+  if [ -n "$percent_text" ]; then
+    text_args+=(-fill "white" -annotate +40+40 "$percent_text")
+  fi
+
+  if [ -n "$days_text" ]; then
+    text_args+=(-fill "$HIGHLIGHT" -annotate +${offset_days}+40 "$days_text")
+  fi
+fi
+
+# ====================================================
+# RENDER
+# ====================================================
+
+mkdir -p "$OUTPUT_DIR"
+OUTPUT_PATH="${OUTPUT_DIR}/${OUTPUT_NAME}"
+
+magick -size ${W}x${H} xc:${BG} "${args[@]}" "${text_args[@]}" "$OUTPUT_PATH"

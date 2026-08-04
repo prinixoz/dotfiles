@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Real-time webcam recorder with zero-lag preview + live mic VU meter (Arch + Sway + PipeWire)
+# by Priyanshu Sharma x ChatGPT 🤝
+
+OUT_FILE="${1:-recording_$(date +%Y%m%d_%H%M%S).mp4}"
+VIDEO_DEV="/dev/video0"
+AUDIO_DEV="default"
+RESOLUTION="1280x720"
+FRAMERATE=30
+
+echo "[+] Starting REAL-TIME recording (no lag, VU meter on)"
+echo "[+] Output file: $OUT_FILE"
+echo
+
+ffmpeg \
+  -hide_banner \
+  -thread_queue_size 512 \
+  -f v4l2 -framerate "$FRAMERATE" -video_size "$RESOLUTION" -fflags nobuffer -flags low_delay -probesize 32 -avioflags direct \
+  -i "$VIDEO_DEV" \
+  -f pulse -i "$AUDIO_DEV" \
+  -filter_complex "\
+    [0:v]format=yuv420p,split=2[vid][preview]; \
+    [1:a]showvolume=w=200:h=20:dm=1:t=1:c=0x00ff00[aud_meter]" \
+  -map "[vid]" -map 1:a -c:v libx264 -preset ultrafast -tune zerolatency -crf 23 -c:a aac -b:a 128k -f mp4 "$OUT_FILE" \
+  -map "[preview]" -map "[aud_meter]" -f nut - | \
+  ffplay -flags low_delay -fflags nobuffer -sync ext -framedrop \
+         -window_title "🎥 Live Preview (q to stop)" -x 640 -y 480 - &
+  
+FF_PID=$!
+wait $FF_PID
+
+echo
+echo "[+] Recording stopped. Saved to $OUT_FILE"
+

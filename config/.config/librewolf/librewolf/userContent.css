@@ -1,0 +1,13 @@
+/* ==UserStyle==
+@name         LibreWolf Core Viewport Blackout
+@description  Overrolls the web content sandbox to force blank pages and new tabs to pure black.
+==/UserStyle== */
+
+/* Target the core blank document roots directly inside the sandbox engine */
+@-moz-document url("about:blank"), url("about:newtab"), url("about:home"), url-prefix("about:neterror") {
+  html, body, #background, #appcontent {
+    background-color: #000000 !important;
+    background: #000000 !important;
+  }
+}
+

@@ -1,0 +1,26 @@
+#   ___
+#  |  _ \  _ __ (_) _ __  (_)__  __ ___   ___
+#  | |_) || '__|| || '_ \ | |\ \/ // _ \ / __|
+#  |  __/ | |   | || | | || | >  <| (_) |\__ \
+#  |_|    |_|   |_||_| |_||_|/_/\_\\___/ |___/
+#
+#  Github :: https://github.com/prinixos
+
+source ~/.config/shell/export
+source ~/.config/shell/alias
+
+PS1='[\u@\h \W]\$ '
+[[ $- != *i* ]] && return
+bind "set completion-ignore-case on"
+complete -cf doas
+
+export HISTCONTROL=ignoreboth:erasedups
+
+#starship prompt
+#eval "$(starship init bash)"
+
+## login
+if [[ "$(tty)" = "/dev/tty1" ]]; then
+     ~/.config/X11/xinitrc
+fi
+

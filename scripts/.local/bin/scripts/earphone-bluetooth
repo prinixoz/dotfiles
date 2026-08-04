@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# bluetooth-toggle.sh
+# Toggle Bluetooth connection for a specific device
+
+DEVICE="88:0E:85:F8:7A:BD"
+
+# Check if device is connected
+if bluetoothctl info "$DEVICE" | grep -q "Connected: yes"; then
+    echo "disconnecting from $DEVICE ..."
+    bluetoothctl disconnect "$DEVICE"
+else
+    echo "connecting to $DEVICE ..."
+    bluetoothctl connect "$DEVICE"
+fi

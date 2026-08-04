@@ -1,0 +1,10 @@
+[Unit]
+Description=Hints daemon
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+ExecStart=/home/user/.local/share/../bin/hintsd
+Restart=always
+RestartSec=1s
+[Install]
+WantedBy=default.target

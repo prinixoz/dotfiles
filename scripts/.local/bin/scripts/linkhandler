@@ -1,0 +1,23 @@
+#!/bin/sh
+[ $1 ] && url="$1" || url="$(xclip -o)"
+case "$url" in
+    *torrent)
+        del=$( pgrep "deluged" )
+        if [ $del ] ; then
+            deluge-console add "$url" > /dev/null  2>&1 &
+        else
+            deluged > /dev/null  2>&1 &
+            deluge-console add "$url" > /dev/null  2>&1 &
+        fi;;
+	*mkv|*webm|*mp4|*youtube.com/watch*|*vid.puffyan.us/watch*|*youtube.com/playlist*|*youtu.be*|*piped.kavin.rocks*|*hooktube.com*|*bitchute.com*|*videos.lukesmith.xyz*|*videoproxy*|*mp3|*flac|*opus|*mp3?source*|*youtube*)
+        setsid -f mpv-yt "$url" >/dev/null 2>&1 ;;
+	*png|*jpg|*jpe|*jpeg|*imageproxy*|*gif|*nitter.snopyta.org/pic*)
+		curl -sL "$url" > "/tmp/nsxiv-tmpimg" && nsxiv -a "/tmp/nsxiv-tmpimg"  >/dev/null 2>&1 & ;;
+	*pdf|*cbz|*cbr)
+		curl -sL "$url" > "/tmp/$(echo "$1" | sed "s/.*\///;s/%20/ /g")" && zathura "/tmp/$(echo "$1" | sed "s/.*\///;s/%20/ /g")"  >/dev/null 2>&1 & ;;
+	*)
+        [ -f /tmp/blog.html ] && rm /tmp/blog.html
+        readable -q "$url" -s ~/.config/newsboat/style.css -o /tmp/blog.html && 
+            setsid -f surf -s /tmp/blog.html >/dev/null 2>&1 & ;;
+esac
+

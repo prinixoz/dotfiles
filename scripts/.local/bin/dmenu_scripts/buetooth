@@ -1,0 +1,24 @@
+#!/bin/sh
+bluetoothctl connect 88:0E:85:F8:7A:BD
+
+
+# device_amount=$(bluetoothctl devices | wc -l)
+#
+# if [[ $device_amount = 1 ]]; then
+# 	MAC=$(bluetoothctl devices | awk {'print $2'})
+# 		[ -z $MAC ] && MAC=NoDeviceFound # Prevents accidental disconnect error
+# else
+# 	select=$(bluetoothctl devices | awk {'print $NF'}  | $@ )
+# 	MAC=$(bluetoothctl devices | grep $select | awk {'print $2'}) 
+# 		[ -z $MAC ] && MAC=NoDeviceFound # Prevents accidental disconnect error
+# fi
+#
+# connect=$(bluetoothctl info $MAC | grep Connected: | awk '{print $2}')
+# if [[ $connect = no ]]; then 
+# 	notify-send "Attempting to connect to $select"
+# 	bluetoothctl connect $MAC || notify-send "Failed to Connect"
+# elif [[ $connect = yes ]]; then
+# 	notify-send "Attempting to disconnect $select"
+# 	bluetoothctl disconnect $MAC 
+# 	notify-send "Disconnected $select"
+# fi

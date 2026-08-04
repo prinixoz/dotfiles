@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# 1. Define your base folder paths here (one per line)
+BASE_FOLDERS=(
+    "/mnt/PS/Media/Youtube/"
+    "/mnt/PS/Media/Anime/"
+    "/mnt/PS/Media/Movies/"
+    "/mnt/PS/Media/Series/"
+)
+
+# 2. Recursively find all subfolders within the base directories
+# -mindepth 0 includes the base folder itself as an option
+# -type d looks only for directories
+ALL_FOLDERS=()
+for base in "${BASE_FOLDERS[@]}"; do
+    # Expand tilde (~) if present in the base path
+    base_expanded="${base/#\~/$HOME}"
+    
+    if [ -d "$base_expanded" ]; then
+        # Find all subdirectories and read them into an array
+        while IFS= read -r subfolder; do
+            ALL_FOLDERS+=("$subfolder")
+        done < <(find "$base_expanded" -mindepth 0 -type d 2>/dev/null)
+    fi
+done
+
+# 3. Convert the array into a newline-separated string for dmenu
+CHOICE=$(printf "%s\n" "${ALL_FOLDERS[@]}" | dmenu -l 15 -p "Select folder to play:")
+
+# 4. Check if the user actually selected something or just pressed ESC
+if [ -n "$CHOICE" ]; then
+    if [ -d "$CHOICE" ]; then
+        # Opens mpv to play the chosen folder
+        mpv "$CHOICE"
+    else
+        notify-send "Error" "Directory does not exist: $CHOICE"
+    fi
+fi

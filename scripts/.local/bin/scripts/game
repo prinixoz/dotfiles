@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+LIBRARY="/mnt/PS/SteamLibrary/steamapps"
+
+declare -A games
+
+while IFS= read -r manifest; do
+    appid=$(basename "$manifest" .acf | cut -d_ -f2)
+    
+    # Extract name and force it to lowercase using tr
+    name=$(awk -F'"' '/"name"/ {print $4; exit}' "$manifest" | tr '[:upper:]' '[:lower:]')
+
+    [ -n "$name" ] && games["$name"]="$appid"
+done < <(find "$LIBRARY" -name 'appmanifest_*.acf')
+
+selected=$(
+    printf '%s\n' "${!games[@]}" |
+    sort |
+    dmenu -i -l 20 -p "Steam"
+)
+
+[ -z "$selected" ] && exit 0
+
+# Start Steam silently if it isn't running
+if ! pgrep -x steam >/dev/null; then
+    steam -silent >/dev/null 2>&1 &
+    sleep 5
+fi
+
+steam -applaunch "${games[$selected]}" >/dev/null 2>&1 &

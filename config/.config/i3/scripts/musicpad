@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if swaymsg -t get_tree | grep -q '"musicpad"'; then
+    swaymsg '[con_mark="musicpad"] scratchpad show'
+else
+    alacritty --title rmpc -e rmpc
+fi

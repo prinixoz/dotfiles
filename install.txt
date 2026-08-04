@@ -1,0 +1,1 @@
+sudo pacman -Rns freetube mpv-mpris micro kitty htop-vim pup repgrep edir entr linux-zen-docs onlyoffice-bin obsidian torbrowser-launcher gparted

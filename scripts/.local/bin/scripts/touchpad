@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Check the status of the touchpad using libinput
+status=$(swaymsg -t get_inputs -r | jq '.[] | select(.type == "pointer" and .identifier | test("touchpad")) | .enabled')
+
+# If the touchpad is enabled, disable it; if disabled, enable it
+if [ "$status" = "true" ]; then
+    swaymsg input "*" touchpad disable
+else
+    swaymsg input "*" touchpad enable
+fi
+

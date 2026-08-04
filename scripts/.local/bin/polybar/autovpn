@@ -1,0 +1,13 @@
+#!/bin/sh
+
+vpn="$(nmcli -t -f name,type connection show --order name --active 2>/dev/null |\
+	grep vpn |\
+	head -1 |\
+	cut -d ':' -f 1)" # Check the name of the vpn you are connected to
+
+if [ ! "$vpn" ]; then # if you are not connected to a vpn then wait for 5 seconds
+    sleep 5	# Done this because sometimes the script automatically change the vpn when i am manually changing it
+    if [ ! "$vpn" ]; then
+        ~/.local/bin/vpn.sh  # Connect to the vpn
+    fi
+fi

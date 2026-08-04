@@ -1,0 +1,118 @@
+#!/bin/sh
+# lock.sh
+
+. ~/.config/mac
+
+LOCKFILE="/tmp/swaylock-script.lock"
+
+# Don't start another lock if already locked
+if pgrep -x swaylock >/dev/null 2>&1; then
+    echo "swaylock already running, skipping new lock"
+    exit 0
+fi
+
+# Prevent race conditions
+if [ -f "$LOCKFILE" ]; then
+    echo "Script triggered too quickly (race condition), aborting."
+    exit 0
+fi
+
+touch "$LOCKFILE"
+
+PAUSE_MEDIA=0
+SUSPEND_AFTER=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -v)
+            PAUSE_MEDIA=1
+            shift
+            ;;
+        -s)
+            shift
+
+            [ $# -gt 0 ] || {
+                echo "Error: -s requires a number of seconds."
+                rm -f "$LOCKFILE"
+                exit 2
+            }
+
+            case "$1" in
+                ''|*[!0-9]*)
+                    echo "Error: '$1' is not a valid number."
+                    rm -f "$LOCKFILE"
+                    exit 2
+                    ;;
+            esac
+
+            SUSPEND_AFTER="$1"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            rm -f "$LOCKFILE"
+            exit 2
+            ;;
+    esac
+done
+
+# Pause media if requested
+if [ "$PAUSE_MEDIA" -eq 1 ]; then
+    playerctl -a pause >/dev/null 2>&1 &
+    mpc pause >/dev/null 2>&1 &
+fi
+
+# Turn off WiZ light
+echo '{"id":1,"method":"setState","params":{"state":false}}' |
+    nc -u -w 1 "$WIZ_IP" 38899 &
+
+# Start swaylock
+swaylock &
+LOCK_PID=$!
+
+# Optional suspend timer
+if [ -n "$SUSPEND_AFTER" ]; then
+    (
+        while kill -0 "$LOCK_PID" 2>/dev/null; do
+            sleep "$SUSPEND_AFTER"
+
+            if kill -0 "$LOCK_PID" 2>/dev/null; then
+                echo "Still locked after $SUSPEND_AFTER seconds. Suspending..."
+                systemctl suspend
+            fi
+        done
+    ) &
+    SUSPEND_TIMER_PID=$!
+fi
+
+# Wait until unlocked
+wait "$LOCK_PID"
+
+# Cancel timer
+if [ -n "$SUSPEND_AFTER" ]; then
+    kill "$SUSPEND_TIMER_PID" 2>/dev/null
+    wait "$SUSPEND_TIMER_PID" 2>/dev/null
+fi
+
+# Turn light back on once the network is available
+(
+    GATEWAY_IP="192.168.29.1"
+    COUNTER=0
+
+    while ! ping -c 1 -W 1 "$GATEWAY_IP" >/dev/null 2>&1; do
+        COUNTER=$((COUNTER + 1))
+
+        if [ "$COUNTER" -ge 100 ]; then
+            echo "Network timeout reached."
+            break
+        fi
+
+        sleep 0.1
+    done
+
+    echo '{"id":1,"method":"setState","params":{"state":true}}' |
+        nc -u -w 1 "$WIZ_IP" 38899
+
+    sleep 2
+    rm -f "$LOCKFILE"
+) &

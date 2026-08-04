@@ -1,0 +1,6 @@
+// 1. Allow your specific files
+!/playlists.db
+!/profiles.db
+
+// 3. Ignore everything else
+*

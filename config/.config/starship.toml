@@ -1,0 +1,4 @@
+[ssh]
+format = "ssh: [$user@$hostname](yellow) "
+disabled = false
+

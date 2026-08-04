@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BOOKMARK_FILE="${HOME}/.config/bm/bm"
+FALLBACK_BROWSER="librewolf"
+
+# Ensure bookmark file exists
+[[ -f "$BOOKMARK_FILE" ]] || {
+    echo "Bookmark file not found: $BOOKMARK_FILE"
+    exit 1
+}
+
+# Build menu
+selected=$(
+    grep -vE '^\s*#|^\s*$' "$BOOKMARK_FILE" |
+    sort |
+    column -ts "|" -o "$(printf "%40s")|" |
+    "$@"
+)
+
+# Exit if nothing selected
+[[ -z "${selected:-}" ]] && exit 0
+
+# Parse fields
+IFS='|' read -r title link command <<< "$selected"
+
+# Trim whitespace
+trim() {
+    xargs <<< "$1"
+}
+
+title=$(trim "$title")
+link=$(trim "$link")
+command=$(trim "$command")
+
+# Validate URL exists
+[[ -n "$link" ]] || {
+    echo "Invalid bookmark entry."
+    exit 1
+}
+
+# Split command safely into array
+read -ra cmd <<< "$command"
+
+# Use fallback if command missing
+if [[ ${#cmd[@]} -eq 0 ]] || ! command -v "${cmd[0]}" >/dev/null 2>&1; then
+    echo "Fallback -> $FALLBACK_BROWSER"
+    exec "$FALLBACK_BROWSER" "$link"
+fi
+
+echo "Launching: ${cmd[*]} $link"
+
+# Safe execution without eval
+exec "${cmd[@]}" "$link"

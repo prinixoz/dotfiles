@@ -1,0 +1,51 @@
+#!/bin/bash
+files(){
+    cd /mnt/PS/Sync/
+
+    rclone -P sync . "drive:Personal" \
+        --filter "- .*/" \
+        --filter "- .*"
+
+    cd -
+}
+
+
+# I should add something for my notes  ;;
+
+config(){
+    cd ~/.local/dotfiles/
+    git add .
+    git commit -m $(date "+%D|%T")
+    git push origin main
+    cd -
+}
+
+all(){
+    config
+    files 
+    #update
+}
+
+
+help_file(){
+    echo \
+        "    -f files ( gdrive)
+    -c config
+    -u update
+    --help, -h help "
+}
+
+case $1 in 
+    -f)
+        files;;
+    -c)
+        config;;
+    -u)
+        update;;
+    -h)
+        help_file;;
+    --help)
+        help_file;;
+    *)
+        all;;
+esac

@@ -1,0 +1,3 @@
+#!/bin/bash
+path=$(find | dmenu -nb "#0f0f0f" -i -l 25 -p "Choose :")
+dragon-drop -x $path

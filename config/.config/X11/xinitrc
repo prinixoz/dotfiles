@@ -1,0 +1,18 @@
+#!/bin/sh
+
+AMD_CARD=$(
+  for card in /sys/class/drm/card[0-9]/; do
+    vendor=$(cat "$card/device/vendor")
+    if [ "$vendor" = "0x1002" ]; then
+      basename "$card"
+      break
+    fi
+  done
+)
+
+export WLR_DRM_DEVICES="/dev/dri/$AMD_CARD"
+
+dbus-update-activation-environment --systemd \
+WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway SWAYSOCK DISPLAY
+
+exec sway &>> ~/.cache/sway.log

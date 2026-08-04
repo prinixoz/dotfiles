@@ -1,0 +1,10 @@
+#!/bin/sh
+xss-lock -- slock &
+
+#shutdown -P 20:00 &
+#time=$(date '+%H')
+#if [ "$time" -gt 20 ] || [ "$time" -lt 5 ];then
+#   shutdown now 
+#fi
+
+exec i3

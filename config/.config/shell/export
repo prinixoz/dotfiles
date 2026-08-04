@@ -1,0 +1,152 @@
+# =========================================================
+# XDG BASE DIRECTORIES
+# =========================================================
+
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# =========================================================
+# LOCALE
+# =========================================================
+
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_GB.UTF-8"
+
+# =========================================================
+# DEFAULT PROGRAMS
+# =========================================================
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+export MANPAGER='nvim +Man!'
+# Force icons globally for eza
+export EZA_ICONS_AUTO=true
+
+export TERMINAL="alacritty"
+export TERMCMD='alacritty -e'
+
+export BROWSER="librewolf.desktop"
+
+export TERM="xterm-256color"
+export SWAY_WALLPAPER="/home/user/.local/wallpaper_modified.png"
+
+# =========================================================
+# WAYLAND / SWAY
+# =========================================================
+
+export XDG_CURRENT_DESKTOP="sway"
+
+export QT_QPA_PLATFORM="wayland"
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_WEBRENDER=1
+
+export XKB_DEFAULT_OPTIONS="caps:swapescape"
+
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+
+# =========================================================
+# GPU / GRAPHICS
+# =========================================================
+
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+
+# =========================================================
+# DEVELOPMENT
+# =========================================================
+
+export CC="clang"
+
+export CFLAGS="-fsanitize=signed-integer-overflow \
+-fsanitize=undefined \
+-ggdb3 \
+-O0 \
+-std=c11 \
+-Wall \
+-Wextra \
+-Werror \
+-Wshadow \
+-Wno-sign-compare \
+-Wno-unused-parameter \
+-Wno-unused-variable"
+
+export LDLIBS="-lcrypt -lcs50 -lm"
+
+export RUST_BACKTRACE=1
+
+# =========================================================
+# XDG APP CONFIGS
+# =========================================================
+
+export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
+
+export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
+
+export ANDROID_HOME="$XDG_DATA_HOME/android"
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+
+export STARSHIP_CONFIG="$HOME/.starship/config.toml"
+
+export VIEB_DATAFOLDER="$XDG_DATA_HOME/Vieb"
+
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+export GOPATH="$XDG_DATA_HOME/go"
+
+export CABAL_CONFIG="$XDG_CONFIG_HOME/cabal/config"
+export CABAL_DIR="$XDG_CACHE_HOME/cabal"
+
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+
+export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
+
+export GTK3_RC_FILES="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+
+
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+export RXVT_SOCKET="$XDG_RUNTIME_DIR/urxvtd"
+
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+
+export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+
+export XORGCONFIG="$XDG_CONFIG_HOME/X11/xorg"
+
+# =========================================================
+# UI / THEMING
+# =========================================================
+
+export GLAMOUR_STYLE="dark"
+export MENU='dmenu -l 8 -p "Choose: "'
+
+# =========================================================
+# SHELL
+# =========================================================
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+export BASH_CONFIG_PATH="$XDG_CONFIG_HOME/bash/bashrc"
+
+# =========================================================
+# PATH
+# =========================================================
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export PATH="$PATH:$HOME/.local/bin/scripts"
+export PATH="$PATH:$HOME/.local/bin/polybar"
+export PATH="$PATH:$HOME/.local/bin/start"
+export PATH="$PATH:$HOME/.local/bin/dmenu_scripts"
+export PATH="$PATH:/usr/bin/Appimage"
+export PATH="$PATH:$HOME/.local/share/cargo/bin"
+
+export PATH="$PATH:/usr/bin/vendor_perl"

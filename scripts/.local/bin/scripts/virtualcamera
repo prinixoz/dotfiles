@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import signal
+import subprocess
+import time
+import atexit
+import re
+import json
+from typing import Dict, Tuple, Optional
+
+# ========== CORE DEFINITIONS ==========
+CONFIG_DIR = os.path.expanduser("~/.config/adbcam")
+CONFIG_FILE = os.path.join(CONFIG_DIR, "config.json")
+
+CARD_LABEL = "AdbCam"
+HARDWARE_CODEC = "h264"
+HARDWARE_ENCODER = "c2.qti.avc.encoder"  # Snapdragon explicit chip target
+DEFAULT_FPS = "30"
+
+video_process = None
+allocated_node = None
+
+def cleanup():
+    global video_process
+    # 1. Kill the scrcpy video feed stream pipeline cleanly
+    if video_process:
+        try:
+            video_process.terminate()
+            video_process.wait(timeout=1)
+        except:
+            try: video_process.kill()
+            except: pass
+            
+    # 2. FIX: Unload the kernel module to instantly vaporize /dev/video2 from your system
+    time.sleep(0.2) # Give the hardware device a brief window to release its files
+    subprocess.run(
+        "sudo rmmod v4l2loopback", 
+        shell=True, 
+        stdout=subprocess.DEVNULL, 
+        stderr=subprocess.DEVNULL
+    )
+
+def signal_handler(signum, frame):
+    cleanup()
+    sys.exit(0)
+
+atexit.register(cleanup)
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
+def load_config() -> Optional[dict]:
+    """Reads saved configuration properties safely"""
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, 'r') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return None
+
+def save_config(camera_id: str, resolution: str):
+    """Writes selected properties to standard fallback path"""
+    try:
+        os.makedirs(CONFIG_DIR, exist_ok=True)
+        config_data = {"camera_id": camera_id, "resolution": resolution}
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config_data, f, indent=4)
+    except Exception as e:
+        subprocess.run(["notify-send", "AdbCam Warning", f"Could not save config profile: {e}"])
+
+def run_menu(title: str, options: list) -> str:
+    """Helper to dynamically invoke dmenu, bemenu, or rofi overlays"""
+    launcher = "dmenu"
+    args = ["-p", title, "-i", "-l", str(min(len(options), 10))]
+    
+    if subprocess.run(["which", "bemenu"], capture_output=True).returncode == 0:
+        launcher = "bemenu"
+    elif subprocess.run(["which", "rofi"], capture_output=True).returncode == 0:
+        launcher = "rofi"
+        args = ["-dmenu", "-p", title, "-i", "-l", str(min(len(options), 10))]
+
+    input_str = "\n".join(options)
+    try:
+        proc = subprocess.run([launcher] + args, input=input_str, text=True, capture_output=True, check=True)
+        return proc.stdout.strip()
+    except subprocess.CalledProcessError:
+        sys.exit(0)
+
+def parse_cameras() -> dict:
+    env = os.environ.copy()
+    env["SDL_VIDEODRIVER"] = "dummy"
+    try:
+        res = subprocess.run(["scrcpy", "--list-camera-sizes"], capture_output=True, text=True, timeout=8, env=env)
+        if res.returncode != 0:
+            subprocess.run(["notify-send", "AdbCam Error", "USB Debugging unauthorized or device disconnected."])
+            sys.exit(1)
+            
+        cameras = {}
+        current_id = None
+        for line in res.stdout.split('\n'):
+            line = line.strip()
+            match = re.match(r'--camera-id=(\d+)\s+\(([^,]+),\s*(\d+x\d+),\s*fps=\{([^}]+)\}', line)
+            if match:
+                cid, ctype, default_res, _ = match.groups()
+                cameras[cid] = {'type': ctype, 'max_res': default_res, 'resolutions': []}
+                current_id = cid
+            elif current_id and re.match(r'^\s*-\s*\d+x\d+\s*$', line):
+                cameras[current_id]['resolutions'].append(line.strip('- ').strip())
+        return cameras
+    except Exception:
+        sys.exit(1)
+
+def show_menu_interface(cameras: dict) -> Tuple[str, str]:
+    """Handles manual menu selection loop"""
+    cam_options = [f"{cid}: {info['type'].upper()} Facing Camera (Max: {info['max_res']})" for cid, info in cameras.items()]
+    cam_selection = run_menu("Select Input Camera Sensor", cam_options)
+    selected_cid = cam_selection.split(":")[0]
+    
+    info = cameras[selected_cid]
+    common_profiles = [r for r in info['resolutions'] if r in ['1920x1080', '1280x720', '640x480']]
+    if not common_profiles and info['resolutions']:
+        common_profiles = [info['resolutions'][-1]]
+        
+    selected_resolution = run_menu(f"Select Layout Resolution for Sensor {selected_cid}", common_profiles)
+    
+    # Save selection as default configuration automatically
+    save_config(selected_cid, selected_resolution)
+    return selected_cid, selected_resolution
+
+def setup_v4l2_loopback() -> str:
+    global allocated_node
+    subprocess.run("sudo rmmod v4l2loopback", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    cmd = f'sudo modprobe v4l2loopback devices=1 card_label="{CARD_LABEL}" exclusive_caps=1'
+    if subprocess.run(cmd, shell=True).returncode != 0:
+        subprocess.run(["notify-send", "AdbCam Error", "Kernel rejected v4l2loopback creation."])
+        sys.exit(1)
+        
+    time.sleep(0.4)
+    try:
+        for node in os.listdir('/sys/class/video4linux'):
+            name = open(f'/sys/class/video4linux/{node}/name').read().strip()
+            if CARD_LABEL in name:
+                allocated_node = f"/dev/{node}"
+                return allocated_node
+    except:
+        pass
+    return "/dev/video0"
+
+def spawn_video_stream(cid: str, resolution: str, target_node: str):
+    global video_process
+    env = os.environ.copy()
+    env["SDL_VIDEODRIVER"] = "dummy"
+
+    cmd = [
+        "scrcpy",
+        "--video-source=camera",
+        f"--camera-id={cid}",
+        f"--video-codec={HARDWARE_CODEC}",
+        f"--video-encoder={HARDWARE_ENCODER}",
+        "--no-audio",
+        f"--v4l2-sink={target_node}",
+        f"--camera-size={resolution}",
+        f"--camera-fps={DEFAULT_FPS}",
+        "--no-window"
+    ]
+    video_process = subprocess.Popen(cmd, env=env)
+
+def main():
+    # Parse CLI flags to allow menu re-configuration overrides
+    force_config_menu = False
+    if len(sys.argv) > 1 and sys.argv[1] in ["-c", "--config"]:
+        force_config_menu = True
+
+    try:
+        res = subprocess.run(["adb", "devices"], capture_output=True, text=True, timeout=3)
+        if "device" not in "".join(res.stdout.splitlines()[1:]):
+            subprocess.run(["notify-send", "AdbCam Error", "No authorized Android device connected via USB."])
+            sys.exit(1)
+    except:
+        sys.exit(1)
+
+    # Core logic boundary split (Load configuration properties vs Fire interactive menus)
+    saved_config = load_config()
+    if saved_config and not force_config_menu:
+        camera_id = saved_config.get("camera_id", "0")
+        resolution = saved_config.get("resolution", "1920x1080")
+    else:
+        hardware = parse_cameras()
+        camera_id, resolution = show_menu_interface(hardware)
+
+    target_node = setup_v4l2_loopback()
+    time.sleep(0.6)  
+    spawn_video_stream(camera_id, resolution, target_node)
+    
+    subprocess.run([
+        "notify-send", 
+        "AdbCam Active", 
+        f"Device assigned to {target_node}.\nProfile: Sensor {camera_id} ({resolution})."
+    ])
+    
+    try:
+        while True:
+            if video_process.poll() is not None:
+                subprocess.run(["notify-send", "AdbCam Alert", "Hardware pipeline dropped out unexpectedly."])
+                break
+            time.sleep(1)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        cleanup()
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+import os
+import re
+import argparse
+from pathlib import Path
+import shlex
+
+# Supported extensions
+VIDEO_EXTENSIONS = {'.mkv', '.mp4', '.avi', '.m4v', '.mov'}
+SUBTITLE_EXTENSIONS = {'.srt', '.vtt', '.sub', '.idx', '.ass'}
+ALL_EXTENSIONS = VIDEO_EXTENSIONS.union(SUBTITLE_EXTENSIONS)
+
+# Generic words that should never be used as a show's title
+GENERIC_TITLES = {"episode", "ep", "season", "series", "tv", "show"}
+
+def extract_clean_info(stem):
+    """Parses a string to extract clean Title and Year for Movies."""
+    clean_string = re.sub(r'[\._\-]', ' ', stem)
+    year_match = re.search(r'\b(19\d{2}|20\d{2})\b', clean_string)
+
+    if year_match:
+        local_year = year_match.group(1)
+        title_part = clean_string[:year_match.start()].strip()
+        title_part = title_part.rstrip('-([ ').strip()
+        local_title = re.sub(r'\s+', ' ', title_part)
+        return local_title.title(), local_year
+    else:
+        local_title = re.sub(r'\s+', ' ', clean_string).strip()
+        return local_title.title(), None
+
+def parse_tv_show(stem):
+    """
+    Checks if a string contains season/episode numbering.
+    Supports: S01E02, s1e12, and absolute numbering like 'Title - 12'
+    """
+    clean_stem = re.sub(r'\[.*?\]', '', stem)
+    
+    tv_match = re.search(r'\b[sS](\d+)[eE](\d+)\b', clean_stem)
+    if tv_match:
+        season_num = int(tv_match.group(1))
+        episode_num = int(tv_match.group(2))
+        title_part = clean_stem[:tv_match.start()].replace('.', ' ').replace('_', ' ').replace('-', ' ').strip()
+        title_part = re.sub(r'\s+', ' ', title_part)
+        if title_part.lower() in GENERIC_TITLES:
+            title_part = ""
+        return title_part.title() if title_part else None, season_num, episode_num
+
+    if re.search(r'\b(19\d{2}|20\d{2})\b', clean_stem):
+        return None
+
+    anime_match = re.search(r'[\s\-_](\d{1,4})(?=\s|$|\.)', clean_stem)
+    if anime_match:
+        episode_num = int(anime_match.group(1))
+        title_part = clean_stem[:anime_match.start()].replace('.', ' ').replace('_', ' ').replace('-', ' ').strip()
+        title_part = re.sub(r'\s+', ' ', title_part)
+        if title_part.lower() in GENERIC_TITLES:
+            title_part = ""
+        return title_part.title() if title_part else None, 1, episode_num
+
+    return None
+
+def parse_folder_for_tv(folder_name):
+    """Checks if a folder name contains a season pattern like 'S01' or 'Season 1'."""
+    season_match = re.search(r'\b([sS]|Season\s*)(\d+)\b', folder_name, re.IGNORECASE)
+    if season_match:
+        season_num = int(season_match.group(2))
+        title_part = folder_name[:season_match.start()].replace('.', ' ').replace('_', ' ').replace('-', ' ').strip()
+        title_part = re.sub(r'\s+', ' ', title_part)
+        return title_part.title(), season_num
+    return None
+
+def calculate_operations(target_path):
+    """
+    Scans the paths and calculates required actions.
+    Tracks everything to generate a paired forward and backward operation map.
+    """
+    mkdir_commands = set()
+    mv_commands = []  # List of tuples: (original_path, clean_path)
+    potential_empty_folders = [] # Original folders that might get emptied
+
+    simulated_exists = set()
+
+    def get_simulated_unique_path(dest_path):
+        if dest_path not in simulated_exists and not os.path.exists(dest_path):
+            simulated_exists.add(dest_path)
+            return dest_path
+        p = Path(dest_path)
+        parent, stem, ext = p.parent, p.stem, p.suffix
+        sub_ext = ""
+        if ext.lower() in SUBTITLE_EXTENSIONS and '.' in stem:
+            parts = stem.split('.')
+            if len(parts[-1]) <= 6:
+                sub_ext = f".{parts[-1]}"
+                stem = " ".join(parts[:-1])
+        counter = 1
+        while True:
+            candidate = os.path.normpath(os.path.join(parent, f"{stem}_{counter}{sub_ext}{ext}"))
+            if candidate not in simulated_exists and not os.path.exists(candidate):
+                simulated_exists.add(candidate)
+                return candidate
+            counter += 1
+
+    def process_single_file(file_path, root_in):
+        path_obj = Path(file_path)
+        ext = path_obj.suffix.lower()
+        if ext not in ALL_EXTENSIONS:
+            return
+
+        full_stem = path_obj.stem
+        sub_lang_suffix = ""
+        if ext in SUBTITLE_EXTENSIONS and '.' in full_stem:
+            parts = full_stem.split('.')
+            if len(parts[-1]) <= 6: 
+                sub_lang_suffix = f".{parts[-1]}"
+                full_stem = " ".join(parts[:-1])
+
+        tv_info = parse_tv_show(full_stem)
+        if tv_info and not tv_info[0]:
+            parent_folder_name = path_obj.parent.name
+            parent_tv = parse_folder_for_tv(parent_folder_name) or parse_tv_show(parent_folder_name)
+            if parent_tv and parent_tv[0] and parent_tv[0].lower() not in GENERIC_TITLES:
+                tv_info = (parent_tv[0], tv_info[1] if tv_info[1] else parent_tv[1], tv_info[2])
+            else:
+                if parent_folder_name.lower() not in GENERIC_TITLES and not parent_folder_name.startswith("Season "):
+                    clean_parent, _ = extract_clean_info(parent_folder_name)
+                    tv_info = (clean_parent, tv_info[1], tv_info[2])
+
+        if tv_info and tv_info[0]:
+            series_title, season_num, episode_num = tv_info
+            new_filename = f"Episode {episode_num:02d}{sub_lang_suffix}{ext}"
+            
+            if os.path.isdir(root_in):
+                relative_to_root = path_obj.relative_to(Path(root_in))
+                base_out = Path(root_in) if len(relative_to_root.parts) > 1 else Path(root_in).parent
+            else:
+                base_out = Path(root_in).parent
+
+            target_dir = os.path.normpath(os.path.join(base_out, series_title, f"Season {season_num}"))
+            raw_new_path = os.path.normpath(os.path.join(target_dir, new_filename))
+            final_new_path = get_simulated_unique_path(raw_new_path)
+
+            if os.path.normpath(file_path) != final_new_path:
+                mkdir_commands.add(target_dir)
+                mv_commands.append((file_path, final_new_path))
+        else:
+            official_title, official_year = extract_clean_info(full_stem)
+            new_name = f"{official_title} ({official_year}){sub_lang_suffix}{ext}" if official_year else f"{official_title}{sub_lang_suffix}{ext}"
+            if path_obj.name != new_name:
+                final_new_path = get_simulated_unique_path(os.path.normpath(os.path.join(path_obj.parent, new_name)))
+                mv_commands.append((file_path, final_new_path))
+
+    # Context Router
+    if os.path.isfile(target_path):
+        process_single_file(target_path, target_path)
+    elif os.path.isdir(target_path):
+        for dirpath, _, filenames in os.walk(target_path):
+            for filename in filenames:
+                process_single_file(os.path.join(dirpath, filename), target_path)
+
+        # Handle movie/show parent directory names
+        for dirpath, dirnames, _ in os.walk(target_path, topdown=False):
+            for dirname in dirnames:
+                if dirname.lower() in {'subs', 'subtitles', 'featurettes', 'sample', 'cd1', 'cd2'}:
+                    continue
+                old_dir_path = os.path.normpath(os.path.join(dirpath, dirname))
+                potential_empty_folders.append(old_dir_path)
+
+                if not dirname.startswith("Season ") and parse_tv_show(dirname) is None and parse_folder_for_tv(dirname) is None:
+                    official_title, official_year = extract_clean_info(dirname)
+                    new_dirname = f"{official_title} ({official_year})" if official_year else official_title
+                    if dirname != new_dirname:
+                        new_dir_path = os.path.normpath(os.path.join(dirpath, new_dirname))
+                        mv_commands.append((old_dir_path, new_dir_path))
+        
+        potential_empty_folders.append(os.path.normpath(target_path))
+
+    return sorted(list(mkdir_commands)), mv_commands, potential_empty_folders
+
+
+def generate_scripts(target_path, out_update="update_media.sh", out_revert="revert_media.sh"):
+    mkdir_cmds, mv_cmds, original_folders = calculate_operations(target_path)
+
+    if not mkdir_cmds and not mv_cmds:
+        print("Everything matches the correct layout. No script adjustments needed!")
+        return
+
+    # --- 1. GENERATE THE UPDATE SCRIPT ---
+    with open(out_update, "w") as f:
+        f.write("#!/usr/bin/env bash\n")
+        f.write("# Automated Media Reorganization Execution Script\n\n")
+        f.write("echo \"--- Shuffling Library To Clean Framework Run ---\"\n\n")
+        
+        if mkdir_cmds:
+            f.write("# Create target directory structures\n")
+            for folder in mkdir_cmds:
+                f.write(f"mkdir -p {shlex.quote(folder)}\n")
+            f.write("\n")
+
+        if mv_cmds:
+            f.write("# Relocate and rename files\n")
+            for old, new in mv_cmds:
+                f.write(f"mv -v {shlex.quote(old)} {shlex.quote(new)}\n")
+            f.write("\n")
+
+        if original_folders:
+            f.write("# Safely clean out leftover messy directory tracks\n")
+            for folder in original_folders:
+                f.write(f"if [ -d {shlex.quote(folder)} ]; then rmdir -p {shlex.quote(folder)} 2>/dev/null; fi\n")
+            f.write("\n")
+
+        f.write("echo \"--- Upgrade Script Applied Safely! ---\"\n")
+
+    # --- 2. GENERATE THE REVERT SCRIPT (INVERSE OPERATIONS) ---
+    with open(out_revert, "w") as f:
+        f.write("#!/usr/bin/env bash\n")
+        f.write("# Automated Media Undo/Revert Tool\n\n")
+        f.write("echo \"--- Rolling Back Structural Changes to Original State ---\"\n\n")
+        
+        # To restore old folders, we need to bring them back before moving files back into them
+        if original_folders or mv_cmds:
+            f.write("# Re-create original folder paths if they were removed\n")
+            restored_parents = set()
+            for old, _ in mv_cmds:
+                parent_dir = os.path.dirname(old)
+                if parent_dir and parent_dir not in restored_parents:
+                    f.write(f"mkdir -p {shlex.quote(parent_dir)}\n")
+                    restored_parents.add(parent_dir)
+            for folder in original_folders:
+                if folder not in restored_parents:
+                    f.write(f"mkdir -p {shlex.quote(folder)}\n")
+            f.write("\n")
+
+        if mv_cmds:
+            f.write("# Moving files backward from organized locations to original states\n")
+            # Loop backward to handle sub-moves cleanly
+            for old, new in reversed(mv_cmds):
+                f.write(f"mv -v {shlex.quote(new)} {shlex.quote(old)}\n")
+            f.write("\n")
+
+        if mkdir_cmds:
+            f.write("# Pruning clean target folders that were spun up during organization\n")
+            # Reverse cleanups to remove inner child folders before parent folders
+            for folder in reversed(mkdir_cmds):
+                f.write(f"if [ -d {shlex.quote(folder)} ]; then rmdir -p {shlex.quote(folder)} 2>/dev/null; fi\n")
+                # Also drop clean root-level show folder additions if empty
+                show_root = os.path.dirname(folder)
+                if show_root and show_root != ".":
+                    f.write(f"if [ -d {shlex.quote(show_root)} ]; then rmdir {shlex.quote(show_root)} 2>/dev/null; fi\n")
+            f.write("\n")
+
+        f.write("echo \"--- Rollback Operations Completed! System Restored. ---\"\n")
+
+    # Set file execution flags
+    for script in [out_update, out_revert]:
+        try:
+            os.chmod(script, 0o755)
+        except OSError:
+            pass
+
+    print(f"🎉 Analysis Complete! Generated two scripts:")
+    print(f"  👉 Organize:  \033[32m./{out_update}\033[0m")
+    print(f"  ↩️  Undo/Revert: \033[33m./{out_revert}\033[0m")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Context-Aware Media Automation Script Builder.")
+    parser.add_argument("target", type=str, help="Target library folder, specific show folder, or video file.")
+    parser.add_argument("-o", "--output", type=str, default="update_media.sh", help="Output update shell script path.")
+    parser.add_argument("-r", "--revert", type=str, default="revert_media.sh", help="Output rollback shell script path.")
+    
+    args = parser.parse_args()
+
+    if os.path.exists(args.target):
+        generate_scripts(args.target, out_update=args.output, out_revert=args.revert)
+    else:
+        print(f"Error: Target path '{args.target}' does not exist.")

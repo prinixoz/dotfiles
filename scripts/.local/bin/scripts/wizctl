@@ -1,0 +1,255 @@
+#!/bin/bash
+
+# Source network configuration
+if [ -f ~/.config/mac ]; then
+    source ~/.config/mac
+fi
+
+PORT=38899
+
+show_help() {
+    cat << EOF
+A simple command line utility for controlling Wiz Connected LED light strips.
+
+Usage: wizctl [OPTIONS] <COMMAND>
+       wizctl id <NUMBER> <COMMAND>
+
+Commands:
+  id        Select a light target by index number (e.g., id 2 off) or list all IDs
+  dynamic   Sets the dynamic scene the light strip(s) use(s)
+  static    Sets the static color the light strip(s) use(s)
+  on        Turns on the light strip(s)
+  off       Turns off the light strip(s)
+  help      Print this message or the help of the given subcommand(s)
+
+Options:
+  -i, --ip <IP>      The IP Addresses of the light strip(s)
+  --id <NUMBER>      Select a light target by configuration index number
+  -h, --help         Print help
+EOF
+}
+
+show_dynamic_help() {
+    cat << EOF
+Sets the dynamic scene the light strip(s) use(s)
+
+Usage: wizctl dynamic <SCENE> [SPEED] [BRIGHTNESS]
+EOF
+}
+
+show_static_help() {
+    cat << EOF
+Sets the static color the light strip(s) use(s)
+
+Usage: wizctl static <RED> <GREEN> <BLUE> [BRIGHTNESS]
+EOF
+}
+
+# --- Toggle Logic for No Arguments ---
+if [ $# -eq 0 ]; then
+    TARGET_IP="${WIZ_IP}"
+    if [ -z "$TARGET_IP" ]; then
+        echo "Error: Default \$WIZ_IP not found in ~/.config/mac"
+        exit 1
+    fi
+    
+    # Query current state
+    response=$(echo '{"method":"getPilot","params":{}}' | nc -u -w 1 "$TARGET_IP" "$PORT" 2>/dev/null)
+    
+    # Check if state is true or false
+    if echo "$response" | grep -q '"state":true'; then
+        payload='{"id":1,"method":"setState","params":{"state":false}}'
+    else
+        payload='{"id":1,"method":"setState","params":{"state":true}}'
+    fi
+    
+    echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+    exit 0
+fi
+
+# 1. Parse Options and Commands anywhere in the arguments
+TARGET_IP=""
+ID_INDEX=""
+COMMAND=""
+SUB_ARGS=()
+ID_COMMAND_ONLY=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--ip)
+            TARGET_IP="$2"
+            shift 2
+            ;;
+        --id)
+            ID_INDEX="$2"
+            shift 2
+            ;;
+        id)
+            # Check if an ID number was passed next
+            if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
+                ID_INDEX="$2"
+                shift 2
+            else
+                # Just 'wizctl id' was typed
+                ID_COMMAND_ONLY=true
+                shift
+            fi
+            ;;
+        -h|--help|help)
+            show_help
+            exit 0
+            ;;
+        on|off|dynamic|static)
+            COMMAND="$1"
+            shift
+            # Collect trailing subcommand args
+            while [[ $# -gt 0 && ! "$1" =~ ^- ]]; do
+                SUB_ARGS+=("$1")
+                shift
+            done
+            ;;
+        -*)
+            echo "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
+        *)
+            echo "Unknown argument: $1"
+            exit 1
+            ;;
+    esac
+done
+
+# 2. Handle 'wizctl id' status listing rule safely
+if [ "$ID_COMMAND_ONLY" = true ] && [ -z "$COMMAND" ]; then
+    echo "Configured WiZ Light IDs:"
+    if [ -n "$WIZ_IP" ]; then
+        echo "1 : $WIZ_IP"
+    fi
+    
+    for var in $(set | awk -F= '/^WIZ_IP[0-9]+/ {print $1}' | sort -V); do
+        if [ -n "$var" ]; then
+            num=$(echo "$var" | tr -d -c '0-9')
+            echo "$num : ${!var}"
+        fi
+    done
+    exit 0
+fi
+
+# 3. Resolve IP matching based on ID Index input
+if [ ! -z "$ID_INDEX" ]; then
+    if [ "$ID_INDEX" -eq 1 ]; then
+        TARGET_IP="$WIZ_IP"
+    else
+        var_name="WIZ_IP${ID_INDEX}"
+        TARGET_IP="${!var_name}"
+    fi
+    
+    if [ -z "$TARGET_IP" ]; then
+        echo "Error: Target ID '$ID_INDEX' is empty or not defined in ~/.config/mac"
+        exit 1
+    fi
+fi
+
+# Fallback default if neither -i nor id index was provided
+TARGET_IP="${TARGET_IP:-$WIZ_IP}"
+
+if [ -z "$TARGET_IP" ]; then
+    echo "Error: IP address not specified. Use -i <IP>, id <NUM>, or set \$WIZ_IP in ~/.config/mac"
+    exit 1
+fi
+
+if [ -z "$COMMAND" ]; then
+    show_help
+    exit 0
+fi
+
+# 4. Process Commands
+case "$COMMAND" in
+    on)
+        payload='{"id":1,"method":"setState","params":{"state":true}}'
+        echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+        ;;
+        
+    off)
+        payload='{"id":1,"method":"setState","params":{"state":false}}'
+        echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+        ;;
+        
+    dynamic)
+        SCENE_NAME="${SUB_ARGS[0]}"
+        
+        # If no scene arguments or help flags are given, print the scene list!
+        if [ -z "$SCENE_NAME" ] || [ "$SCENE_NAME" = "--help" ] || [ "$SCENE_NAME" = "-h" ]; then
+            echo "ocean romance sunset party fireplace cozy forest pastel-colors wake-up bedtime warm-white daylight cool-white night-light focus relax true-colors tv-time plantgrowth spring summer fall deepdive jungle mojito club christmas halloween candlelight golden-white pulse steampunk rhythm" | tr ' ' '\n'
+            exit 0
+        fi
+
+        SPEED=${SUB_ARGS[1]:-20}
+        BRIGHTNESS=${SUB_ARGS[2]:-75}
+        
+        case "${SCENE_NAME,,}" in
+            "ocean")        scene_id=1 ;;
+            "romance")      scene_id=2 ;;
+            "sunset")       scene_id=3 ;;
+            "party")        scene_id=4 ;;
+            "fireplace")    scene_id=5 ;;
+            "cozy")         scene_id=6 ;;
+            "forest")       scene_id=7 ;;
+            "pastel-colors") scene_id=8 ;;
+            "wake-up")      scene_id=9 ;;
+            "bedtime")      scene_id=10 ;;
+            "warm-white")   scene_id=11 ;;
+            "daylight")     scene_id=12 ;;
+            "cool-white")   scene_id=13 ;;
+            "night-light")  scene_id=14 ;;
+            "focus")        scene_id=15 ;;
+            "relax")        scene_id=16 ;;
+            "true-colors")  scene_id=17 ;;
+            "tv-time")      scene_id=18 ;;
+            "plantgrowth")  scene_id=19 ;;
+            "spring")       scene_id=20 ;;
+            "summer")       scene_id=21 ;;
+            "fall")         scene_id=22 ;;
+            "deepdive")     scene_id=23 ;;
+            "jungle")       scene_id=24 ;;
+            "mojito")       scene_id=25 ;;
+            "club")         scene_id=26 ;;
+            "christmas")    scene_id=27 ;;
+            "halloween")    scene_id=28 ;;
+            "candlelight")  scene_id=29 ;;
+            "golden-white") scene_id=30 ;;
+            "pulse")        scene_id=31 ;;
+            "steampunk")    scene_id=32 ;;
+            "rhythm")       scene_id=1000 ;;
+            *)
+                echo "Error: Unknown dynamic scene '$SCENE_NAME'."
+                exit 1
+                ;;
+        esac
+        
+        payload=$(printf '{"id":1,"method":"setPilot","params":{"sceneId":%d,"speed":%d,"dimming":%d}}' "$scene_id" "$SPEED" "$BRIGHTNESS")
+        echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+        ;;
+        
+    static)
+        if [ "${SUB_ARGS[0]}" = "--help" ] || [ "${SUB_ARGS[0]}" = "-h" ] || [ -z "${SUB_ARGS[0]}" ]; then
+            show_static_help
+            exit 0
+        fi
+
+        RED="${SUB_ARGS[0]}"
+        GREEN="${SUB_ARGS[1]}"
+        BLUE="${SUB_ARGS[2]}"
+        BRIGHTNESS=${SUB_ARGS[3]:-75}
+        
+        if [ -z "$RED" ] || [ -z "$GREEN" ] || [ -z "$BLUE" ]; then
+            echo "Error: Missing required RGB arguments."
+            show_static_help
+            exit 1
+        fi
+        
+        payload=$(printf '{"id":1,"method":"setPilot","params":{"r":%d,"g":%d,"b":%d,"dimming":%d}}' "$RED" "$GREEN" "$BLUE" "$BRIGHTNESS")
+        echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+        ;;
+esac

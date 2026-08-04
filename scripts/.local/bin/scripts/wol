@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+
+# --- CONFIGURATION ---
+source ~/.config/mac
+
+echo "Sending Wake-on-LAN magic packet... ✨"
+wakeonlan "$TARGET_MAC"
+
+# --- STEP 2: Wait for ping response ---
+notify-send "Waiting for $TARGET_IP to wake up... ⏳"
+while ! ping -c 1 $TARGET_IP &> /dev/null; do
+    sleep 1
+done
+
+# --- STEP 3: Notify it's online ---
+notify-send "$TARGET_IP is ONLINE 🚀"
+
+# --- STEP 4: SSH into the machine ---
+#echo "Connecting via SSH... 🔐"
+#alacritty -e ssh $SSH_USER@$TARGET_IP

@@ -1,0 +1,115 @@
+colourful: true
+
+filekinds:
+  normal: { foreground: Blue }
+  directory: { foreground: Blue, is_bold: true }
+  symlink: { foreground: Cyan }
+  executable: { foreground: Green }
+
+perms:
+  user_read: { foreground: Yellow, is_bold: true }
+  user_write: { foreground: Red, is_bold: true }
+  user_execute_file: { foreground: Green, is_bold: true }
+  user_execute_other: { foreground: Green, is_bold: true }
+  group_read: { foreground: Yellow }
+  group_write: { foreground: Red }
+  group_execute: { foreground: Green }
+  other_read: { foreground: Yellow }
+  other_write: { foreground: Red }
+  other_execute: { foreground: Green }
+
+filenames:
+  README: { icon: { glyph: "📖" } }
+  README.md: { icon: { glyph: "📖" } }
+  LICENSE: { icon: { glyph: "⚖️" } }
+  LICENSE.md: { icon: { glyph: "⚖️" } }
+  CHANGELOG: { icon: { glyph: "📜" } }
+  CHANGELOG.md: { icon: { glyph: "📜" } }
+  Makefile: { icon: { glyph: "🏗️" } }
+  CMakeLists.txt: { icon: { glyph: "🏗️" } }
+  Rakefile: { icon: { glyph: "💎" } }
+  Procfile: { icon: { glyph: "🍇" } }
+  .git: { icon: { glyph: "🌿" } }
+  .gitignore: { icon: { glyph: "🚫" } }
+  .gitattributes: { icon: { glyph: "🌿" } }
+  .gitmodules: { icon: { glyph: "🌿" } }
+  Dockerfile: { icon: { glyph: "🐳" } }
+  .dockerignore: { icon: { glyph: "🐳" } }
+  docker-compose.yml: { icon: { glyph: "🚢" } }
+  docker-compose.yaml: { icon: { glyph: "🚢" } }
+  package.json: { icon: { glyph: "📦" } }
+  package-lock.json: { icon: { glyph: "🔒" } }
+  yarn.lock: { icon: { glyph: "🔒" } }
+  pnpm-lock.yaml: { icon: { glyph: "🔒" } }
+  bun.lockb: { icon: { glyph: "🔒" } }
+  Cargo.toml: { icon: { glyph: "🦀" } }
+  Cargo.lock: { icon: { glyph: "🦀" } }
+  go.mod: { icon: { glyph: "🐹" } }
+  go.sum: { icon: { glyph: "🐹" } }
+  .env: { icon: { glyph: "🔑" } }
+
+extensions:
+  txt: { icon: { glyph: "📝" } }
+  md: { icon: { glyph: "✍️" } }
+  pdf: { icon: { glyph: "🎯" } }
+  doc: { icon: { glyph: "📄" } }
+  docx: { icon: { glyph: "💙" } }
+  xls: { icon: { glyph: "📄" } }
+  xlsx: { icon: { glyph: "💚" } }
+  ppt: { icon: { glyph: "📄" } }
+  pptx: { icon: { glyph: "🧡" } }
+  csv: { icon: { glyph: "📊" } }
+  png: { icon: { glyph: "🖼️" } }
+  jpg: { icon: { glyph: "📸" } }
+  jpeg: { icon: { glyph: "📸" } }
+  gif: { icon: { glyph: "🎞️" } }
+  svg: { icon: { glyph: "📐" } }
+  webp: { icon: { glyph: "🌐" } }
+  ico: { icon: { glyph: "🎯" } }
+  mp4: { icon: { glyph: "🎬" } }
+  mkv: { icon: { glyph: "🎥" } }
+  avi: { icon: { glyph: "🎞️" } }
+  mov: { icon: { glyph: "🍏" } }
+  webm: { icon: { glyph: "🌐" } }
+  mp3: { icon: { glyph: "🎵" } }
+  flac: { icon: { glyph: "🎧" } }
+  wav: { icon: { glyph: "📻" } }
+  ogg: { icon: { glyph: "🔮" } }
+  py: { icon: { glyph: "🐍" } }
+  js: { icon: { glyph: "🟨" } }
+  ts: { icon: { glyph: "🟦" } }
+  tsx: { icon: { glyph: "⚛️" } }
+  jsx: { icon: { glyph: "⚛️" } }
+  java: { icon: { glyph: "☕" } }
+  c: { icon: { glyph: "🦾" } }
+  cpp: { icon: { glyph: "⚙️" } }
+  h: { icon: { glyph: "🔑" } }
+  cs: { icon: { glyph: "💜" } }
+  rs: { filename: { foreground: Red }, icon: { glyph: "🦀" } }
+  go: { icon: { glyph: "🐹" } }
+  php: { icon: { glyph: "🐘" } }
+  rb: { icon: { glyph: "💎" } }
+  lua: { icon: { glyph: "🌙" } }
+  sh: { icon: { glyph: "🐚" } }
+  zsh: { icon: { glyph: "🐚" } }
+  html: { icon: { glyph: "🌐" } }
+  css: { icon: { glyph: "🎨" } }
+  json: { icon: { glyph: "📋" } }
+  xml: { icon: { glyph: "🏷️" } }
+  yaml: { icon: { glyph: "⚙️" } }
+  yml: { icon: { glyph: "⚙️" } }
+  sql: { icon: { glyph: "🗄️" } }
+  db: { icon: { glyph: "💾" } }
+  sqlite: { icon: { glyph: "🪶" } }
+  conf: { icon: { glyph: "🛠️" } }
+  ini: { icon: { glyph: "🛠️" } }
+  toml: { icon: { glyph: "🧱" } }
+  exe: { icon: { glyph: "⚙️" } }
+  zip: { icon: { glyph: "🗜️" } }
+  tar: { icon: { glyph: "📦" } }
+  gz: { icon: { glyph: "🗜️" } }
+  "7z": { icon: { glyph: "🤐" } }
+  rar: { icon: { glyph: "📦" } }
+  iso: { icon: { glyph: "💿" } }
+  dmg: { icon: { glyph: "🍏" } }
+  nix: { icon: { glyph: "❄", style: { foreground: White } } }

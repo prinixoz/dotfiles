@@ -1,0 +1,109 @@
+# Basic aliases
+alias cp='cp -v'
+alias c="cd /mnt/PS/"
+alias mv='mv -v'
+alias rm='rm -v'
+alias grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias unsl="sudo sed -i 's/^#\?HandleLidSwitch=.*/HandleLidSwitch=ignore/' /etc/systemd/logind.conf && sudo systemctl restart systemd-logind"
+alias gsl="sudo sed -i 's/^HandleLidSwitch=ignore/#HandleLidSwitch=suspend/' /etc/systemd/logind.conf && sudo systemctl restart systemd-logind"
+alias make50='make CC=clang CFLAGS="-fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow" LDLIBS="-lcrypt -lcs50 -lm"'
+alias neofetch="fastfetch"
+alias gitpush='git add . && git commit -m "$(date)" && git push -u origin main'
+
+
+
+alias yt-dl="yt-dlp -f 'bestvideo[height<=?720]+ba'"
+alias yt-dl-playlist="yt-dlp -f 'bestvideo[height<=?720]+ba' --output '%(playlist_index)s - %(title)s.%(ext)s'"
+alias instaloader="instaloader --no-video-thumbnails --no-caption --no-metadata-json --no-compress-json"
+alias myip="ip route get 1.1.1.1 | awk '{print $7}'"
+
+# System control
+alias sys='sudo systemctl start'
+alias syst='sudo systemctl stop'
+alias unlock='sudo rm /var/lib/pacman/db.lck'
+alias live='live-server --port=8000 --browser="librewolf"'
+alias pd='sudo protonvpn d'
+
+alias vinstallf="nvim ~/.local/dotfiles/install.txt"
+alias installf="paru -S (sed '/^#/d'  ~/.local/dotfiles/install.txt ) --needed"
+alias paru-fix='cd ~/.cache/paru && wget -O - https://aur.archlinux.org/packages.gz | gunzip > packages.aur'
+
+# sudo to doas
+#alias sudo='doas'
+#alias sudoedit='doas nvim'
+
+# File management
+alias untar='tar -zxvf '
+alias trash='gio trash'
+alias xdg-ninja="xdg-ninja --skip-unsupported"
+
+# Package management
+# Package management
+alias yay="yay"
+alias p='yay -S'
+alias pi='yay -Si'
+alias pr='yay -Rns'
+alias pu='yay -Syu --noconfirm'
+alias pacman-delete-orphan='pacman -Qdtq | xargs -r sudo pacman -Rns --noconfirm'
+alias pacman-delete-cache='sudo pacman -Scc'
+
+
+# Configuration editing
+alias nf='$EDITOR ~/.config/fish/config.fish'
+alias vnvim='cd ~/.config/nvim/ && nvim init.lua && cd -'
+alias nano='nvim'
+#alias gum='gummy -B 3 -T 3 -P 3 -y "05:00" -u "18:00"'
+
+# Navigation shortcuts
+alias ..='cd ..'
+alias .2='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias .6='cd ../../../../../..'
+
+# Misc utilities
+alias sl='exa --icons --classify --group-directories-first --long'
+alias ls='exa --icons --classify --group-directories-first --long'
+alias la='exa -all --icons --classify --group-directories-first'
+alias tree='exa -1 --group-directories-first --icons --classify --tree'
+
+# Mirror updates
+alias mirror='sudo reflector --latest 30 --number 10 --verbose --fastest 30 --save /etc/pacman.d/mirrorlist'
+
+# Reload fonts
+alias reload-fonts='fc-cache -f -v'
+
+# Custom aliases
+alias black='xset dpms force off'
+
+# Display control
+alias stopblack='xset s off && xset -dpms'
+
+# Multipe program at once
+alias n='cd && clear'
+
+# Weather
+alias weather='clear && curl wttr.in/Jamshedpur'
+
+# Utility
+alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+alias gcp='git clone $(wl-paste) --depth=1'
+alias record="ffmpeg -f x11grab -s 1920x1080 -i :0.0 -r 30 -preset ultrafast /mnt/PS/output.mkv"
+
+# EDITOR
+alias valias="$EDITOR ~/.config/shell/alias"
+alias vexport="$EDITOR ~/.config/shell/export"
+alias vbm="$EDITOR ~/.config/bm/bm"
+alias vsearch="$EDITOR ~/.config/bm/search"
+alias vi1="$EDITOR ~/.config/X11/xinitrc"
+alias vi2="$EDITOR ~/.config/i3/scripts/startup.sh"
+alias vi3="$EDITOR ~/.config/i3/config"
+alias vinsta="$EDITOR ~/.config/instaloader/profiles"
+alias v=nvim
+
+alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
+
+
+# NOCONFIG
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts" --no-config'

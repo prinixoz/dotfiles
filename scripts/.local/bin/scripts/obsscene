@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+HOST="ws://192.168.29.200:4455"
+PASSWORD="AZBi3KQPurRR0MxB"
+
+b64sha256() {
+    printf "%s" "$1" |
+        openssl dgst -binary -sha256 |
+        openssl base64 -A
+}
+
+REQ=$(mktemp)
+RESP=$(mktemp)
+trap 'rm -f "$REQ" "$RESP"' EXIT
+
+coproc WS { websocat "$HOST"; }
+
+# Read Hello
+IFS= read -r HELLO <&"${WS[0]}"
+
+CHALLENGE=$(jq -r '.d.authentication.challenge // empty' <<<"$HELLO")
+SALT=$(jq -r '.d.authentication.salt // empty' <<<"$HELLO")
+
+if [[ -n "$CHALLENGE" ]]; then
+    SECRET=$(b64sha256 "${PASSWORD}${SALT}")
+    AUTH=$(b64sha256 "${SECRET}${CHALLENGE}")
+
+    jq -nc \
+        --arg auth "$AUTH" \
+        '{"op":1,"d":{"rpcVersion":1,"authentication":$auth}}' \
+        >&"${WS[1]}"
+else
+    printf '{"op":1,"d":{"rpcVersion":1}}\n' >&"${WS[1]}"
+fi
+
+IFS= read -r IDENTIFY <&"${WS[0]}"
+
+STATUS=$(jq -r '.op' <<<"$IDENTIFY")
+if [[ "$STATUS" != "2" ]]; then
+    echo "Authentication failed"
+    echo "$IDENTIFY"
+    exit 1
+fi
+
+printf '{"op":6,"d":{"requestType":"GetSceneList","requestId":"1"}}\n' >&"${WS[1]}"
+
+IFS= read -r RESPONSE <&"${WS[0]}"
+
+SCENE=$(
+    jq -r '.d.responseData.scenes[].sceneName' <<<"$RESPONSE" |
+    dmenu -l 10 -i -p "Scene"
+)
+
+[[ -z "$SCENE" ]] && exit 0
+
+jq -nc \
+    --arg scene "$SCENE" \
+    '{
+        op:6,
+        d:{
+            requestType:"SetCurrentProgramScene",
+            requestId:"2",
+            requestData:{
+                sceneName:$scene
+            }
+        }
+    }' >&"${WS[1]}"

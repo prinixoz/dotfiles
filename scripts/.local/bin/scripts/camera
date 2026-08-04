@@ -1,0 +1,7 @@
+#/usr/bin/env bash
+ffplay \
+          -f v4l2 \
+          -input_format mjpeg \
+          -video_size 1280x720 \
+          -framerate 30 \
+          /dev/video0
