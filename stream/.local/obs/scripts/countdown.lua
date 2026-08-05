@@ -1,13 +1,9 @@
 obs               = obslua
 
--- Scene Configuration Structure
-scene_configs     = {}
-
 -- Active State Variables
 cur_seconds       = 0
-total_seconds     = 0
 last_text         = ""
-stop_text         = ""
+stop_text         = "TIME UP!"
 source_name       = ""
 alarm_source_name = ""
 bgm_source_name   = ""
@@ -16,7 +12,29 @@ activated         = false
 reset_hotkey_id   = obs.OBS_INVALID_HOTKEY_ID
 stop_hotkey_id    = obs.OBS_INVALID_HOTKEY_ID
 
--- Helper to control a Media Source playback by Source Name
+-- Time parser ONLY for full words: hours/hour, minutes/minute, seconds/second
+function parse_time_from_string(name)
+    if name == nil or name == "" then return 0 end
+
+    local lower_name = string.lower(name)
+    local total_sec = 0
+
+    -- Match Full Words: "1 hour", "2 hours"
+    local h = lower_name:match("(%d+)%s*hours") or lower_name:match("(%d+)%s*hour")
+    if h then total_sec = total_sec + (tonumber(h) * 3600) end
+
+    -- Match Full Words: "10 minute", "20 minutes"
+    local m = lower_name:match("(%d+)%s*minutes") or lower_name:match("(%d+)%s*minute")
+    if m then total_sec = total_sec + (tonumber(m) * 60) end
+
+    -- Match Full Words: "30 second", "45 seconds"
+    local s = lower_name:match("(%d+)%s*seconds") or lower_name:match("(%d+)%s*second")
+    if s then total_sec = total_sec + tonumber(s) end
+
+    return total_sec
+end
+
+-- Media Control Helpers
 function play_media_source(name)
     if name == nil or name == "" then return end
     local source = obs.obs_get_source_by_name(name)
@@ -43,6 +61,8 @@ function set_time_text()
     local total_minutes = math.floor(cur_seconds / 60)
     local minutes       = math.floor(total_minutes % 60)
     local hours         = math.floor(total_minutes / 60)
+
+    -- Always formatted as HH:MM:SS (00:00:00)
     local text          = string.format("%02d:%02d:%02d", hours, minutes, seconds)
 
     if cur_seconds < 1 then
@@ -68,8 +88,8 @@ function timer_callback()
     if cur_seconds < 0 then
         obs.remove_current_callback()
         cur_seconds = 0
+        activated = false
 
-        -- Stop countdown music and start looping alarm
         stop_media_source(bgm_source_name)
         play_media_source(alarm_source_name)
     end
@@ -77,23 +97,22 @@ function timer_callback()
     set_time_text()
 end
 
-function activate(activating)
-    if activated == activating then return end
-
-    activated = activating
-
-    if activating then
-        stop_media_source(alarm_source_name)
+function activate(activating, duration_seconds)
+    if activated then
+        obs.timer_remove(timer_callback)
         stop_media_source(bgm_source_name)
+        activated = false
+    end
 
-        cur_seconds = total_seconds
+    if activating and duration_seconds > 0 then
+        stop_media_source(alarm_source_name)
+
+        cur_seconds = duration_seconds
         set_time_text()
 
         play_media_source(bgm_source_name)
         obs.timer_add(timer_callback, 1000)
-    else
-        obs.timer_remove(timer_callback)
-        stop_media_source(bgm_source_name)
+        activated = true
     end
 end
 
@@ -104,21 +123,13 @@ function scene_switch()
     local current_scene_name = obs.obs_source_get_name(current_scene_source)
     obs.obs_source_release(current_scene_source)
 
-    activate(false)
-    stop_media_source(alarm_source_name)
+    local duration_seconds = parse_time_from_string(current_scene_name)
 
-    for _, config in ipairs(scene_configs) do
-        if config.scene_name == current_scene_name and config.scene_name ~= "" then
-            source_name       = config.source_name
-            total_seconds     = config.duration * 60
-            stop_text         = config.stop_text
-            alarm_source_name = config.alarm_source_name
-            bgm_source_name   = config.bgm_source_name
-            last_text         = ""
-
-            activate(true)
-            break
-        end
+    if duration_seconds > 0 then
+        activate(true, duration_seconds)
+    else
+        activate(false, 0)
+        stop_media_source(alarm_source_name)
     end
 end
 
@@ -131,7 +142,6 @@ end
 function reset(pressed)
     if not pressed then return end
     stop_media_source(alarm_source_name)
-    activate(false)
     scene_switch()
 end
 
@@ -154,57 +164,36 @@ end
 
 function script_properties()
     local props = obs.obs_properties_create()
-
-    local scenes = obs.obs_frontend_get_scenes()
     local sources = obs.obs_enum_sources()
 
-    for i = 1, 4 do
-        obs.obs_properties_add_text(props, "header_" .. i, "--- SCENE CONFIGURATION " .. i .. " ---", obs.OBS_TEXT_INFO)
+    local text_prop = obs.obs_properties_add_list(props, "source_name", "Global Text Source", obs
+    .OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
+    obs.obs_property_list_add_string(text_prop, "(None)", "")
 
-        local scene_prop = obs.obs_properties_add_list(props, "scene_" .. i, "Scene", obs.OBS_COMBO_TYPE_EDITABLE,
-            obs.OBS_COMBO_FORMAT_STRING)
-        obs.obs_property_list_add_string(scene_prop, "(None)", "")
+    local bgm_prop = obs.obs_properties_add_list(props, "bgm_source_name", "BGM Source (Optional)",
+        obs.OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
+    obs.obs_property_list_add_string(bgm_prop, "(None)", "")
 
-        if scenes ~= nil then
-            for _, scene in ipairs(scenes) do
-                local name = obs.obs_source_get_name(scene)
-                obs.obs_property_list_add_string(scene_prop, name, name)
+    local alarm_prop = obs.obs_properties_add_list(props, "alarm_source_name", "Alarm Source (Optional)",
+        obs.OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
+    obs.obs_property_list_add_string(alarm_prop, "(None)", "")
+
+    if sources ~= nil then
+        for _, source in ipairs(sources) do
+            local name = obs.obs_source_get_name(source)
+            local source_id = obs.obs_source_get_unversioned_id(source)
+
+            if source_id == "text_gdiplus" or source_id == "text_ft2_source" or source_id == "text_gdiplus_v2" then
+                obs.obs_property_list_add_string(text_prop, name, name)
+            elseif source_id == "ffmpeg_source" then
+                obs.obs_property_list_add_string(bgm_prop, name, name)
+                obs.obs_property_list_add_string(alarm_prop, name, name)
             end
         end
-
-        obs.obs_properties_add_int(props, "duration_" .. i, "Duration (minutes)", 1, 100000, 1)
-
-        local text_prop = obs.obs_properties_add_list(props, "source_" .. i, "Text Source", obs.OBS_COMBO_TYPE_EDITABLE,
-            obs.OBS_COMBO_FORMAT_STRING)
-        obs.obs_property_list_add_string(text_prop, "(None)", "")
-
-        local bgm_prop = obs.obs_properties_add_list(props, "bgm_source_" .. i, "Countdown BGM Source",
-            obs.OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
-        obs.obs_property_list_add_string(bgm_prop, "(None)", "")
-
-        local alarm_prop = obs.obs_properties_add_list(props, "alarm_source_" .. i, "Completion Alarm Source",
-            obs.OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
-        obs.obs_property_list_add_string(alarm_prop, "(None)", "")
-
-        if sources ~= nil then
-            for _, source in ipairs(sources) do
-                local name = obs.obs_source_get_name(source)
-                local source_id = obs.obs_source_get_unversioned_id(source)
-
-                if source_id == "text_gdiplus" or source_id == "text_ft2_source" or source_id == "text_gdiplus_v2" then
-                    obs.obs_property_list_add_string(text_prop, name, name)
-                elseif source_id == "ffmpeg_source" then
-                    obs.obs_property_list_add_string(bgm_prop, name, name)
-                    obs.obs_property_list_add_string(alarm_prop, name, name)
-                end
-            end
-        end
-
-        obs.obs_properties_add_text(props, "stop_text_" .. i, "Final Text", obs.OBS_TEXT_DEFAULT)
+        obs.source_list_release(sources)
     end
 
-    if scenes ~= nil then obs.source_list_release(scenes) end
-    if sources ~= nil then obs.source_list_release(sources) end
+    obs.obs_properties_add_text(props, "stop_text", "Completion Text", obs.OBS_TEXT_DEFAULT)
 
     obs.obs_properties_add_button(props, "stop_alarm_button", "Stop Alarm Audio", stop_alarm_button_clicked)
     obs.obs_properties_add_button(props, "reset_button", "Reset Current Timer", reset_button_clicked)
@@ -213,44 +202,24 @@ function script_properties()
 end
 
 function script_description()
-    return "Manages scene timers and controls existing OBS Media Sources by name."
+    return
+    "Starts a timer formatted as 00:00:00 when scene names contain full words: 'hour'/'hours', 'minute'/'minutes', or 'second'/'seconds'."
 end
 
 function script_update(settings)
-    scene_configs = {}
-
-    for i = 1, 4 do
-        local sc_name   = obs.obs_data_get_string(settings, "scene_" .. i)
-        local duration  = obs.obs_data_get_int(settings, "duration_" .. i)
-        local src_name  = obs.obs_data_get_string(settings, "source_" .. i)
-        local final_txt = obs.obs_data_get_string(settings, "stop_text_" .. i)
-        local alarm_src = obs.obs_data_get_string(settings, "alarm_source_" .. i)
-        local bgm_src   = obs.obs_data_get_string(settings, "bgm_source_" .. i)
-
-        if sc_name ~= "" then
-            table.insert(scene_configs, {
-                scene_name        = sc_name,
-                duration          = duration,
-                source_name       = src_name,
-                stop_text         = final_txt,
-                alarm_source_name = alarm_src,
-                bgm_source_name   = bgm_src
-            })
-        end
-    end
+    source_name       = obs.obs_data_get_string(settings, "source_name")
+    bgm_source_name   = obs.obs_data_get_string(settings, "bgm_source_name")
+    alarm_source_name = obs.obs_data_get_string(settings, "alarm_source_name")
+    stop_text         = obs.obs_data_get_string(settings, "stop_text")
 
     scene_switch()
 end
 
 function script_defaults(settings)
-    for i = 1, 4 do
-        obs.obs_data_set_default_string(settings, "scene_" .. i, "")
-        obs.obs_data_set_default_int(settings, "duration_" .. i, 10)
-        obs.obs_data_set_default_string(settings, "source_" .. i, "")
-        obs.obs_data_set_default_string(settings, "stop_text_" .. i, "Starting soon (tm)")
-        obs.obs_data_set_default_string(settings, "alarm_source_" .. i, "")
-        obs.obs_data_set_default_string(settings, "bgm_source_" .. i, "")
-    end
+    obs.obs_data_set_default_string(settings, "source_name", "")
+    obs.obs_data_set_default_string(settings, "bgm_source_name", "")
+    obs.obs_data_set_default_string(settings, "alarm_source_name", "")
+    obs.obs_data_set_default_string(settings, "stop_text", "TIME UP!")
 end
 
 function script_save(settings)

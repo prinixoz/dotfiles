@@ -4,34 +4,152 @@ set -euo pipefail
 HOST="ws://192.168.29.200:4455"
 PASSWORD="AZBi3KQPurRR0MxB"
 
+SCENE=""
+ACTION=""
+SOURCE_NAME=""
+TARGET_TIME=""
+EXEC_ORDER=() # Tracks execution order based on command line flags
+
+# Parse command line arguments preserving specified flag order
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -s|--scene)
+            SCENE="$2"
+            EXEC_ORDER+=("scene")
+            shift 2
+            ;;
+        -a|--action)
+            ACTION="$2"
+            EXEC_ORDER+=("action")
+            shift 2
+            ;;
+        -src|--source)
+            SOURCE_NAME="$2"
+            EXEC_ORDER+=("source")
+            shift 2
+            ;;
+        -at|-t|--at)
+            TARGET_TIME="$2"
+            shift 2
+            ;;
+        -h|--help)
+            echo "Usage: $0 [-s SCENE_NAME] [-a ACTION] [-src SOURCE_NAME] [-at HH:MM]"
+            echo "  -s    Set current scene (e.g., 'Gaming')"
+            echo "  -a    Trigger action (startstream, stopstream, startrecord, stoprecord)"
+            echo "  -src  Toggle source visibility on current or specified scene"
+            echo "  -at   Schedule execution at specified time (e.g., 13:30)"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
+# Send desktop notification helper (Dunst optimized)
+notify() {
+    local msg="$1"
+    local urgency="${2:-normal}"
+    local timeout="${3:-10000}"
+
+    if command -v dunstify >/dev/null 2>&1; then
+        dunstify "OBS Controller" "$msg" -u "$urgency" -t "$timeout"
+    elif command -v notify-send >/dev/null 2>&1; then
+        notify-send "OBS Controller" "$msg" -u "$urgency" -t "$timeout"
+    fi
+}
+
+# If a target time was provided, sleep until then
+if [[ -n "$TARGET_TIME" ]]; then
+    TARGET_EPOCH=$(date -d "$TARGET_TIME" +%s 2>/dev/null || { echo "Invalid time format: $TARGET_TIME" >&2; exit 1; })
+    CURRENT_EPOCH=$(date +%s)
+
+    # If the specified time has already passed today, target tomorrow
+    if (( TARGET_EPOCH <= CURRENT_EPOCH )); then
+        TARGET_EPOCH=$(date -d "tomorrow $TARGET_TIME" +%s)
+    fi
+
+    SLEEP_SECS=$(( TARGET_EPOCH - CURRENT_EPOCH ))
+
+    if (( SLEEP_SECS > 10 )); then
+        PRE_SLEEP=$(( SLEEP_SECS - 10 ))
+        echo "Waiting until 10s before $TARGET_TIME ($PRE_SLEEP seconds)..."
+        sleep "$PRE_SLEEP"
+
+        TARGET_NAME=""
+        for step in "${EXEC_ORDER[@]}"; do
+            if [[ "$step" == "scene" && -n "$SCENE" ]]; then
+                [[ -n "$TARGET_NAME" ]] && TARGET_NAME="$TARGET_NAME + "
+                TARGET_NAME="${TARGET_NAME}Scene: $SCENE"
+            elif [[ "$step" == "action" && -n "$ACTION" ]]; then
+                [[ -n "$TARGET_NAME" ]] && TARGET_NAME="$TARGET_NAME + "
+                TARGET_NAME="${TARGET_NAME}Action: $ACTION"
+            elif [[ "$step" == "source" && -n "$SOURCE_NAME" ]]; then
+                [[ -n "$TARGET_NAME" ]] && TARGET_NAME="$TARGET_NAME + "
+                TARGET_NAME="${TARGET_NAME}Toggle Source: $SOURCE_NAME"
+            fi
+        done
+        [[ -z "$TARGET_NAME" ]] && TARGET_NAME="Scheduled Task"
+        
+        notify "Scheduled OBS task ($TARGET_NAME) starting in 10 seconds!" "critical" 10000
+        sleep 10
+    else
+        echo "Waiting $SLEEP_SECS seconds until $TARGET_TIME..."
+        sleep "$SLEEP_SECS"
+    fi
+fi
+
 b64sha256() {
     printf "%s" "$1" |
         openssl dgst -binary -sha256 |
         openssl base64 -A
 }
 
-REQ=$(mktemp)
-RESP=$(mktemp)
-trap 'rm -f "$REQ" "$RESP"' EXIT
-
 coproc WS { websocat "$HOST"; }
 
-# Read Hello
+# Helper function: Sends request and waits specifically for OpCode 7 (RequestResponse)
+send_req() {
+    local payload="$1"
+    local req_id
+    req_id=$(jq -r '.d.requestId // empty' <<<"$payload")
+
+    printf '%s\n' "$payload" >&"${WS[1]}"
+
+    local line op
+    while IFS= read -r line <&"${WS[0]}"; do
+        op=$(jq -r '.op // empty' <<<"$line")
+        # op: 7 is RequestResponse
+        if [[ "$op" == "7" ]]; then
+            if [[ -n "$req_id" ]]; then
+                local res_id
+                res_id=$(jq -r '.d.requestId // empty' <<<"$line")
+                [[ "$res_id" == "$req_id" ]] && echo "$line" && return 0
+            else
+                echo "$line"
+                return 0
+            fi
+        fi
+    done
+}
+
+# Read Hello (OpCode 0)
 IFS= read -r HELLO <&"${WS[0]}"
 
 CHALLENGE=$(jq -r '.d.authentication.challenge // empty' <<<"$HELLO")
 SALT=$(jq -r '.d.authentication.salt // empty' <<<"$HELLO")
 
+# Identify with eventSubscriptions: 0 to disable unwanted background events
 if [[ -n "$CHALLENGE" ]]; then
     SECRET=$(b64sha256 "${PASSWORD}${SALT}")
     AUTH=$(b64sha256 "${SECRET}${CHALLENGE}")
 
     jq -nc \
         --arg auth "$AUTH" \
-        '{"op":1,"d":{"rpcVersion":1,"authentication":$auth}}' \
+        '{"op":1,"d":{"rpcVersion":1,"authentication":$auth,"eventSubscriptions":0}}' \
         >&"${WS[1]}"
 else
-    printf '{"op":1,"d":{"rpcVersion":1}}\n' >&"${WS[1]}"
+    printf '{"op":1,"d":{"rpcVersion":1,"eventSubscriptions":0}}\n' >&"${WS[1]}"
 fi
 
 IFS= read -r IDENTIFY <&"${WS[0]}"
@@ -43,26 +161,159 @@ if [[ "$STATUS" != "2" ]]; then
     exit 1
 fi
 
-printf '{"op":6,"d":{"requestType":"GetSceneList","requestId":"1"}}\n' >&"${WS[1]}"
+# Multi-level dmenu selection if no CLI parameters are passed
+if [[ -z "$SCENE" && -z "$ACTION" && -z "$SOURCE_NAME" ]]; then
+    CATEGORY=$(printf "1. Scenes\n2. Sources\n3. Actions" | dmenu -l 3 -i -p "Select Category:")
 
-IFS= read -r RESPONSE <&"${WS[0]}"
+    [[ -z "$CATEGORY" ]] && exit 0
 
-SCENE=$(
-    jq -r '.d.responseData.scenes[].sceneName' <<<"$RESPONSE" |
-    dmenu -l 10 -i -p "Scene"
-)
+    case "$CATEGORY" in
+        *"Actions")
+            ACTION=$(printf "startstream\nstopstream\nstartrecord\nstoprecord" | dmenu -l 4 -i -p "Select Action:")
+            [[ -z "$ACTION" ]] && exit 0
+            EXEC_ORDER+=("action")
+            ;;
+            
+        *"Scenes")
+            REQ_JSON='{"op":6,"d":{"requestType":"GetSceneList","requestId":"get_scenes"}}'
+            SCENE_RESP=$(send_req "$REQ_JSON")
 
-[[ -z "$SCENE" ]] && exit 0
+            # Sort scenes in reverse sceneIndex order
+            SCENE=$(jq -r '.d.responseData.scenes | sort_by(- .sceneIndex) | .[].sceneName' <<<"$SCENE_RESP" | dmenu -l 12 -i -p "Select Scene:")
+            [[ -z "$SCENE" ]] && exit 0
+            EXEC_ORDER+=("scene")
+            ;;
 
-jq -nc \
-    --arg scene "$SCENE" \
-    '{
-        op:6,
-        d:{
-            requestType:"SetCurrentProgramScene",
-            requestId:"2",
-            requestData:{
-                sceneName:$scene
+        *"Sources")
+            # Fetch active scene
+            REQ_CURR='{"op":6,"d":{"requestType":"GetCurrentProgramScene","requestId":"get_curr_scene"}}'
+            CURR_SCENE_RESP=$(send_req "$REQ_CURR")
+            CURRENT_SCENE=$(jq -r '.d.responseData.currentProgramSceneName' <<<"$CURR_SCENE_RESP")
+
+            # Fetch scene items for current scene
+            REQ_ITEMS=$(jq -nc --arg scene "$CURRENT_SCENE" '{op:6, d:{requestType:"GetSceneItemList", requestId:"get_items", requestData:{sceneName: $scene}}}')
+            ITEM_RESP=$(send_req "$REQ_ITEMS")
+
+            # Displays sources in reverse OBS list order with [ON] / [OFF] status indicator
+            RAW_SELECTION=$(jq -r '.d.responseData.sceneItems | reverse | .[] | (if .sceneItemEnabled then "[ON] " else "[OFF] " end) + .sourceName' <<<"$ITEM_RESP" | dmenu -l 12 -i -p "Toggle Source ($CURRENT_SCENE):")
+            
+            [[ -z "$RAW_SELECTION" ]] && exit 0
+            
+            # Robust tag stripping: removes "[ON] " or "[OFF] " prefix cleanly
+            SOURCE_NAME="${RAW_SELECTION#\[*\] }"
+            EXEC_ORDER+=("source")
+            ;;
+    esac
+fi
+
+# Helper functions to send WebSocket commands
+do_scene() {
+    [[ -z "$SCENE" ]] && return
+    REQ_JSON=$(jq -nc \
+        --arg scene "$SCENE" \
+        '{
+            op: 6,
+            d: {
+                requestType: "SetCurrentProgramScene",
+                requestId: "set_scene",
+                requestData: { sceneName: $scene }
             }
-        }
-    }' >&"${WS[1]}"
+        }')
+    send_req "$REQ_JSON" >/dev/null
+}
+
+do_action() {
+    [[ -z "$ACTION" ]] && return
+    case "${ACTION,,}" in
+        startstream|startstreaming)
+            REQUEST_TYPE="StartStream"
+            ;;
+        stopstream|stopstreaming)
+            REQUEST_TYPE="StopStream"
+            ;;
+        startrecord|startrecording)
+            REQUEST_TYPE="StartRecord"
+            ;;
+        stoprecord|stoprecording)
+            REQUEST_TYPE="StopRecord"
+            ;;
+        *)
+            echo "Unknown action: $ACTION" >&2
+            exit 1
+            ;;
+    esac
+
+    REQ_JSON=$(jq -nc \
+        --arg type "$REQUEST_TYPE" \
+        '{
+            op: 6,
+            d: {
+                requestType: $type,
+                requestId: "do_action",
+                requestData: {}
+            }
+        }')
+    send_req "$REQ_JSON" >/dev/null
+}
+
+do_toggle_source() {
+    [[ -z "$SOURCE_NAME" ]] && return
+
+    # Use specified scene if provided, otherwise fetch active scene
+    if [[ -z "$SCENE" ]]; then
+        REQ_CURR='{"op":6,"d":{"requestType":"GetCurrentProgramScene","requestId":"src_curr"}}'
+        RESP_JSON=$(send_req "$REQ_CURR")
+        TARGET_SCENE=$(jq -r '.d.responseData.currentProgramSceneName' <<<"$RESP_JSON")
+    else
+        TARGET_SCENE="$SCENE"
+    fi
+
+    # Query items to find ID and visibility state
+    REQ_ITEMS=$(jq -nc --arg scene "$TARGET_SCENE" '{op:6, d:{requestType:"GetSceneItemList", requestId:"src_items", requestData:{sceneName: $scene}}}')
+    ITEM_RESP=$(send_req "$REQ_ITEMS")
+
+    ITEM_INFO=$(jq -r --arg src "$SOURCE_NAME" \
+        '.d.responseData.sceneItems[] | select(.sourceName == $src) | "\(.sceneItemId) \(.sceneItemEnabled)"' <<<"$ITEM_RESP")
+
+    if [[ -z "$ITEM_INFO" ]]; then
+        echo "Source '$SOURCE_NAME' not found in scene '$TARGET_SCENE'" >&2
+        return 1
+    fi
+
+    ITEM_ID=$(echo "$ITEM_INFO" | awk '{print $1}')
+    IS_ENABLED=$(echo "$ITEM_INFO" | awk '{print $2}')
+
+    # Invert state
+    NEW_STATE=true
+    [[ "$IS_ENABLED" == "true" ]] && NEW_STATE=false
+
+    # Send toggle request
+    REQ_TOGGLE=$(jq -nc \
+        --arg scene "$TARGET_SCENE" \
+        --argjson id "$ITEM_ID" \
+        --argjson enabled "$NEW_STATE" \
+        '{
+            op: 6,
+            d: {
+                requestType: "SetSceneItemEnabled",
+                requestId: "src_toggle",
+                requestData: {
+                    sceneName: $scene,
+                    sceneItemId: $id,
+                    sceneItemEnabled: $enabled
+                }
+            }
+        }')
+    send_req "$REQ_TOGGLE" >/dev/null
+
+    notify "Source '$SOURCE_NAME' set to $( [[ "$NEW_STATE" == "true" ]] && echo "Visible" || echo "Hidden" )"
+}
+
+# Execute in the exact order flags were specified
+for step in "${EXEC_ORDER[@]}"; do
+    case "$step" in
+        scene)  do_scene ;;
+        action) do_action ;;
+        source) do_toggle_source ;;
+    esac
+done

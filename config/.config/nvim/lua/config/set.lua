@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd("FileType", {
         if ft == "c" then
             vim.bo.makeprg = "gcc -Wall -Wextra -g -lm -o \"%<\" \"%\" && \"./%<\""
         elseif ft == "cpp" then
-            vim.bo.makeprg = "g++ -Wall -Wextra -std=c++17 -g -o \"%<\" \"%\" && \"./%<\""
+            vim.bo.makeprg = "g++ -Wall -Wextra -std=c++17 -g -o \"%<\" \"%\" && \"%<\""
         elseif ft == "python" then
             vim.bo.makeprg = 'python3 "%"'
         elseif ft == "java" then
@@ -74,8 +74,8 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-  pattern = "make",
-  command = "cclose"
+    pattern = "make",
+    command = "cclose"
 })
 
 
