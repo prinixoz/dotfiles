@@ -12,29 +12,54 @@ activated         = false
 reset_hotkey_id   = obs.OBS_INVALID_HOTKEY_ID
 stop_hotkey_id    = obs.OBS_INVALID_HOTKEY_ID
 
--- Time parser ONLY for full words: hours/hour, minutes/minute, seconds/second
+----------------------------------------------------------
+-- TIME PARSER & MEDIA CONTROLS
+----------------------------------------------------------
+
+-- Parses scene names like "10 minutes 30 seconds"
 function parse_time_from_string(name)
     if name == nil or name == "" then return 0 end
 
     local lower_name = string.lower(name)
     local total_sec = 0
 
-    -- Match Full Words: "1 hour", "2 hours"
     local h = lower_name:match("(%d+)%s*hours") or lower_name:match("(%d+)%s*hour")
     if h then total_sec = total_sec + (tonumber(h) * 3600) end
 
-    -- Match Full Words: "10 minute", "20 minutes"
     local m = lower_name:match("(%d+)%s*minutes") or lower_name:match("(%d+)%s*minute")
     if m then total_sec = total_sec + (tonumber(m) * 60) end
 
-    -- Match Full Words: "30 second", "45 seconds"
     local s = lower_name:match("(%d+)%s*seconds") or lower_name:match("(%d+)%s*second")
     if s then total_sec = total_sec + tonumber(s) end
 
     return total_sec
 end
 
--- Media Control Helpers
+-- Helper parser for formatted time strings (e.g., "10", "10:00", "01:00:00", "1:00:00")
+function parse_flexible_time(time_str)
+    if type(time_str) ~= "string" or time_str == "" then
+        return 0
+    end
+
+    local parts = {}
+    for part in string.gmatch(time_str, "%d+") do
+        table.insert(parts, tonumber(part))
+    end
+
+    if #parts == 1 then
+        -- Format "10" -> 10 seconds
+        return parts[1]
+    elseif #parts == 2 then
+        -- Format "10:00" -> 10 minutes, 00 seconds
+        return (parts[1] * 60) + parts[2]
+    elseif #parts == 3 then
+        -- Format "01:00:00" or "1:00:00" -> 1 hour, 00 minutes, 00 seconds
+        return (parts[1] * 3600) + (parts[2] * 60) + parts[3]
+    end
+
+    return 0
+end
+
 function play_media_source(name)
     if name == nil or name == "" then return end
     local source = obs.obs_get_source_by_name(name)
@@ -62,7 +87,6 @@ function set_time_text()
     local minutes       = math.floor(total_minutes % 60)
     local hours         = math.floor(total_minutes / 60)
 
-    -- Always formatted as HH:MM:SS (00:00:00)
     local text          = string.format("%02d:%02d:%02d", hours, minutes, seconds)
 
     if cur_seconds < 1 then
@@ -133,16 +157,80 @@ function scene_switch()
     end
 end
 
+----------------------------------------------------------
+-- NEW TIMER MANIPULATION FUNCTIONS
+----------------------------------------------------------
+
+-- Restarts the timer based on the active scene's name duration
+function restart()
+    stop_media_source(alarm_source_name)
+    scene_switch()
+end
+
+-- Sets the timer directly using a formatted string ("10", "10:00", "01:00:00")
+function set_time(time_str)
+    local seconds = parse_flexible_time(time_str)
+    if seconds > 0 then
+        activate(true, seconds)
+    else
+        activate(false, 0)
+    end
+end
+
+-- Increases the timer by the given duration string
+function increase_time(time_str)
+    local added_seconds = parse_flexible_time(time_str)
+    if added_seconds <= 0 then return end
+
+    stop_media_source(alarm_source_name)
+    cur_seconds = cur_seconds + added_seconds
+
+    -- If the timer was stopped or finished, start it up again
+    if not activated then
+        play_media_source(bgm_source_name)
+        obs.timer_add(timer_callback, 1000)
+        activated = true
+    end
+
+    set_time_text()
+end
+
+-- Decreases the timer by the given duration string (floored at 0)
+function decrease_time(time_str)
+    local subtracted_seconds = parse_flexible_time(time_str)
+    if subtracted_seconds <= 0 then return end
+
+    cur_seconds = cur_seconds - subtracted_seconds
+
+    -- Ensure time never drops below zero
+    if cur_seconds <= 0 then
+        cur_seconds = 0
+        if activated then
+            obs.timer_remove(timer_callback)
+            stop_media_source(bgm_source_name)
+            activated = false
+            play_media_source(alarm_source_name)
+        end
+    end
+
+    set_time_text()
+end
+
+----------------------------------------------------------
+-- EVENTS & HOTKEYS
+----------------------------------------------------------
+
 function frontend_event(event)
-    if event == obs.OBS_FRONTEND_EVENT_SCENE_CHANGED then
+    if event == obs.OBS_FRONTEND_EVENT_SCENE_CHANGED or
+        event == obs.OBS_FRONTEND_EVENT_TRANSITION_STARTED or
+        event == obs.OBS_FRONTEND_EVENT_PREVIEW_SCENE_CHANGED then
         scene_switch()
     end
 end
 
 function reset(pressed)
     if not pressed then return end
-    stop_media_source(alarm_source_name)
-    scene_switch()
+    restart()
 end
 
 function stop_alarm_hotkey(pressed)
@@ -151,7 +239,7 @@ function stop_alarm_hotkey(pressed)
 end
 
 function reset_button_clicked(props, p)
-    reset(true)
+    restart()
     return false
 end
 
@@ -161,13 +249,15 @@ function stop_alarm_button_clicked(props, p)
 end
 
 ----------------------------------------------------------
+-- OBS SCRIPT INTEGRATION
+----------------------------------------------------------
 
 function script_properties()
     local props = obs.obs_properties_create()
     local sources = obs.obs_enum_sources()
 
     local text_prop = obs.obs_properties_add_list(props, "source_name", "Global Text Source", obs
-    .OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
+        .OBS_COMBO_TYPE_EDITABLE, obs.OBS_COMBO_FORMAT_STRING)
     obs.obs_property_list_add_string(text_prop, "(None)", "")
 
     local bgm_prop = obs.obs_properties_add_list(props, "bgm_source_name", "BGM Source (Optional)",

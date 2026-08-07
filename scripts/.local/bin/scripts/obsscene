@@ -163,13 +163,13 @@ fi
 
 # Multi-level dmenu selection if no CLI parameters are passed
 if [[ -z "$SCENE" && -z "$ACTION" && -z "$SOURCE_NAME" ]]; then
-    CATEGORY=$(printf "1. Scenes\n2. Sources\n3. Actions" | dmenu -l 3 -i -p "Select Category:")
+    CATEGORY=$(printf "1. Scenes\n2. Sources\n3. Actions" | dmenu -l 3 -p "Select Category:")
 
     [[ -z "$CATEGORY" ]] && exit 0
 
     case "$CATEGORY" in
         *"Actions")
-            ACTION=$(printf "startstream\nstopstream\nstartrecord\nstoprecord" | dmenu -l 4 -i -p "Select Action:")
+            ACTION=$(printf "startstream\nstopstream\nstartrecord\nstoprecord" | dmenu -l 4 -p "Select Action:")
             [[ -z "$ACTION" ]] && exit 0
             EXEC_ORDER+=("action")
             ;;
@@ -178,28 +178,23 @@ if [[ -z "$SCENE" && -z "$ACTION" && -z "$SOURCE_NAME" ]]; then
             REQ_JSON='{"op":6,"d":{"requestType":"GetSceneList","requestId":"get_scenes"}}'
             SCENE_RESP=$(send_req "$REQ_JSON")
 
-            # Sort scenes in reverse sceneIndex order
-            SCENE=$(jq -r '.d.responseData.scenes | sort_by(- .sceneIndex) | .[].sceneName' <<<"$SCENE_RESP" | dmenu -l 12 -i -p "Select Scene:")
+            SCENE=$(jq -r '.d.responseData.scenes | sort_by(- .sceneIndex) | .[].sceneName' <<<"$SCENE_RESP" | dmenu -l 12 -p "Select Scene:")
             [[ -z "$SCENE" ]] && exit 0
             EXEC_ORDER+=("scene")
             ;;
 
         *"Sources")
-            # Fetch active scene
             REQ_CURR='{"op":6,"d":{"requestType":"GetCurrentProgramScene","requestId":"get_curr_scene"}}'
             CURR_SCENE_RESP=$(send_req "$REQ_CURR")
             CURRENT_SCENE=$(jq -r '.d.responseData.currentProgramSceneName' <<<"$CURR_SCENE_RESP")
 
-            # Fetch scene items for current scene
             REQ_ITEMS=$(jq -nc --arg scene "$CURRENT_SCENE" '{op:6, d:{requestType:"GetSceneItemList", requestId:"get_items", requestData:{sceneName: $scene}}}')
             ITEM_RESP=$(send_req "$REQ_ITEMS")
 
-            # Displays sources in reverse OBS list order with [ON] / [OFF] status indicator
-            RAW_SELECTION=$(jq -r '.d.responseData.sceneItems | reverse | .[] | (if .sceneItemEnabled then "[ON] " else "[OFF] " end) + .sourceName' <<<"$ITEM_RESP" | dmenu -l 12 -i -p "Toggle Source ($CURRENT_SCENE):")
+            RAW_SELECTION=$(jq -r '.d.responseData.sceneItems | reverse | .[] | (if .sceneItemEnabled then "[ON] " else "[OFF] " end) + .sourceName' <<<"$ITEM_RESP" | dmenu -l 12 -p "Toggle Source ($CURRENT_SCENE):")
             
             [[ -z "$RAW_SELECTION" ]] && exit 0
             
-            # Robust tag stripping: removes "[ON] " or "[OFF] " prefix cleanly
             SOURCE_NAME="${RAW_SELECTION#\[*\] }"
             EXEC_ORDER+=("source")
             ;;
@@ -259,7 +254,6 @@ do_action() {
 do_toggle_source() {
     [[ -z "$SOURCE_NAME" ]] && return
 
-    # Use specified scene if provided, otherwise fetch active scene
     if [[ -z "$SCENE" ]]; then
         REQ_CURR='{"op":6,"d":{"requestType":"GetCurrentProgramScene","requestId":"src_curr"}}'
         RESP_JSON=$(send_req "$REQ_CURR")
@@ -268,7 +262,6 @@ do_toggle_source() {
         TARGET_SCENE="$SCENE"
     fi
 
-    # Query items to find ID and visibility state
     REQ_ITEMS=$(jq -nc --arg scene "$TARGET_SCENE" '{op:6, d:{requestType:"GetSceneItemList", requestId:"src_items", requestData:{sceneName: $scene}}}')
     ITEM_RESP=$(send_req "$REQ_ITEMS")
 
@@ -283,11 +276,9 @@ do_toggle_source() {
     ITEM_ID=$(echo "$ITEM_INFO" | awk '{print $1}')
     IS_ENABLED=$(echo "$ITEM_INFO" | awk '{print $2}')
 
-    # Invert state
     NEW_STATE=true
     [[ "$IS_ENABLED" == "true" ]] && NEW_STATE=false
 
-    # Send toggle request
     REQ_TOGGLE=$(jq -nc \
         --arg scene "$TARGET_SCENE" \
         --argjson id "$ITEM_ID" \
