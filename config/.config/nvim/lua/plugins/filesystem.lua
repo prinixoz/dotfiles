@@ -46,8 +46,8 @@ return {
                 columns = {
                     "icon",
                     "permissions",
-                    "size",
-                    "mtime",
+                    -- "size",
+                    -- "mtime",
                 },
                 -- Buffer-local options to use for oil buffers
                 buf_options = {
@@ -118,7 +118,7 @@ return {
                 use_default_keymaps = true,
                 view_options = {
                     -- Show files and directories that start with "."
-                    show_hidden = false,
+                    show_hidden = true,
                     -- This function defines what is considered a "hidden" file
                     is_hidden_file = function(name, bufnr)
                         local m = name:match("^%.")
@@ -139,7 +139,8 @@ return {
                         { "type", "asc" },
                         { "name", "asc" },
                     },
-                    -- Customize the highlight group for the file name
+
+
                     highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
                         return nil
                     end,
