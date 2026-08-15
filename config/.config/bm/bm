@@ -37,16 +37,17 @@ home                            | https://home.google.com/u/0/                  
 tasks                           | https://tasks.google.com/u/1                                                          | librewolf -P google
 drive                           | drive.google.com                                                                      | librewolf -P google
 
+prinixos@gmail.com              | https://mail.google.com/                                                              | librewolf -P prinixos
 
-prinixoz@gmail.com              | https://mail.google.com/                                                              | librewolf -P prinixoz
+prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
+prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
 prinixoz - channel              | https://studio.youtube.com/                                                           | librewolf -P prinixoz
-live                            | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
-linkedin                        | https://linkedin.com/                                                                 | librewolf -P prinixoz
-github                          | https://github.com/                                                                   | librewolf -P prinixoz
+prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
 monkeytype                      | https://monkeytype.com/                                                               | librewolf -P prinixoz
-dsa                             | https://takeuforward.org/dsa/strivers-a2z-sheet-learn-dsa-a-to-z                      | librewolf -P prinixoz
+github                          | https://github.com/                                                                   | librewolf -P prinixoz
+linkedin                        | https://linkedin.com/                                                                 | librewolf -P prinixoz
 harkirat                        | https://harkirat.classx.co.in/new-courses/24/content?activeTab=Content                | librewolf -P prinixoz
-
+dsa                             | https://takeuforward.org/dsa/strivers-a2z-sheet-learn-dsa-a-to-z                      | librewolf -P prinixoz
 
 #### ProtonMail :)              |                                                                                       |
 aliasoz - Protonmail            | https://mail.proton.me/u/0/inbox                                                      | librewolf -P proton
@@ -131,19 +132,11 @@ mit                             | file:///home/user/Downloads/6.0001-fall-2016/v
 
 ## Server                       
 yt-local                        | http://localhost:2000                                                                 |
-radarr movies                   | http://laptop:7878                                                                    |
-sonarr series                   | http://laptop:8989                                                                    |
-prowlarr                        | http://laptop:9696                                                                    |
 synthing                        | http://localhost:8384                                                                 |
-qbittorrent                     | http://localhost:8080                                                                    |
-jellyfin                        | http://laptop:8096/                                                                   |
+qbittorrent                     | http://localhost:8080                                                                 |
 
-# Courses
-### free courses list
-free harvard courses list       | https://pll.harvard.edu/catalog/free                                                  |
-free harvard course list for it | https://www.classcentral.com/report/harvard-cs50-guide/                               |
-tech giants free certificates   | https://www.classcentral.com/report/big-tech-free-courses/                            |
+postoffice                      | https://ebanking.indiapost.gov.in/                                                    | helium-browser --incognito
+hdfc                            | https://now.hdfc.bank.in/                                                             | helium-browser --incognito
 
-# Data
-#@Internship
-internia                        |https://internia.io/                                                                   |
+
+innovist                        | https://innovist.com/apps/return_prime/details?store=bareanatomy.myshopify.com&request_id=6a801a75399466f5fb70eb78&session_id=ug2f8g29DtUM5jem&feedback=true
