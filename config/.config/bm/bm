@@ -37,7 +37,8 @@ home                            | https://home.google.com/u/0/                  
 tasks                           | https://tasks.google.com/u/1                                                          | librewolf -P google
 drive                           | drive.google.com                                                                      | librewolf -P google
 
-prinixos@gmail.com              | https://mail.google.com/                                                              | librewolf -P prinixos
+prinixos - gmail                | https://mail.google.com/                                                              | librewolf -P prinixos
+prinixos - contacts             | https://contacts.google.com/                                                          | librewolf -P prinixos
 
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
@@ -45,6 +46,7 @@ prinixoz - channel              | https://studio.youtube.com/                   
 prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
 monkeytype                      | https://monkeytype.com/                                                               | librewolf -P prinixoz
 github                          | https://github.com/                                                                   | librewolf -P prinixoz
+reddit                          | https://reddit.com/                                                                   | librewolf -P prinixoz
 linkedin                        | https://linkedin.com/                                                                 | librewolf -P prinixoz
 harkirat                        | https://harkirat.classx.co.in/new-courses/24/content?activeTab=Content                | librewolf -P prinixoz
 dsa                             | https://takeuforward.org/dsa/strivers-a2z-sheet-learn-dsa-a-to-z                      | librewolf -P prinixoz
@@ -89,7 +91,6 @@ yt                              | https://youtube.com/?theme=dark               
 
 ### Social                      |                                                                                       |
 whatsapp                        | https://web.whatsapp.com/                                                             | librewolf -P meta
-reddit                          | https://reddit.com/                                                                   | librewolf -P social
 twitter                         | https://x.com/                                                                        | librewolf -P reddit
 pintrest                        | https://pintrest.com/                                                                 | librewolf -P social
 
