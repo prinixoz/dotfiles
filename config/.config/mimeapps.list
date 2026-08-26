@@ -17,6 +17,7 @@ x-scheme-handler/bruno=bruno.desktop
 x-scheme-handler/noutube=noutube.desktop
 inode/directory=kitty-open.desktop
 x-scheme-handler/hydralauncher=hydralauncher.desktop
+x-scheme-handler/mailto=helium.desktop
 
 [Added Associations]
 image/jpeg=nsxiv.desktop;
