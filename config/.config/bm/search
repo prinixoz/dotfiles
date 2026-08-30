@@ -1,16 +1,55 @@
 yt | https://youtube.com/results?search_query=%s
-yt | http://localhost:2000/youtube.com/results?search_query=%s
+
+## WIKI
 arch | https://wiki.archlinux.org/title/%s
-piped | https://piped.kavin.rocks/results?search_query=%s
-amazon | https://www.amazon.in/s?k=%s 
-flipkart | https://www.flipkart.com/search?q=%s
+
+## LLM
+chatgpt | https://chat.openai.com/?q=%s
+claude | https://claude.ai/new?q=%s
+gemini | https://gemini.google.com/app?q=%s
+perplexity | https://www.perplexity.ai/search?q=%s
+copilot | https://www.microsoft.com/en-us/copilot?q=%s
+poe | https://poe.com/?q=%s
+you | https://you.com/search?q=%s
+phind | https://www.phind.com/search?q=%s
+kagi_assistant | https://kagi.com/assistant?q=%s
+brave_ai | https://search.brave.com/ask?q=%s
+duck_ai | https://duckduckgo.com/?q=%s&ia=chat
+blackbox | https://www.blackbox.ai/?q=%s
+huggingchat | https://huggingface.co/chat/?q=%s
+le_chat | https://chat.mistral.ai/?q=%s
+pi | https://pi.ai/?q=%s
+deepai | https://deepai.org/chat?q=%s
+forefront | https://www.forefront.ai/?q=%s
+
+## SEARCH ENGINE
+wiby | https://wiby.me/?q=%s
 yandex | https://yandex.com/search/?text=%s
 brave | https://search.brave.com/search?q=%s
 duckduckgo | https://duckduckgo.com/?q=%s
-libreddit | https://libreddit.spike.codes/search?q=%s
+google | https://www.google.com/search?q=%s
+bing | https://www.bing.com/search?q=%s
+ecosia | https://www.ecosia.org/search?q=%s
+qwant | https://www.qwant.com/?q=%s
+startpage | https://www.startpage.com/sp/search?query=%s
+swisscows | https://swisscows.com/en/web?query=%s
+mojeek | https://www.mojeek.com/search?q=%s
+searx | https://searx.be/search?q=%s
+searxng | https://search.sapti.me/search?q=%s
+kagi | https://kagi.com/search?q=%s
+metager | https://metager.org/meta/meta.ger3?eingabe=%s
+presearch | https://presearch.com/search?q=%s
+dogpile | https://www.dogpile.com/serp?q=%s
+searchencrypt | https://www.searchencrypt.com/search?q=%s
+info | https://www.info.com/serp?q=%s
+
 alternativeto | https://alternativeto.net/browse/search/?q=%s
-aniwatch | https://aniwatch.to/search?keyword=%s
-behance | https://www.behance.net/?search=%s
-wiby | https://wiby.me/?q=%s
-thepiratebay | https://thepiratebay.org/search.php?q=%s
-chatgpt |https://chat.openai.com/?q=%s
+
+thepiratebay | https://thepiratebay.org/search.php?q=%s | librewolf -P default-null
+
+## SHOPPING
+amazon | https://www.amazon.in/s?k=%s | librewolf -P shopping
+flipkart | https://www.flipkart.com/search?q=%s | librewolf -P shopping
+blinkit | https://blinkit.com/s/?q=%s | librewolf -P shopping
+bigbasket | https://www.bigbasket.com/ps/?q=%s | librewolf -P shopping
+instamart | https://www.swiggy.com/instamart/search?query=%s | librewolf -P shopping

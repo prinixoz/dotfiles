@@ -17,7 +17,7 @@ mkdir -p "$CACHE_DIR"
 TODAY=$(date +%F)
 CURRENT_HOUR=$(date +%H)
 
-# Global Variables to prevent heavy subshell forks
+# Global Variables
 OUT_BATTERY="N/A"
 OUT_UPDATES="updating..."
 OUT_UPTIME="N/A"
@@ -25,8 +25,9 @@ OUT_WEATHER="updating..."
 OUT_MEMORY="N/A"
 OUT_TEMP="N/A"
 OUT_DISK="N/A"
+OUT_BLUETOOTH="N/A"
 
-################################# Updates #################################################################	
+################################# Updates #################################################################
 
 daily(){
     rm -f "$UPDATE_CACHE" "$WEATHER_CACHE"
@@ -46,7 +47,6 @@ load_updates(){
         OUT_UPDATES="updating..."
         if [[ ! -f "$UPDATE_LOCK" ]]; then
             touch "$UPDATE_LOCK"
-            # Completely detach background subshell to prevent process grouping delays
             (
                 local count
                 count=$(_fetch_updates)
@@ -150,7 +150,7 @@ load_weather() {
 
     local saved_date line
     saved_date=$(head -n 1 "$WEATHER_CACHE" 2>/dev/null)
-    
+
     declare -A weather_map
     while IFS='|' read -r hour code temp feels; do
         [[ -z "$hour" ]] && continue
@@ -175,7 +175,7 @@ load_weather() {
     fi
 }
 
-################################### System Stats ##########################################################	
+################################### System Stats ##########################################################
 
 load_battery(){
     local bat_dir="/sys/class/power_supply/BAT0"
@@ -221,6 +221,55 @@ load_disk() {
     OUT_DISK=$(df -h / | awk 'NR==2 {print $5 " full (" $4 " free)"}')
 }
 
+################################## Bluetooth #############################################################
+
+load_bluetooth() {
+    OUT_BLUETOOTH=""
+
+    command -v bluetoothctl >/dev/null 2>&1 || {
+        OUT_BLUETOOTH="N/A"
+        return
+    }
+
+    local mac name battery info
+    local found=0
+
+    while read -r _ mac name; do
+        [[ -z "$mac" ]] && continue
+
+        info=$(bluetoothctl info "$mac" 2>/dev/null)
+
+        # Only show devices that are actually connected.
+        grep -q "Connected: yes" <<< "$info" || continue
+
+        name=$(awk -F': ' '/Name:/ {print $2; exit}' <<< "$info")
+        name="${name:-$mac}"
+
+        # BlueZ normally reports:
+        # Battery Percentage: 0x4b (75)
+        battery=$(awk '/Battery Percentage:/ {
+            gsub(/[()%]/, "", $4)
+            print $4
+            exit
+        }' <<< "$info")
+
+        # Skip connected devices that don't expose battery information.
+        [[ -z "$battery" ]] && continue
+
+        if [[ -n "$OUT_BLUETOOTH" ]]; then
+            OUT_BLUETOOTH+=" | "
+        fi
+
+        OUT_BLUETOOTH+="${name} (${battery}%)"
+        found=1
+
+    done < <(bluetoothctl devices Connected 2>/dev/null)
+
+    [[ "$found" -eq 0 ]] && OUT_BLUETOOTH="N/A"
+}
+
+
+
 load_data() {
     load_battery
     load_updates
@@ -229,26 +278,32 @@ load_data() {
     load_memory
     load_temperature
     load_disk
+    load_bluetooth
 }
 
-################################## Presentation ###########################################################	
+################################## Presentation ###########################################################
 
 allprint(){
     load_data
-    printf "%-8s : %s\n" "Time"     "$(date +"%I:%M %p, %A")"
-    printf "%-8s : %s\n" "Date"     "$(date +"%b %d, %Y")"
-    printf "%-8s : %s\n" "Battery"  "$OUT_BATTERY"
-    printf "%-8s : %s\n" "Uptime"   "$OUT_UPTIME"
-    printf "%-8s : %s\n" "RAM"      "$OUT_MEMORY"
-    printf "%-8s : %s\n" "CPU Temp" "$OUT_TEMP"
-    printf "%-8s : %s\n" "Disk"     "$OUT_DISK"
-    
+
+    printf "%-9s : %s\n" "Time"     "$(date +"%I:%M %p, %A")"
+    printf "%-9s : %s\n" "Date"     "$(date +"%b %d, %Y")"
+    printf "%-9s : %s\n" "Battery"  "$OUT_BATTERY"
+    printf "%-9s : %s\n" "Uptime"   "$OUT_UPTIME"
+    printf "%-9s : %s\n" "RAM"      "$OUT_MEMORY"
+    printf "%-9s : %s\n" "CPU Temp" "$OUT_TEMP"
+    printf "%-9s : %s\n" "Disk"     "$OUT_DISK"
+
     if [[ "$OUT_UPDATES" != "updating..." ]]; then
-        printf "%-8s : %s\n" "Updates" "$OUT_UPDATES"
+        printf "%-9s : %s\n" "Updates" "$OUT_UPDATES"
     fi
-    
+
     if [[ "$OUT_WEATHER" != "updating..." ]]; then
-        printf "%-8s : %s\n" "Weather" "$OUT_WEATHER"
+        printf "%-9s : %s\n" "Weather" "$OUT_WEATHER"
+    fi
+
+    if [[ "$OUT_BLUETOOTH" != "N/A" ]]; then
+        printf "%-9s : %s\n" "Bluetooth" "$OUT_BLUETOOTH"
     fi
 }
 

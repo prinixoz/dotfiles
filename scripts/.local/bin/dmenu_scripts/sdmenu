@@ -1,9 +1,108 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-file="$HOME/.config/bm/search"
+set -euo pipefail
 
-content=$(cat $file| sed -e '/^\s*#/d' | column -ts "|" -o "$(printf "%100s")|" | $@ | awk -F "|" '{print $NF}')
-[ $content ] && term=$(echo "" | $1 -l 0 -p "Search :" | sed "s/\ /+/g")
-search=$(echo $content | sed "s/%s/$term/g")
-[ $term ] && librewolf -P default "$search"
+SEARCH_FILE="${HOME}/.config/bm/search"
 
+# Defaults
+DEFAULT_ENCODING="+"
+DEFAULT_BROWSER=(librewolf -P default)
+
+# Ensure search file exists
+[[ -f "$SEARCH_FILE" ]] || {
+    echo "Search file not found: $SEARCH_FILE"
+    exit 1
+}
+
+# Build menu
+selected=$(
+    grep -vE '^\s*#|^\s*$' "$SEARCH_FILE" |
+    sort |
+    column -ts "|" -o "$(printf "%100s")|" |
+    "$@"
+)
+
+# Exit if nothing selected
+[[ -z "${selected:-}" ]] && exit 0
+
+# Parse fields
+IFS='|' read -r title link command <<< "$selected"
+
+# Trim whitespace
+trim() {
+    xargs <<< "$1"
+}
+
+title=$(trim "$title")
+link=$(trim "$link")
+command=$(trim "$command")
+
+# Validate URL template
+[[ -n "$link" ]] || {
+    echo "Invalid search entry."
+    exit 1
+}
+
+# Get encoding suffix after %s
+if [[ "$link" == *%s* ]]; then
+    prefix=${link#*%s}
+else
+    echo "Invalid search entry: missing %s"
+    exit 1
+fi
+
+# Use default encoding when no suffix is given
+if [[ -z "$prefix" ]]; then
+    prefix="$DEFAULT_ENCODING"
+fi
+
+# Remove the suffix from the URL template
+base_url=${link%%%s*}
+
+# Prompt for search term
+term=$(
+    printf '%s\n' "" |
+    "$1" -l 0 -p "Search :"
+)
+
+# Exit if nothing entered
+[[ -n "${term:-}" ]] || exit 0
+
+# Encode search term according to suffix
+case "$prefix" in
+    "+")
+        term=${term// /+}
+        ;;
+    ",+")
+        term=${term// /+}
+        ;;
+    ",%20")
+        term=${term// /%20}
+        ;;
+    *)
+        # If a custom suffix is present, preserve it.
+        # Spaces default to the configured encoding.
+        term=${term// /$DEFAULT_ENCODING}
+        ;;
+esac
+
+# Replace %s with the encoded search term
+search="${link/\%s/$term}"
+
+# Use default browser if command is missing
+if [[ -z "$command" ]]; then
+    cmd=("${DEFAULT_BROWSER[@]}")
+else
+    read -ra cmd <<< "$command"
+
+    # Fall back if browser command does not exist
+    if ! command -v "${cmd[0]}" >/dev/null 2>&1; then
+        echo "Fallback -> ${DEFAULT_BROWSER[*]}"
+        cmd=("${DEFAULT_BROWSER[@]}")
+    fi
+fi
+
+echo "Launching: ${cmd[*]} $search"
+
+# Safe execution without eval
+exec "${cmd[@]}" "$search"
