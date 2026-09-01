@@ -17,7 +17,6 @@ DEFAULT_BROWSER=(librewolf -P default)
 # Build menu
 selected=$(
     grep -vE '^\s*#|^\s*$' "$SEARCH_FILE" |
-    sort |
     column -ts "|" -o "$(printf "%100s")|" |
     "$@"
 )
