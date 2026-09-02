@@ -40,6 +40,7 @@ drive                           | drive.google.com                              
 prinixos - gmail                | https://mail.google.com/                                                              | librewolf -P prinixos
 prinixos - contacts             | https://contacts.google.com/                                                          | librewolf -P prinixos
 
+prinixoz - A                    | https://prinixoz.com/                                                              | librewolf -P prinixoz
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
 prinixoz - channel              | https://studio.youtube.com/                                                           | librewolf -P prinixoz
