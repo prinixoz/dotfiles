@@ -29,7 +29,7 @@ alias installf="paru -S (sed '/^#/d'  ~/.local/dotfiles/install.txt ) --needed"
 alias paru-fix='cd ~/.cache/paru && wget -O - https://aur.archlinux.org/packages.gz | gunzip > packages.aur'
 alias quartz-liveserve="cd /mnt/PS/Github/website && npx quartz build --serve"
 alias quartz-build="cd /mnt/PS/Github/website && npx quartz build"
-alias quartz-sync="cd /mnt/PS/Github/website && npx quartz sync --no-pull"
+alias quartz-sync="cd /mnt/PS/Github/website && npx quartz build && npx quartz sync --no-pull"
 
 # sudo to doas
 #alias sudo='doas'

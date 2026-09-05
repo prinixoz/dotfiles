@@ -40,15 +40,24 @@ drive                           | drive.google.com                              
 prinixos - gmail                | https://mail.google.com/                                                              | librewolf -P prinixos
 prinixos - contacts             | https://contacts.google.com/                                                          | librewolf -P prinixos
 
-prinixoz - A                    | https://prinixoz.com/                                                              | librewolf -P prinixoz
+
+prinixoz - website              | https://blog.prinixoz.com/                                                            | librewolf -P prinixoz
+prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
+prinixoz - github website       | https://github.com/prinixoz/website                                                   | librewolf -P prinixoz
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
 prinixoz - channel              | https://studio.youtube.com/                                                           | librewolf -P prinixoz
 prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
+prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-posts/                                   | librewolf -P prinixoz
+prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
+prinixoz - github               | https://github.com/                                                                   | librewolf -P prinixoz
+## MEDIA
+moctale                         | https://moctale.in/                                                                   | librewolf -P prinixoz
+anilist                         | https://anilist.co/                                                                   | librewolf -P prinixoz
+anichart                        | https://anichart.net/                                                                 | librewolf -P prinixoz
+
 monkeytype                      | https://monkeytype.com/                                                               | librewolf -P prinixoz
-github                          | https://github.com/                                                                   | librewolf -P prinixoz
 reddit                          | https://reddit.com/                                                                   | librewolf -P prinixoz
-linkedin                        | https://linkedin.com/                                                                 | librewolf -P prinixoz
 100x                            | https://100xdevs.com/new-courses/21/content?parentId=4154                             | librewolf -P prinixoz
 dsa                             | https://takeuforward.org/dsa/strivers-a2z-sheet-learn-dsa-a-to-z                      | librewolf -P prinixoz
 
@@ -84,7 +93,6 @@ chess                           | https://chess.com/                            
 
 ### DATA STRUCTURE AND ALGORITHMS
 notion                          | https://notion.so/                                                                    | librewolf -P developer
-leetcode                        | https://leetcode.com/                                                                 | librewolf -P developer
 neetcode                        | https://neetcode.io/roadmap                                                           | librewolf -P developer
 codewars                        | https://www.codewars.com/                                                             | librewolf -P developer
 roadmap                         | https://roadmap.sh/                                                                   | librewolf -P developer
@@ -95,10 +103,6 @@ whatsapp                        | https://web.whatsapp.com/                     
 twitter                         | https://x.com/                                                                        | librewolf -P reddit
 pintrest                        | https://pintrest.com/                                                                 | librewolf -P social
 
-########################################################       MEDIA     #####################################################################
-moctale                         | https://moctale.in/                                                                   | librewolf -P media
-anilist                         | https://anilist.co/                                                                   | librewolf -P media
-anichart                        | https://anichart.net/                                                                 | librewolf -P media
 
 ### PIRACY
 nyaa                            | https://nyaa.si/                                                                      |
@@ -127,10 +131,6 @@ c lang                          | https://www.gnu.org/software/gnu-c-manual/gnu-
 ## Others                       |                                                                                       |
 virustotal                      | https://www.virustotal.com/gui/home/upload                                            |
 file upload                     | https://file.swurl.xyz/                                                               |
-meet                            | https://meet.google.com/zxb-wbxo-yma                                                  | brave --profile-directory="prinixoz"
-timer                           | https://www.bigtimer.net/?minutes=3                                                   | brave --profile-directory="prinixoz"
-rating sheet                    | https://docs.google.com/spreadsheets/d/15eseC-TvbG0RCLAfcW1uPyYiG60EKDEM6MNJKmM6gp0/  | brave --profile-directory="prinixoz"
-mit                             | file:///home/user/Downloads/6.0001-fall-2016/video_galleries/lecture-videos/index.html|
 
 ## Server                       
 yt-local                        | http://localhost:2000                                                                 |
@@ -139,6 +139,3 @@ qbittorrent                     | http://localhost:8080                         
 
 postoffice                      | https://ebanking.indiapost.gov.in/                                                    | helium-browser --incognito
 hdfc                            | https://now.hdfc.bank.in/                                                             | helium-browser --incognito
-
-
-innovist                        | https://innovist.com/apps/return_prime/details?store=bareanatomy.myshopify.com&request_id=6a801a75399466f5fb70eb78&session_id=ug2f8g29DtUM5jem&feedback=true
