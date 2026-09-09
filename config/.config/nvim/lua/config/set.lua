@@ -56,7 +56,8 @@ vim.api.nvim_create_autocmd("FileType", {
         if ft == "c" then
             vim.bo.makeprg = "gcc -Wall -Wextra -g -lm -o \"%<\" \"%\" && \"./%<\""
         elseif ft == "cpp" then
-            vim.bo.makeprg = "g++ -Wall -Wextra -std=c++17 -g -o \"/tmp/nvim.out\" \"%\" && \"/tmp/nvim.out\""
+            vim.bo.makeprg =
+            'g++ -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -std=c++17 -g -o "/tmp/nvim.out" "%" && "/tmp/nvim.out"'
         elseif ft == "python" then
             vim.bo.makeprg = 'python3 "%"'
         elseif ft == "java" then

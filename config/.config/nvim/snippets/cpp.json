@@ -1,0 +1,45 @@
+{
+    "dsa Boilerplate": {
+        "prefix": "dsa",
+        "body": [
+            "#include <bits/stdc++.h>",
+            "using namespace std;",
+            "",
+            "int main (int argc, char *argv[]) {",
+                "    cout << \"$0\";",
+                "    return 0;",
+                "}"
+        ],
+        "description": "C++ boilerplate"
+    },
+
+    "C++ Boilerplate": {
+        "prefix": "cpp",
+        "body": [
+            "#include <iostream>",
+            "using namespace std;",
+            "",
+            "int main (int argc, char *argv[]) {",
+                "    cout << \"$0\";",
+                "    return 0;",
+                "}"
+        ],
+        "description": "C++ boilerplate"
+    },
+    "Cout": {
+        "prefix": "cout",
+        "body": [
+            "cout << ${1:variable};"
+        ],
+        "description": "Print a variable"
+    },
+
+    "Cin": {
+        "prefix": "cin",
+        "body": [
+            "cin >> ${1:variable};"
+        ],
+        "description": "Read a variable"
+    }
+}
+
