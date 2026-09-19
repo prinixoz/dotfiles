@@ -4,61 +4,63 @@
 -- General
 --------------------------------------------------
 
-swayimg.enable_overlay(false)
-swayimg.enable_antialiasing(true)
+swayimg.overlay = false
+swayimg.antialiasing = true
 
-swayimg.viewer.set_default_scale("optimal")
-swayimg.viewer.enable_centering(true)
-swayimg.viewer.enable_loop(true)
+swayimg.viewer.default_scale = "optimal"
+swayimg.viewer.autocenter = true
+swayimg.viewer.loop = true
 
-swayimg.viewer.set_window_background(0xff000000)
-swayimg.viewer.set_image_background(0xff111111)
+swayimg.viewer.window_color = 0xff000000
+swayimg.viewer.background = 0xff111111
 
 --------------------------------------------------
--- Image list
+-- Image List
 --------------------------------------------------
 
-swayimg.imagelist.set_order("alpha")
-swayimg.imagelist.enable_recursive(false)
-swayimg.imagelist.enable_adjacent(true)
+swayimg.imagelist.order = "alpha"
+swayimg.imagelist.recursive = false
+swayimg.imagelist.adjacent = true
 
 --------------------------------------------------
 -- Text UI
 --------------------------------------------------
 
-swayimg.text.set_font("monospace")
-swayimg.text.set_size(14)
-swayimg.text.set_foreground(0xffcccccc)
-swayimg.text.set_shadow(0xaa000000)
+swayimg.text.font = "monospace"
+swayimg.text.size = 14
+swayimg.text.color = 0xffcccccc
+swayimg.text.shadow = 0xaa000000
 
-swayimg.viewer.set_text("topleft", {
-    "{name}",
-    "{format}",
-    "{sizehr}",
-    "{frame.width}x{frame.height}",
-})
+swayimg.viewer.text = {
+    topleft = {
+        "{name}",
+        "{format}",
+        "{sizehr}",
+        "{frame.width}x{frame.height}",
+    },
 
-swayimg.viewer.set_text("topright", {
-    "[{list.index}/{list.total}]",
-})
+    topright = {
+        "[{list.index}/{list.total}]",
+    },
 
-swayimg.viewer.set_text("bottomleft", {
-    "Zoom: {scale}%",
-})
+    bottomleft = {
+        "Zoom: {scale}%",
+    },
+}
 
 --------------------------------------------------
--- Gallery Look
+-- Gallery
 --------------------------------------------------
 
-swayimg.gallery.set_thumb_size(240)
-swayimg.gallery.set_padding_size(12)
-swayimg.gallery.set_border_size(3)
+swayimg.gallery.thumb_size = 240
+swayimg.gallery.padding_size = 12
+swayimg.gallery.border_size = 3
 
-swayimg.gallery.set_selected_scale(1.08)
+swayimg.gallery.selected_scale = 1.08
 
-swayimg.gallery.set_window_color(0xff111111)
-swayimg.gallery.set_selected_color(0xff222222)
-swayimg.gallery.set_unselected_color(0xff111111)
+swayimg.gallery.window_color = 0xff111111
+swayimg.gallery.selected_color = 0xff222222
+swayimg.gallery.unselected_color = 0xff111111
 
 --------------------------------------------------
 -- Helpers
@@ -71,7 +73,11 @@ end
 
 local function move(dx, dy)
     local pos = swayimg.viewer.get_position()
-    swayimg.viewer.set_abs_position(pos.x + dx, pos.y + dy)
+
+    swayimg.viewer.set_abs_position(
+        pos.x + dx,
+        pos.y + dy
+    )
 end
 
 --------------------------------------------------
@@ -80,12 +86,18 @@ end
 
 swayimg.viewer.bind_reset()
 
--- Open gallery
+--------------------------------------------------
+-- Gallery
+--------------------------------------------------
+
 swayimg.viewer.on_key("g", function()
     swayimg.set_mode("gallery")
 end)
 
+--------------------------------------------------
 -- Navigation
+--------------------------------------------------
+
 swayimg.viewer.on_key("n", function()
     swayimg.viewer.switch_image("next")
 end)
@@ -102,7 +114,10 @@ swayimg.viewer.on_key("Shift+k", function()
     swayimg.viewer.switch_image("prev")
 end)
 
+--------------------------------------------------
 -- Movement
+--------------------------------------------------
+
 swayimg.viewer.on_key("h", function()
     move(-40, 0)
 end)
@@ -119,7 +134,10 @@ swayimg.viewer.on_key("l", function()
     move(40, 0)
 end)
 
+--------------------------------------------------
 -- Zoom
+--------------------------------------------------
+
 swayimg.viewer.on_key("Equal", function()
     zoom(1.1)
 end)
@@ -144,7 +162,10 @@ swayimg.viewer.on_key("BackSpace", function()
     swayimg.viewer.set_fix_scale("optimal")
 end)
 
+--------------------------------------------------
 -- Rotate
+--------------------------------------------------
+
 swayimg.viewer.on_key("[", function()
     swayimg.viewer.rotate(270)
 end)
@@ -153,7 +174,10 @@ swayimg.viewer.on_key("]", function()
     swayimg.viewer.rotate(90)
 end)
 
+--------------------------------------------------
 -- Flip
+--------------------------------------------------
+
 swayimg.viewer.on_key("m", function()
     swayimg.viewer.flip_vertical()
 end)
@@ -162,31 +186,28 @@ swayimg.viewer.on_key("Shift+m", function()
     swayimg.viewer.flip_horizontal()
 end)
 
+--------------------------------------------------
 -- Fullscreen
+--------------------------------------------------
+
 swayimg.viewer.on_key("f", function()
     swayimg.set_fullscreen()
 end)
 
+--------------------------------------------------
 -- Reload
+--------------------------------------------------
+
 swayimg.viewer.on_key("r", function()
     swayimg.viewer.reload()
 end)
 
+--------------------------------------------------
 -- Quit
+--------------------------------------------------
+
 swayimg.viewer.on_key("q", function()
     swayimg.exit()
-end)
-
---------------------------------------------------
--- Mouse
---------------------------------------------------
-
-swayimg.viewer.on_mouse("Ctrl-MouseScrollUp", function()
-    zoom(1.1)
-end)
-
-swayimg.viewer.on_mouse("Ctrl-MouseScrollDown", function()
-    zoom(0.9)
 end)
 
 --------------------------------------------------
@@ -195,7 +216,10 @@ end)
 
 swayimg.gallery.bind_reset()
 
--- Return to viewer
+--------------------------------------------------
+-- Return to Viewer
+--------------------------------------------------
+
 swayimg.gallery.on_key("g", function()
     swayimg.set_mode("viewer")
 end)
@@ -209,8 +233,10 @@ swayimg.gallery.on_key("Return", function()
     end
 end)
 
+--------------------------------------------------
+-- Vim Navigation
+--------------------------------------------------
 
--- Vim movement
 swayimg.gallery.on_key("h", function()
     swayimg.gallery.switch_image("left")
 end)
@@ -227,7 +253,10 @@ swayimg.gallery.on_key("l", function()
     swayimg.gallery.switch_image("right")
 end)
 
--- Page movement
+--------------------------------------------------
+-- Page Navigation
+--------------------------------------------------
+
 swayimg.gallery.on_key("Ctrl+d", function()
     swayimg.gallery.switch_image("pgdown")
 end)
@@ -236,15 +265,50 @@ swayimg.gallery.on_key("Ctrl+u", function()
     swayimg.gallery.switch_image("pgup")
 end)
 
--- Quit
+--------------------------------------------------
+-- Gallery Quit
+--------------------------------------------------
+
 swayimg.gallery.on_key("q", function()
     swayimg.exit()
 end)
 
 --------------------------------------------------
--- Start in gallery mode
+-- Start in Gallery
 --------------------------------------------------
 
 swayimg.on_initialized(function()
     swayimg.set_mode("gallery")
+end)
+
+--------------------------------------------------
+-- Vim-style Viewer Controls
+--------------------------------------------------
+
+swayimg.viewer.bind_reset()
+
+-- Movement
+swayimg.viewer.on_key("h", function()
+    move(-40, 0)
+end)
+
+swayimg.viewer.on_key("j", function()
+    move(0, 40)
+end)
+
+swayimg.viewer.on_key("k", function()
+    move(0, -40)
+end)
+
+swayimg.viewer.on_key("l", function()
+    move(40, 0)
+end)
+
+-- Image navigation
+swayimg.viewer.on_key("n", function()
+    swayimg.viewer.switch_image("next")
+end)
+
+swayimg.viewer.on_key("p", function()
+    swayimg.viewer.switch_image("prev")
 end)
