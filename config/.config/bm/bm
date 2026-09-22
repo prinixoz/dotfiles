@@ -39,6 +39,7 @@ drive                           | drive.google.com                              
 
 prinixos - gmail                | https://mail.google.com/                                                              | librewolf -P prinixos
 prinixos - contacts             | https://contacts.google.com/                                                          | librewolf -P prinixos
+prinixos - groww                | https://groww.in/mutual-funds/user/dashboard                                          | librewolf -P prinixos
 
 
 prinixoz - website              | https://blog.prinixoz.com/                                                            | librewolf -P prinixoz

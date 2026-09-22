@@ -152,7 +152,7 @@ bindsym $mod+o exec $terminal --class floating sh -c pulsemixer
 
 bindsym $mod+shift+e exec thunar
 bindsym $mod+Shift+o exec overview
-bindsym $mod+x exec lock -v -s 1800
+bindsym $mod+x exec lock -v -s
 bindsym $mod+Shift+x exec lock
 
 #==============================================================================
