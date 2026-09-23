@@ -15,12 +15,13 @@ Usage: wizctl [OPTIONS] <COMMAND>
        wizctl id <NUMBER> <COMMAND>
 
 Commands:
-  id        Select a light target by index number (e.g., id 2 off) or list all IDs
-  dynamic   Sets the dynamic scene the light strip(s) use(s)
-  static    Sets the static color the light strip(s) use(s)
-  on        Turns on the light strip(s)
-  off       Turns off the light strip(s)
-  help      Print this message or the help of the given subcommand(s)
+  id         Select a light target by index number (e.g., id 2 off) or list all IDs
+  dynamic    Sets the dynamic scene the light strip(s) use(s)
+  static     Sets the static color the light strip(s) use(s)
+  brightness Sets the brightness level (10-100) without changing scene/color
+  on         Turns on the light strip(s)
+  off        Turns off the light strip(s)
+  help       Print this message or the help of the given subcommand(s)
 
 Options:
   -i, --ip <IP>      The IP Addresses of the light strip(s)
@@ -99,7 +100,7 @@ while [[ $# -gt 0 ]]; do
             show_help
             exit 0
             ;;
-        on|off|dynamic|static)
+        on|off|dynamic|static|brightness)
             COMMAND="$1"
             shift
             # Collect trailing subcommand args
@@ -173,6 +174,16 @@ case "$COMMAND" in
         
     off)
         payload='{"id":1,"method":"setState","params":{"state":false}}'
+        echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
+        ;;
+        
+    brightness)
+        BRIGHTNESS="${SUB_ARGS[0]}"
+        if [ -z "$BRIGHTNESS" ] || ! [[ "$BRIGHTNESS" =~ ^[0-9]+$ ]]; then
+            echo "Error: Missing or invalid brightness value (use 10-100)."
+            exit 1
+        fi
+        payload=$(printf '{"id":1,"method":"setPilot","params":{"dimming":%d}}' "$BRIGHTNESS")
         echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
         ;;
         
