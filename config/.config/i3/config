@@ -326,8 +326,6 @@ workspace 1 layout tabbed
 for_window [app_id="librewolf"] move container to workspace number 1
 for_window [app_id="obsidian"] move container to workspace number 2
 for_window [class="LibreWolf"]  move container to workspace number 1
-for_window [app_id="zen-browser"] move container to workspace number 1
-for_window [class="zen-beta"]    move container to workspace number 1
 
 #==============================================================================
 #+++++++++++++++++++++++++++++ Stylings +++++++++++++++++++++++++++++++++++++++

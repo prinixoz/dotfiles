@@ -1,314 +1,97 @@
--- ~/.config/swayimg/init.lua
+swayimg.viewer.on_key("n", function() swayimg.viewer.open("next") end)
+swayimg.viewer.on_key("p", function() swayimg.viewer.open("prev") end)
+swayimg.viewer.on_key("q", function() swayimg.exit() end)
+swayimg.gallery.on_key("q", function() swayimg.exit() end)
 
---------------------------------------------------
--- General
---------------------------------------------------
+swayimg.viewer.on_key("Escape", function() end)
+swayimg.gallery.on_key("Escape", function() end)
 
-swayimg.overlay = false
+
+swayimg.overlay = false -- Ensures it opens as a standard independent window
 swayimg.antialiasing = true
+swayimg.text.visible = false
 
-swayimg.viewer.default_scale = "optimal"
-swayimg.viewer.autocenter = true
-swayimg.viewer.loop = true
-
-swayimg.viewer.window_color = 0xff000000
-swayimg.viewer.background = 0xff111111
-
---------------------------------------------------
--- Image List
---------------------------------------------------
-
-swayimg.imagelist.order = "alpha"
-swayimg.imagelist.recursive = false
-swayimg.imagelist.adjacent = true
-
---------------------------------------------------
--- Text UI
---------------------------------------------------
-
-swayimg.text.font = "monospace"
-swayimg.text.size = 14
-swayimg.text.color = 0xffcccccc
-swayimg.text.shadow = 0xaa000000
-
-swayimg.viewer.text = {
-    topleft = {
-        "{name}",
-        "{format}",
-        "{sizehr}",
-        "{frame.width}x{frame.height}",
-    },
-
-    topright = {
-        "[{list.index}/{list.total}]",
-    },
-
-    bottomleft = {
-        "Zoom: {scale}%",
-    },
-}
-
---------------------------------------------------
--- Gallery
---------------------------------------------------
-
-swayimg.gallery.thumb_size = 240
-swayimg.gallery.padding_size = 12
-swayimg.gallery.border_size = 3
-
-swayimg.gallery.selected_scale = 1.08
-
-swayimg.gallery.window_color = 0xff111111
-swayimg.gallery.selected_color = 0xff222222
-swayimg.gallery.unselected_color = 0xff111111
-
---------------------------------------------------
--- Helpers
---------------------------------------------------
-
-local function zoom(factor)
-    local scale = swayimg.viewer.get_scale()
-    swayimg.viewer.set_abs_scale(scale * factor)
-end
-
-local function move(dx, dy)
-    local pos = swayimg.viewer.get_position()
-
-    swayimg.viewer.set_abs_position(
-        pos.x + dx,
-        pos.y + dy
-    )
-end
-
---------------------------------------------------
--- Viewer Keybinds
---------------------------------------------------
-
-swayimg.viewer.bind_reset()
-
---------------------------------------------------
--- Gallery
---------------------------------------------------
-
-swayimg.viewer.on_key("g", function()
-    swayimg.set_mode("gallery")
+swayimg.viewer.on_key("Shift+i", function()
+    swayimg.text.visible = not swayimg.text.visible
 end)
 
---------------------------------------------------
--- Navigation
---------------------------------------------------
-
-swayimg.viewer.on_key("n", function()
-    swayimg.viewer.switch_image("next")
+swayimg.gallery.on_key("Shift+i", function()
+    swayimg.text.visible = not swayimg.text.visible
 end)
 
-swayimg.viewer.on_key("p", function()
-    swayimg.viewer.switch_image("prev")
-end)
+swayimg.text.color = 0xffffffff      -- White text
+swayimg.text.background = 0xff000000 -- Black background
+swayimg.text.shadow = 0x00000000     -- Disable shadow (optional, for clean contrast)
 
-swayimg.viewer.on_key("Shift+j", function()
-    swayimg.viewer.switch_image("next")
-end)
 
-swayimg.viewer.on_key("Shift+k", function()
-    swayimg.viewer.switch_image("prev")
-end)
-
---------------------------------------------------
--- Movement
---------------------------------------------------
-
-swayimg.viewer.on_key("h", function()
-    move(-40, 0)
-end)
-
-swayimg.viewer.on_key("j", function()
-    move(0, 40)
-end)
-
-swayimg.viewer.on_key("k", function()
-    move(0, -40)
-end)
-
-swayimg.viewer.on_key("l", function()
-    move(40, 0)
-end)
-
---------------------------------------------------
--- Zoom
---------------------------------------------------
-
-swayimg.viewer.on_key("Equal", function()
-    zoom(1.1)
-end)
-
-swayimg.viewer.on_key("Minus", function()
-    zoom(0.9)
-end)
-
-swayimg.viewer.on_key("z", function()
-    swayimg.viewer.set_fix_scale("fit")
-end)
-
-swayimg.viewer.on_key("w", function()
-    swayimg.viewer.set_fix_scale("width")
-end)
-
-swayimg.viewer.on_key("0", function()
-    swayimg.viewer.set_fix_scale("real")
-end)
-
-swayimg.viewer.on_key("BackSpace", function()
-    swayimg.viewer.set_fix_scale("optimal")
-end)
-
---------------------------------------------------
--- Rotate
---------------------------------------------------
-
-swayimg.viewer.on_key("[", function()
-    swayimg.viewer.rotate(270)
-end)
-
-swayimg.viewer.on_key("]", function()
-    swayimg.viewer.rotate(90)
-end)
-
---------------------------------------------------
--- Flip
---------------------------------------------------
-
-swayimg.viewer.on_key("m", function()
-    swayimg.viewer.flip_vertical()
-end)
-
-swayimg.viewer.on_key("Shift+m", function()
-    swayimg.viewer.flip_horizontal()
-end)
-
---------------------------------------------------
--- Fullscreen
---------------------------------------------------
-
-swayimg.viewer.on_key("f", function()
-    swayimg.set_fullscreen()
-end)
-
---------------------------------------------------
--- Reload
---------------------------------------------------
-
-swayimg.viewer.on_key("r", function()
-    swayimg.viewer.reload()
-end)
-
---------------------------------------------------
--- Quit
---------------------------------------------------
-
-swayimg.viewer.on_key("q", function()
-    swayimg.exit()
-end)
-
---------------------------------------------------
--- Gallery Keybinds
---------------------------------------------------
-
-swayimg.gallery.bind_reset()
-
---------------------------------------------------
--- Return to Viewer
---------------------------------------------------
-
-swayimg.gallery.on_key("g", function()
-    swayimg.set_mode("viewer")
-end)
-
-swayimg.gallery.on_key("Return", function()
-    local image = swayimg.gallery.get_image()
-
-    if image and image.path then
-        swayimg.viewer.open(image.path)
-        swayimg.set_mode("viewer")
+-- Delete / Trash current image with 'd'
+swayimg.viewer.on_key("d", function()
+    local img = swayimg.viewer.get_image()
+    if img and img.path then
+        os.execute("gio trash " .. string.format("%q", img.path))
+        swayimg.viewer.open("next")
     end
 end)
 
---------------------------------------------------
--- Vim Navigation
---------------------------------------------------
-
-swayimg.gallery.on_key("h", function()
-    swayimg.gallery.switch_image("left")
+swayimg.gallery.on_key("d", function()
+    local img = swayimg.gallery.get_image()
+    if img and img.path then
+        os.execute("gio trash " .. string.format("%q", img.path))
+        swayimg.gallery.reload()
+    end
 end)
 
-swayimg.gallery.on_key("j", function()
-    swayimg.gallery.switch_image("down")
+-- Single 'y' to yank the actual image bytes to the clipboard
+swayimg.viewer.on_key("y", function()
+    local img = swayimg.viewer.get_image()
+    if img and img.path then
+        os.execute("wl-copy -t image/png < " .. string.format("%q", img.path))
+        os.execute("notify-send 'Swayimg' 'Yanked image to clipboard'")
+    end
 end)
 
-swayimg.gallery.on_key("k", function()
-    swayimg.gallery.switch_image("up")
+swayimg.gallery.on_key("y", function()
+    local img = swayimg.gallery.get_image()
+    if img and img.path then
+        os.execute("wl-copy -t image/png < " .. string.format("%q", img.path))
+        os.execute("notify-send 'Swayimg' 'Yanked image to clipboard'")
+    end
 end)
 
-swayimg.gallery.on_key("l", function()
-    swayimg.gallery.switch_image("right")
+-- Shift+y to copy the file path
+swayimg.viewer.on_key("Shift+y", function()
+    local img = swayimg.viewer.get_image()
+    if img and img.path then
+        os.execute("echo -n " .. string.format("%q", img.path) .. " | wl-copy")
+        os.execute("notify-send 'Swayimg' 'Copied path to clipboard'")
+    end
 end)
 
---------------------------------------------------
--- Page Navigation
---------------------------------------------------
-
-swayimg.gallery.on_key("Ctrl+d", function()
-    swayimg.gallery.switch_image("pgdown")
+swayimg.gallery.on_key("Shift+y", function()
+    local img = swayimg.gallery.get_image()
+    if img and img.path then
+        os.execute("echo -n " .. string.format("%q", img.path) .. " | wl-copy")
+        os.execute("notify-send 'Swayimg' 'Copied path to clipboard'")
+    end
 end)
 
-swayimg.gallery.on_key("Ctrl+u", function()
-    swayimg.gallery.switch_image("pgup")
-end)
+-- Rotate clockwise with 'r' (90 degrees)
+swayimg.viewer.on_key("r", function() swayimg.viewer.rotate(90) end)
+swayimg.gallery.on_key("r", function() swayimg.gallery.rotate(90) end)
 
---------------------------------------------------
--- Gallery Quit
---------------------------------------------------
+-- Rotate counter-clockwise with Shift+r (270 degrees)
+swayimg.viewer.on_key("Shift+r", function() swayimg.viewer.rotate(270) end)
+swayimg.gallery.on_key("Shift+r", function() swayimg.gallery.rotate(270) end)
 
-swayimg.gallery.on_key("q", function()
-    swayimg.exit()
-end)
+-- Rotate clockwise with 'r' (90 degrees)
+swayimg.viewer.on_key("r", function() swayimg.viewer.rotate(90) end)
+swayimg.gallery.on_key("r", function() swayimg.gallery.rotate(90) end)
 
---------------------------------------------------
--- Start in Gallery
---------------------------------------------------
+-- Rotate counter-clockwise with Shift+r (270 degrees)
+swayimg.viewer.on_key("Shift+r", function() swayimg.viewer.rotate(270) end)
+swayimg.gallery.on_key("Shift+r", function() swayimg.gallery.rotate(270) end)
 
-swayimg.on_initialized(function()
-    swayimg.set_mode("gallery")
-end)
+swayimg.viewer.on_key("z", function() swayimg.viewer.set_fix_scale("fit") end)
+swayimg.viewer.on_key("0", function() swayimg.viewer.set_fix_scale("real") end)
 
---------------------------------------------------
--- Vim-style Viewer Controls
---------------------------------------------------
-
-swayimg.viewer.bind_reset()
-
--- Movement
-swayimg.viewer.on_key("h", function()
-    move(-40, 0)
-end)
-
-swayimg.viewer.on_key("j", function()
-    move(0, 40)
-end)
-
-swayimg.viewer.on_key("k", function()
-    move(0, -40)
-end)
-
-swayimg.viewer.on_key("l", function()
-    move(40, 0)
-end)
-
--- Image navigation
-swayimg.viewer.on_key("n", function()
-    swayimg.viewer.switch_image("next")
-end)
-
-swayimg.viewer.on_key("p", function()
-    swayimg.viewer.switch_image("prev")
-end)
+swayimg.viewer.on_key("Ctrl+r", function() swayimg.viewer.reload() end)
