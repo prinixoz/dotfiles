@@ -10,6 +10,8 @@ vim.opt.cmdheight = 0;
 vim.api.nvim_set_hl(0, "Normal", { ctermbg = "none", bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { ctermbg = "none", bg = "none" })
 vim.api.nvim_set_hl(0, "EndOfBuffer", { ctermbg = "none", bg = "none" })
+vim.opt.shortmess:append("I")
+
 
 -- === Line Numbers & Layout ===
 vim.opt.nu = true             -- Show absolute line numbers
@@ -92,5 +94,13 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "c",
     callback = function()
         vim.api.nvim_set_hl(0, "cBlock", { underline = false, undercurl = false })
+    end,
+})
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+        if vim.fn.argc() == 0 then
+            require("telescope.builtin").oldfiles()
+        end
     end,
 })

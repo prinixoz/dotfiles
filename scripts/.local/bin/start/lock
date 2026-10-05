@@ -2,9 +2,35 @@
 
 # 1. Initialize variables
 PAUSE_MEDIA=0
-ENABLE_SLEEP=0
+ENABLE_SLEEP=1
 SLEEP_DELAY=1800 # Default to 300 seconds (5 mins)
 SWAYLOCK_ARGS=()
+
+light_on(){
+    (GATEWAY_IP="192.168.29.1"
+    COUNTER=0
+
+    while ! ping -c 1 -W 1 "$GATEWAY_IP" >/dev/null 2>&1; do
+        COUNTER=$((COUNTER + 1))
+        if [ "$COUNTER" -ge 100 ]; then
+            echo "Network timeout reached."
+            break
+        fi
+        sleep 0.1
+    done
+
+    wizctl --scene daylight --brightness 60&
+    ) &
+}
+
+light_off(){
+    now=$(date +%H%M)
+    if (( 10#$now >= 1600 || 10#$now <= 630 )); then
+        wizctl --scene warm-white --brightness 40&
+    else
+        wizctl off&
+    fi
+}
 
 # 2. Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -53,13 +79,13 @@ if [ "$ENABLE_SLEEP" -eq 1 ]; then
     (
         sleep "$SLEEP_DELAY"
         systemctl suspend
-    ) &
-    # Save the Process ID (PID) of the background timer
-    SLEEP_TIMER_PID=$! 
+        ) &
+        # Save the Process ID (PID) of the background timer
+        SLEEP_TIMER_PID=$! 
 fi
 
 # 5. Turn off lights
-wizctl off&
+light_off
 
 # 7. Run swaylock with any remaining arguments (blocking)
 swaylock "${SWAYLOCK_ARGS[@]}"
@@ -69,18 +95,6 @@ if [ "$ENABLE_SLEEP" -eq 1 ] && kill -0 "$SLEEP_TIMER_PID" 2>/dev/null; then
     kill "$SLEEP_TIMER_PID" >/dev/null 2>&1
 fi
 
+PAUSE_MEDIA=0
 # 9. Post-unlock network check and lights on
-(GATEWAY_IP="192.168.29.1"
-    COUNTER=0
-
-    while ! ping -c 1 -W 1 "$GATEWAY_IP" >/dev/null 2>&1; do
-        COUNTER=$((COUNTER + 1))
-        if [ "$COUNTER" -ge 100 ]; then
-            echo "Network timeout reached."
-            break
-        fi
-        sleep 0.1
-    done
-
-    wizctl on &
-) &
+light_on

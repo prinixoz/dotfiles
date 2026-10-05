@@ -8,41 +8,28 @@ fi
 PORT=38899
 
 show_help() {
-    cat << EOF
+    cat << 'EOF'
 A simple command line utility for controlling Wiz Connected LED light strips.
 
-Usage: wizctl [OPTIONS] <COMMAND>
-       wizctl id <NUMBER> <COMMAND>
+Usage: wizctl [OPTIONS] <COMMAND> [SUB-OPTIONS]
+       wizctl id <NUMBER> [COMMAND] [SUB-OPTIONS]
 
 Commands:
   id         Select a light target by index number (e.g., id 2 off) or list all IDs
   dynamic    Sets the dynamic scene the light strip(s) use(s)
   static     Sets the static color the light strip(s) use(s)
-  brightness Sets the brightness level (10-100) without changing scene/color
+  brightness Sets the brightness level (10-100)
   on         Turns on the light strip(s)
   off        Turns off the light strip(s)
-  help       Print this message or the help of the given subcommand(s)
+  help       Print this message
 
 Options:
-  -i, --ip <IP>      The IP Addresses of the light strip(s)
-  --id <NUMBER>      Select a light target by configuration index number
-  -h, --help         Print help
-EOF
-}
-
-show_dynamic_help() {
-    cat << EOF
-Sets the dynamic scene the light strip(s) use(s)
-
-Usage: wizctl dynamic <SCENE> [SPEED] [BRIGHTNESS]
-EOF
-}
-
-show_static_help() {
-    cat << EOF
-Sets the static color the light strip(s) use(s)
-
-Usage: wizctl static <RED> <GREEN> <BLUE> [BRIGHTNESS]
+  -i, --ip <IP>          The IP Address of the light strip
+  --id <NUMBER>          Select a light target by configuration index number
+  -b, --brightness <VAL> Set brightness level (10-100)
+  -s, --scene <NAME>     Set dynamic scene name
+  -p, --speed <VAL>      Set dynamic scene speed
+  -h, --help             Print help
 EOF
 }
 
@@ -54,10 +41,8 @@ if [ $# -eq 0 ]; then
         exit 1
     fi
     
-    # Query current state
     response=$(echo '{"method":"getPilot","params":{}}' | nc -u -w 1 "$TARGET_IP" "$PORT" 2>/dev/null)
     
-    # Check if state is true or false
     if echo "$response" | grep -q '"state":true'; then
         payload='{"id":1,"method":"setState","params":{"state":false}}'
     else
@@ -68,13 +53,17 @@ if [ $# -eq 0 ]; then
     exit 0
 fi
 
-# 1. Parse Options and Commands anywhere in the arguments
+# --- Variables ---
 TARGET_IP=""
 ID_INDEX=""
 COMMAND=""
-SUB_ARGS=()
+OPT_BRIGHTNESS=""
+OPT_SCENE=""
+OPT_SPEED=""
 ID_COMMAND_ONLY=false
+POS_ARGS=()
 
+# --- Advanced Argument Parsing ---
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -i|--ip)
@@ -86,15 +75,25 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         id)
-            # Check if an ID number was passed next
             if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
                 ID_INDEX="$2"
                 shift 2
             else
-                # Just 'wizctl id' was typed
                 ID_COMMAND_ONLY=true
                 shift
             fi
+            ;;
+        -b|--brightness)
+            OPT_BRIGHTNESS="$2"
+            shift 2
+            ;;
+        -s|--scene)
+            OPT_SCENE="$2"
+            shift 2
+            ;;
+        -p|--speed)
+            OPT_SPEED="$2"
+            shift 2
             ;;
         -h|--help|help)
             show_help
@@ -103,11 +102,6 @@ while [[ $# -gt 0 ]]; do
         on|off|dynamic|static|brightness)
             COMMAND="$1"
             shift
-            # Collect trailing subcommand args
-            while [[ $# -gt 0 && ! "$1" =~ ^- ]]; do
-                SUB_ARGS+=("$1")
-                shift
-            done
             ;;
         -*)
             echo "Unknown option: $1"
@@ -115,19 +109,18 @@ while [[ $# -gt 0 ]]; do
             exit 1
             ;;
         *)
-            echo "Unknown argument: $1"
-            exit 1
+            POS_ARGS+=("$1")
+            shift
             ;;
     esac
 done
 
-# 2. Handle 'wizctl id' status listing rule safely
+# Handle 'wizctl id' status listing rule
 if [ "$ID_COMMAND_ONLY" = true ] && [ -z "$COMMAND" ]; then
     echo "Configured WiZ Light IDs:"
     if [ -n "$WIZ_IP" ]; then
         echo "1 : $WIZ_IP"
     fi
-    
     for var in $(set | awk -F= '/^WIZ_IP[0-9]+/ {print $1}' | sort -V); do
         if [ -n "$var" ]; then
             num=$(echo "$var" | tr -d -c '0-9')
@@ -137,8 +130,8 @@ if [ "$ID_COMMAND_ONLY" = true ] && [ -z "$COMMAND" ]; then
     exit 0
 fi
 
-# 3. Resolve IP matching based on ID Index input
-if [ ! -z "$ID_INDEX" ]; then
+# Resolve IP matching based on ID Index input
+if [ -n "$ID_INDEX" ]; then
     if [ "$ID_INDEX" -eq 1 ]; then
         TARGET_IP="$WIZ_IP"
     else
@@ -152,7 +145,6 @@ if [ ! -z "$ID_INDEX" ]; then
     fi
 fi
 
-# Fallback default if neither -i nor id index was provided
 TARGET_IP="${TARGET_IP:-$WIZ_IP}"
 
 if [ -z "$TARGET_IP" ]; then
@@ -160,15 +152,67 @@ if [ -z "$TARGET_IP" ]; then
     exit 1
 fi
 
+# --- Intelligent Command Inference ---
 if [ -z "$COMMAND" ]; then
-    show_help
-    exit 0
+    if [ -n "$OPT_SCENE" ]; then
+        COMMAND="dynamic"
+    elif [ -n "$OPT_BRIGHTNESS" ]; then
+        COMMAND="brightness"
+        POS_ARGS=("$OPT_BRIGHTNESS")
+    else
+        show_help
+        exit 0
+    fi
 fi
 
-# 4. Process Commands
+# --- Scene Name Mapping Function ---
+get_scene_id() {
+    case "${1,,}" in
+        "ocean")          echo 1 ;;
+        "romance")        echo 2 ;;
+        "sunset")         echo 3 ;;
+        "party")          echo 4 ;;
+        "fireplace")      echo 5 ;;
+        "cozy")           echo 6 ;;
+        "forest")         echo 7 ;;
+        "pastel-colors")  echo 8 ;;
+        "wake-up")        echo 9 ;;
+        "bedtime")        echo 10 ;;
+        "warm-white")     echo 11 ;;
+        "daylight")       echo 12 ;;
+        "cool-white")     echo 13 ;;
+        "night-light")    echo 14 ;;
+        "focus")          echo 15 ;;
+        "relax")          echo 16 ;;
+        "true-colors")    echo 17 ;;
+        "tv-time")        echo 18 ;;
+        "plantgrowth")    echo 19 ;;
+        "spring")         echo 20 ;;
+        "summer")         echo 21 ;;
+        "fall")           echo 22 ;;
+        "deepdive")       echo 23 ;;
+        "jungle")         echo 24 ;;
+        "mojito")         echo 25 ;;
+        "club")           echo 26 ;;
+        "christmas")      echo 27 ;;
+        "halloween")      echo 28 ;;
+        "candlelight")    echo 29 ;;
+        "golden-white")   echo 30 ;;
+        "pulse")          echo 31 ;;
+        "steampunk")      echo 32 ;;
+        "rhythm")         echo 1000 ;;
+        *)                echo "" ;;
+    esac
+}
+
+# --- Process Commands ---
 case "$COMMAND" in
     on)
-        payload='{"id":1,"method":"setState","params":{"state":true}}'
+        if [ -n "$OPT_BRIGHTNESS" ]; then
+            payload=$(printf '{"id":1,"method":"setPilot","params":{"state":true,"dimming":%d}}' "$OPT_BRIGHTNESS")
+        else
+            payload='{"id":1,"method":"setState","params":{"state":true}}'
+        fi
         echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
         ;;
         
@@ -178,7 +222,7 @@ case "$COMMAND" in
         ;;
         
     brightness)
-        BRIGHTNESS="${SUB_ARGS[0]}"
+        BRIGHTNESS="${OPT_BRIGHTNESS:-${POS_ARGS[0]}}"
         if [ -z "$BRIGHTNESS" ] || ! [[ "$BRIGHTNESS" =~ ^[0-9]+$ ]]; then
             echo "Error: Missing or invalid brightness value (use 10-100)."
             exit 1
@@ -188,75 +232,36 @@ case "$COMMAND" in
         ;;
         
     dynamic)
-        SCENE_NAME="${SUB_ARGS[0]}"
+        SCENE_NAME="${OPT_SCENE:-${POS_ARGS[0]}}"
         
-        # If no scene arguments or help flags are given, print the scene list!
         if [ -z "$SCENE_NAME" ] || [ "$SCENE_NAME" = "--help" ] || [ "$SCENE_NAME" = "-h" ]; then
-            echo "ocean romance sunset party fireplace cozy forest pastel-colors wake-up bedtime warm-white daylight cool-white night-light focus relax true-colors tv-time plantgrowth spring summer fall deepdive jungle mojito club christmas halloween candlelight golden-white pulse steampunk rhythm" | tr ' ' '\n'
+            echo "Available scenes: ocean romance sunset party fireplace cozy forest pastel-colors wake-up bedtime warm-white daylight cool-white night-light focus relax true-colors tv-time plantgrowth spring summer fall deepdive jungle mojito club christmas halloween candlelight golden-white pulse steampunk rhythm" | tr ' ' '\n'
             exit 0
         fi
 
-        SPEED=${SUB_ARGS[1]:-20}
-        BRIGHTNESS=${SUB_ARGS[2]:-75}
-        
-        case "${SCENE_NAME,,}" in
-            "ocean")        scene_id=1 ;;
-            "romance")      scene_id=2 ;;
-            "sunset")       scene_id=3 ;;
-            "party")        scene_id=4 ;;
-            "fireplace")    scene_id=5 ;;
-            "cozy")         scene_id=6 ;;
-            "forest")       scene_id=7 ;;
-            "pastel-colors") scene_id=8 ;;
-            "wake-up")      scene_id=9 ;;
-            "bedtime")      scene_id=10 ;;
-            "warm-white")   scene_id=11 ;;
-            "daylight")     scene_id=12 ;;
-            "cool-white")   scene_id=13 ;;
-            "night-light")  scene_id=14 ;;
-            "focus")        scene_id=15 ;;
-            "relax")        scene_id=16 ;;
-            "true-colors")  scene_id=17 ;;
-            "tv-time")      scene_id=18 ;;
-            "plantgrowth")  scene_id=19 ;;
-            "spring")       scene_id=20 ;;
-            "summer")       scene_id=21 ;;
-            "fall")         scene_id=22 ;;
-            "deepdive")     scene_id=23 ;;
-            "jungle")       scene_id=24 ;;
-            "mojito")       scene_id=25 ;;
-            "club")         scene_id=26 ;;
-            "christmas")    scene_id=27 ;;
-            "halloween")    scene_id=28 ;;
-            "candlelight")  scene_id=29 ;;
-            "golden-white") scene_id=30 ;;
-            "pulse")        scene_id=31 ;;
-            "steampunk")    scene_id=32 ;;
-            "rhythm")       scene_id=1000 ;;
-            *)
-                echo "Error: Unknown dynamic scene '$SCENE_NAME'."
-                exit 1
-                ;;
-        esac
+        scene_id=$(get_scene_id "$SCENE_NAME")
+        if [ -z "$scene_id" ]; then
+            echo "Error: Unknown dynamic scene '$SCENE_NAME'."
+            exit 1
+        fi
+
+        SPEED="${OPT_SPEED:-${POS_ARGS[1]:-20}}"
+        # If brightness wasn't explicitly passed with --brightness, use position 2 or default to 75
+        BRIGHTNESS="${OPT_BRIGHTNESS:-${POS_ARGS[2]:-75}}"
         
         payload=$(printf '{"id":1,"method":"setPilot","params":{"sceneId":%d,"speed":%d,"dimming":%d}}' "$scene_id" "$SPEED" "$BRIGHTNESS")
         echo "$payload" | nc -u -w 1 "$TARGET_IP" "$PORT"
         ;;
         
     static)
-        if [ "${SUB_ARGS[0]}" = "--help" ] || [ "${SUB_ARGS[0]}" = "-h" ] || [ -z "${SUB_ARGS[0]}" ]; then
-            show_static_help
-            exit 0
-        fi
-
-        RED="${SUB_ARGS[0]}"
-        GREEN="${SUB_ARGS[1]}"
-        BLUE="${SUB_ARGS[2]}"
-        BRIGHTNESS=${SUB_ARGS[3]:-75}
+        RED="${POS_ARGS[0]}"
+        GREEN="${POS_ARGS[1]}"
+        BLUE="${POS_ARGS[2]}"
+        BRIGHTNESS="${OPT_BRIGHTNESS:-${POS_ARGS[3]:-75}}"
         
         if [ -z "$RED" ] || [ -z "$GREEN" ] || [ -z "$BLUE" ]; then
             echo "Error: Missing required RGB arguments."
-            show_static_help
+            echo "Usage: wizctl static <RED> <GREEN> <BLUE> [--brightness <VAL>]"
             exit 1
         fi
         

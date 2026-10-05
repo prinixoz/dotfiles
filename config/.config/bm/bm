@@ -45,6 +45,7 @@ prinixos - groww                | https://groww.in/mutual-funds/user/dashboard  
 
 prinixoz - website              | https://blog.prinixoz.com/                                                            | librewolf -P prinixoz
 prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
+prinixoz - gemini               | https://gemini.google.com/app                                                         | librewolf -P prinixoz
 prinixoz - github website       | https://github.com/prinixoz/website                                                   | librewolf -P prinixoz
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
@@ -93,6 +94,7 @@ swiggy                          | https://www.swiggy.com/restaurants            
 etsy                            | etsy.com/                                                                             |
 ### Games                       |                                                                                       |
 schulte                         | https://drafterleo.github.io/schulte/                                                 |
+metronome                       | https://metronome-online.com/84-bpm
 breating                        | https://zenmix.io/breathing-timer/                                                    |
 chess                           | https://chess.com/                                                                    | librewolf -P typing
 ### Torrent                     |                                                                                       |
