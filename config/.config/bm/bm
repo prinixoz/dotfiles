@@ -17,6 +17,7 @@ neptl                           | https://onlinecourses.nptel.ac.in/e-learning/c
 
 ################################################### JAPANESE ##################################################################################################
 jlpt practice                   | https://www.japanesejlpt.com/learn-japanese/katakana-practice/                        |
+anime japanese                  | https://nadeshiko.co/
 ### tracker                     |                                                                                       |
 habit tracker                   | https://www.lifeofdiscipline.com/my-habits                                            | librewolf -P trackers
 todoist                         | https://app.todoist.com/app/                                                          | librewolf -P trackers
@@ -50,6 +51,7 @@ prinixoz - github website       | https://github.com/prinixoz/website           
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
 prinixoz - channel              | https://studio.youtube.com/                                                           | librewolf -P prinixoz
+prinixoz - youtube              | https://youtube.com/                                                                  | librewolf -P prinixoz
 prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
 prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-posts/                                   | librewolf -P prinixoz
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz

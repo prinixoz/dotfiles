@@ -43,8 +43,3 @@ vim.api.nvim_set_keymap("n", "<leader>t", ":terminal<CR>", { noremap = true, sil
 -- Exit terminal mode with Esc
 vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap('i', '(', '()<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '[', '[]<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '{', '{}<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '"', '""<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', "'", "''<Left>", { noremap = true })
