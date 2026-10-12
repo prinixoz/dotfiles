@@ -80,7 +80,6 @@ simplelogin                     | https://app.simplelogin.io/dashboard/         
 chatgpt                         | https://chatgpt.com/?temporary-chat=true                                              | librewolf -P google
 duckai                          | https://duck.ai                                                                       |
 deepseek                        | https://chat.deepseek.com/                                                            | librewolf -P google
-gemini                          | http://gemini.google.com/u/0/                                                         | librewolf -P google
 notebooklm                      | https://notebooklm.google.com/                                                        | librewolf -P google
 ## Shopping                     |                                                                                       |
 amazon                          | https://amazon.in/                                                                    | librewolf -P shopping
