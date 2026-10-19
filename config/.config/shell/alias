@@ -104,6 +104,7 @@ alias vi2="$EDITOR ~/.config/i3/scripts/startup.sh"
 alias vi3="$EDITOR ~/.config/i3/config"
 alias vinsta="$EDITOR ~/.config/instaloader/profiles"
 alias v=nvim
+alias vim=nvim
 
 alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
 

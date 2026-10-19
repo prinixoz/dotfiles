@@ -37,6 +37,17 @@ function fish_mode_prompt
 end
 
 
+# Vi mode
+set -g fish_key_bindings fish_vi_key_bindings
+
+# Block cursor in insert mode
+set -g fish_cursor_insert block
+
+# Block cursor in normal mode
+set -g fish_cursor_default block
+
+# Block cursor in visual mode
+set -g fish_cursor_visual block
 
 
 alias so="source ~/.config/fish/config.fish"
