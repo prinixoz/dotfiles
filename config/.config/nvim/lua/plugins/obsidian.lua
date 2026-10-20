@@ -131,7 +131,7 @@ return {
             heading = {
                 enabled = true,
                 sign = true,
-                icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+                icons = { ">>>>>>>>>>  ", ">>>>> ", ">>> ", ">> ", "> ", "󰲫 " },
             },
             code = {
                 enabled = true,
