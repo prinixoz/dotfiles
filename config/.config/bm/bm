@@ -47,6 +47,7 @@ prinixos - groww                | https://groww.in/mutual-funds/user/dashboard  
 prinixoz - website              | https://blog.prinixoz.com/                                                            | librewolf -P prinixoz
 prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
 prinixoz - gemini               | https://gemini.google.com/app                                                         | librewolf -P prinixoz
+prinixoz - notebooklm           | https://notebooklm.google.com/                                                        | librewolf -P prinixoz
 prinixoz - github website       | https://github.com/prinixoz/website                                                   | librewolf -P prinixoz
 prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
 prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
@@ -56,7 +57,7 @@ prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxU
 prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-posts/                                   | librewolf -P prinixoz
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
 prinixoz - github               | https://github.com/                                                                   | librewolf -P prinixoz
-prinixoz - kick                 | https://kick.com/                                                                     | librewolf -P prinixoz
+prinixoz - kick                 | https://kick.com/prinixoz                                                             | librewolf -P prinixoz
 
 prinixoz - dualingo             | https://www.duolingo.com/learn                                                        | librewolf -P prinixoz
 
@@ -80,7 +81,6 @@ simplelogin                     | https://app.simplelogin.io/dashboard/         
 chatgpt                         | https://chatgpt.com/?temporary-chat=true                                              | librewolf -P google
 duckai                          | https://duck.ai                                                                       |
 deepseek                        | https://chat.deepseek.com/                                                            | librewolf -P google
-notebooklm                      | https://notebooklm.google.com/                                                        | librewolf -P google
 ## Shopping                     |                                                                                       |
 amazon                          | https://amazon.in/                                                                    | librewolf -P shopping
 flipkart                        | https://flipkart.com/                                                                 | librewolf -P shopping
