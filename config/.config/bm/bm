@@ -58,6 +58,8 @@ prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-p
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
 prinixoz - github               | https://github.com/                                                                   | librewolf -P prinixoz
 prinixoz - kick                 | https://kick.com/prinixoz                                                             | librewolf -P prinixoz
+prinixoz - kick chat            | https://kick.com/popout/prinixoz/chat                                                 | helium-browser --app 
+
 
 prinixoz - dualingo             | https://www.duolingo.com/learn                                                        | librewolf -P prinixoz
 
@@ -126,7 +128,6 @@ monochrome                      | https://monochrome.tf/                        
 jjk                             | https://ww5.readjujutsukaisen.com/manga/jujutsu-kaisen-modulo-spoilers-raw/           |
 kayoanime                       | https://kayoanime.com/                                                                | librewolf -P google 
 nekobt                          | https://nekobt.to/                   
-anikai                          | https://anikai.to/
 
 ### Docs                        |                                                                                       |
 archwiki                        | https://wiki.archlinux.org                                                            |
