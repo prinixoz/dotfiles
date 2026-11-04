@@ -151,3 +151,9 @@ export PATH="$PATH:$HOME/.local/share/cargo/bin"
 
 export PATH="$PATH:/usr/bin/vendor_perl"
 export QT_QPA_PLATFORM=xcb
+
+## Japanese writing
+export XMODIFIERS=@im=fcitx
+export QT_IM_MODULE=fcitx
+export GTK_IM_MODULE=fcitx
+export SDL_IM_MODULE=fcitx
