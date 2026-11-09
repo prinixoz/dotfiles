@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if pgrep -x swaylock >/dev/null 2>&1; then
+    echo "swaylock already running, skipping new lock"
+    exit 0
+fi
+
 # 1. Initialize variables
 PAUSE_MEDIA=0
 ENABLE_SLEEP=1
@@ -62,10 +67,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 3. Check if already locked
-if pgrep -x swaylock >/dev/null 2>&1; then
-    echo "swaylock already running, skipping new lock"
-    exit 0
-fi
 
 # 4. Execute media pause if the flag was passed
 if [ "$PAUSE_MEDIA" -eq 1 ]; then
