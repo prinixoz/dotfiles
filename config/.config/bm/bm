@@ -39,30 +39,32 @@ home                            | https://home.google.com/u/0/                  
 tasks                           | https://tasks.google.com/u/1                                                          | librewolf -P google
 drive                           | drive.google.com                                                                      | librewolf -P google
 
-prinixos - gmail                | https://mail.google.com/                                                              | librewolf -P prinixos
-prinixos - drive                | https://drive.google.com/                                                             | librewolf -P prinixos
-prinixos - contacts             | https://contacts.google.com/                                                          | librewolf -P prinixos
-prinixos - groww                | https://groww.in/mutual-funds/user/dashboard                                          | librewolf -P prinixos
+prinixos - gmail                | https://mail.google.com/                                                              | helium-browser -P prinixos --app="$url"
+prinixos - drive                | https://drive.google.com/                                                             | helium-browser -P prinixos --app="$url"
+prinixos - contacts             | https://contacts.google.com/                                                          | helium-browser -P prinixos --app="$url"
+prinixos - groww                | https://groww.in/mutual-funds/user/dashboard                                          | helium-browser -P prinixos --app="$url"
 
 
-prinixoz - website              | https://blog.prinixoz.com/                                                            | librewolf -P prinixoz
+prinixoz - website              | https://blog.prinixoz.com/                                                            
 prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
 prinixoz - gemini               | https://gemini.google.com/app                                                         | librewolf -P prinixoz
 prinixoz - notebooklm           | https://notebooklm.google.com/                                                        | librewolf -P prinixoz
 prinixoz - github website       | https://github.com/prinixoz/website                                                   | librewolf -P prinixoz
-prinixoz - gmail                | https://mail.google.com/                                                              | librewolf -P prinixoz
-prinixoz - calendar             | https://calendar.google.com/                                                          | librewolf -P prinixoz
-prinixoz - channel              | https://studio.youtube.com/                                                           | librewolf -P prinixoz
-prinixoz - youtube              | https://youtube.com/                                                                  | librewolf -P prinixoz
-prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | librewolf -P prinixoz
-prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-posts/                                   | librewolf -P prinixoz
+prinixoz - gmail                | https://mail.google.com/                                                              | helium-browser -P prinixoz 
+prinixoz - calendar             | https://calendar.google.com/                                                          | helium-browser -P prinixoz 
+prinixoz - youtube              | https://youtube.com/                                                                  | helium-browser -P prinixoz 
+prinixoz - instagram            | https://www.instagram.com/prinixoz/saved/all-posts/                                   | helium-browser -P prinixoz --app="$url"
+prinixoz - reddit               | https://reddit.com/                                                                   | helium-browser -P prinixoz --app="$url"
+prinixoz - monkeytype           | https://monkeytype.com/                                                               | helium-browser -P prinixoz --app="$url"
+prinixoz - dualingo             | https://www.duolingo.com/learn                                                        | helium-browser -P prinixoz --app="$url"
+prinixoz - kick                 | https://kick.com/prinixoz                                                             | helium-browser -P prinixoz --app="$url"
+prinixoz - kick chat            | https://kick.com/popout/prinixoz/chat                                                 | helium-browser -P prinixoz --app="$url"
+prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | helium-browser -P prinixoz --app="$url"
+prinixoz - channel              | https://studio.youtube.com/                                                           | helium-browser -P prinixoz 
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
 prinixoz - github               | https://github.com/                                                                   | librewolf -P prinixoz
-prinixoz - kick                 | https://kick.com/prinixoz                                                             | librewolf -P prinixoz
-prinixoz - kick chat            | https://kick.com/popout/prinixoz/chat                                                 | helium-browser --app 
 
 
-prinixoz - dualingo             | https://www.duolingo.com/learn                                                        | librewolf -P prinixoz
 
 ## MEDIA
 moctale                         | https://moctale.in/                                                                   | librewolf -P prinixoz
@@ -70,8 +72,6 @@ wetrackr                        | https://wetrakr.com/                          
 anilist                         | https://anilist.co/                                                                   | librewolf -P prinixoz
 anichart                        | https://anichart.net/                                                                 | librewolf -P prinixoz
 
-monkeytype                      | https://monkeytype.com/                                                               | librewolf -P prinixoz
-reddit                          | https://reddit.com/                                                                   | librewolf -P prinixoz
 100x                            | https://100xdevs.com/new-courses/21/content?parentId=4154                             | librewolf -P prinixoz
 dsa                             | https://takeuforward.org/prep-hub/strivers-a2z-dsa-sheet?page=sheet                   | librewolf -P prinixoz
 

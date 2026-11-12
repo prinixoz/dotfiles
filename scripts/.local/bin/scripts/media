@@ -2,10 +2,11 @@
 
 # 1. Define your base folder paths here (one per line)
 BASE_FOLDERS=(
-    "/mnt/PS/Media/Youtube/"
-    "/mnt/PS/Media/Anime/"
-    "/mnt/PS/Media/Movies/"
-    "/mnt/PS/Media/Series/"
+    "/mnt/PS/<media>/Youtube/"
+    "/mnt/PS/<media>/Anime/"
+    "/mnt/PS/<media>/Movies/"
+    "/mnt/PS/<media>/Series/"
+    "/mnt/PS/<nihongo>/"
 )
 
 # 2. Recursively find all subfolders within the base directories

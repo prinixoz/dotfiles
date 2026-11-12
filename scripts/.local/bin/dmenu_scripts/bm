@@ -1,17 +1,39 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 BOOKMARK_FILE="${HOME}/.config/bm/bm"
 FALLBACK_BROWSER="librewolf"
+HELIUM_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/net.imput.helium"
 
-# Ensure bookmark file exists
-[[ -f "$BOOKMARK_FILE" ]] || {
-    echo "Bookmark file not found: $BOOKMARK_FILE"
+if [[ ! -f "$BOOKMARK_FILE" ]]; then
+    echo "Bookmark file not found: $BOOKMARK_FILE" >&2
     exit 1
+fi
+
+resolve_helium_profile() {
+    local target_name="$1"
+    local local_state="$HELIUM_CONFIG/Local State"
+
+    if [[ -f "$local_state" ]] && command -v jq >/dev/null 2>&1; then
+        local found
+        found=$(jq -r --arg name "$target_name" '
+            .profile.info_cache
+            | to_entries[]?
+            | select(
+                (.key | ascii_downcase == ($name | ascii_downcase)) or
+                ((.value.name // "") | ascii_downcase == ($name | ascii_downcase)) or
+                ((.value.user_name // "") | ascii_downcase == ($name | ascii_downcase))
+              )
+            | .key' "$local_state" 2>/dev/null | head -n 1)
+
+        if [[ -n "$found" && "$found" != "null" ]]; then
+            echo "$found"
+            return 0
+        fi
+    fi
+
+    echo "$target_name"
 }
 
-# Build menu
 selected=$(
     grep -vE '^\s*#|^\s*$' "$BOOKMARK_FILE" |
     sort |
@@ -19,37 +41,71 @@ selected=$(
     "$@"
 )
 
-# Exit if nothing selected
 [[ -z "${selected:-}" ]] && exit 0
 
-# Parse fields
 IFS='|' read -r title link command <<< "$selected"
 
-# Trim whitespace
 trim() {
-    xargs <<< "$1"
+    echo "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
 title=$(trim "$title")
 link=$(trim "$link")
 command=$(trim "$command")
 
-# Validate URL exists
-[[ -n "$link" ]] || {
-    echo "Invalid bookmark entry."
-    exit 1
-}
+[[ -z "$link" ]] && exit 1
 
-# Split command safely into array
-read -ra cmd <<< "$command"
+read -ra raw_cmd <<< "$command"
 
-# Use fallback if command missing
-if [[ ${#cmd[@]} -eq 0 ]] || ! command -v "${cmd[0]}" >/dev/null 2>&1; then
-    echo "Fallback -> $FALLBACK_BROWSER"
+if [[ ${#raw_cmd[@]} -eq 0 ]] || ! command -v "${raw_cmd[0]}" >/dev/null 2>&1; then
     exec "$FALLBACK_BROWSER" "$link"
 fi
 
-echo "Launching: ${cmd[*]} $link"
+browser_bin="${raw_cmd[0]}"
+parsed_cmd=()
+has_url_placeholder=false
+i=0
 
-# Safe execution without eval
-exec "${cmd[@]}" "$link"
+while [[ $i -lt ${#raw_cmd[@]} ]]; do
+    arg="${raw_cmd[$i]}"
+
+    # Strip surrounding quotes if present (e.g., "--app=\"$url\"" -> "--app=$url")
+    arg="${arg%\"}"
+    arg="${arg#\"}"
+    arg="${arg%\'}"
+    arg="${arg#\'}"
+
+    # Handle -P <name> for Helium/Chromium
+    if [[ "$arg" == "-P" && "$browser_bin" == *"helium"* ]] || [[ "$arg" == "-P" && "$browser_bin" == *"chromium"* ]]; then
+        ((i++))
+        if [[ $i -lt ${#raw_cmd[@]} ]]; then
+            profile_label="${raw_cmd[$i]}"
+            profile_label="${profile_label%\"}"
+            profile_label="${profile_label#\"}"
+            resolved_dir=$(resolve_helium_profile "$profile_label")
+            parsed_cmd+=("--profile-directory=$resolved_dir")
+        fi
+        ((i++))
+        continue
+    fi
+
+    # Replace $url or %u
+    if [[ "$arg" == *'$url'* || "$arg" == *'%u'* ]]; then
+        arg="${arg//\$url/$link}"
+        arg="${arg//%u/$link}"
+        # If the parameter looks like --app="https://...", strip inner quotes
+        if [[ "$arg" =~ ^--app=[\"\']?(.*)[\"\']?$ ]]; then
+            arg="--app=${BASH_REMATCH[1]}"
+        fi
+        has_url_placeholder=true
+    fi
+
+    parsed_cmd+=("$arg")
+    ((i++))
+done
+
+if [[ "$has_url_placeholder" = false ]]; then
+    parsed_cmd+=("$link")
+fi
+
+exec "${parsed_cmd[@]}"

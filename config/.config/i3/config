@@ -95,6 +95,9 @@ bindsym $mod2+m scratchpad show
 
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
+bindsym $mod+grave focus right
+bindsym $mod+shift+grave focus left
+
 
 bindsym $mod+Control+h seat seat0 cursor left
 bindsym $mod+Control+j seat seat0 cursor down

@@ -1,11 +1,13 @@
 #!/bin/bash
 
+# Prevent overlapping slurp processes
+killall -q slurp
+
 # 1. Select the screenshot target (Screen or Select)
 option=$1
 [ -z "$option" ] && option=$(printf "Select\nScreen" | dmenu -p "Capture:" | tr '[:upper:]' '[:lower:]')
 [ -z "$option" ] && exit 1
 
-# Create a temporary file to hold the screenshot initially
 tmp_img=$(mktemp /tmp/screenshot.XXXXXX.png)
 
 case "$option" in
@@ -13,8 +15,9 @@ case "$option" in
         grim "$tmp_img"
         ;;
     select|*) 
-        # If slurp is cancelled (Esc), exit without proceeding
-        geometry=$(slurp) || { rm "$tmp_img"; exit 1; }
+        # Extra kill check to ensure no rogue instance remains
+        killall -q slurp
+        geometry=$(slurp) || { rm -f "$tmp_img"; exit 1; }
         grim -g "$geometry" "$tmp_img"
         ;;
 esac
@@ -27,7 +30,6 @@ case "$type" in
         dir="/mnt/PS/Picture/Sreenshot"
         [ -d "$dir" ] || mkdir -p "$dir"
         
-        # Generate timestamp once to prevent filename mismatch
         filename="Sreenshot $(date +'%d-%m-%Y %T').png"
         filepath="$dir/$filename"
         
@@ -36,7 +38,7 @@ case "$type" in
         ;;
     copy|*) 
         wl-copy < "$tmp_img"
-        rm "$tmp_img"
+        rm -f "$tmp_img"
         notify-send "Screenshot" "Copied to clipboard"
         ;;
 esac
