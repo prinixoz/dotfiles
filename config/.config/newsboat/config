@@ -38,6 +38,7 @@ color info red black bold
 color article white default bold
 
 
+
 browser "setsid -f librewolf -P default %u >/dev/null 2>&1"
 macro , open-in-browser
 macro o set browser "setsid -f mpv-audio"; open-in-browser
@@ -67,3 +68,6 @@ highlight article ":.*\\(embedded flash\\)$" magenta default
 
 ignore-mode "display"
 ignore-article "*" "link=~ \"https://www.youtube.com/shorts\"""
+
+feedlist-title-format "My RSS Reader - %u unread / %t total"
+itemview-title-format "Article: %T"

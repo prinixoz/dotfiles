@@ -1,0 +1,40 @@
+#!/bin/bash
+
+arr=(
+    'https://shop.amul.com/en/product/amul-chocolate-whey-protein-34-g-or-pack-of-60-sachets'
+    'https://shop.amul.com/en/product/amul-whey-protein-32-g-or-pack-of-60-sachets'
+)
+
+for i in "${arr[@]}"; do
+    link=$(echo "$i" | sed 's|https://shop.amul.com/en/product/|https://shop.amul.com/api/1/entity/ms.products?q=%7B%22alias%22:%22|; s|$|%22%7D\&limit=1|')
+    while true; do
+        available=$(curl -s "$link" \
+        --compressed \
+        -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0' \
+        -H 'Accept: application/json, text/plain, */*' \
+        -H 'Accept-Language: en-US,en;q=0.9' \
+        -H 'Accept-Encoding: gzip, deflate, br, zstd' \
+        -H 'Referer: https://shop.amul.com/en/product/amul-chocolate-whey-protein-34-g-or-pack-of-60-sachets' \
+        -H 'tid: 1794966620596:526:9314e8c56e0083ef9e3bbd64a969430954e85aba87103bb20d4033aec4dedd4a' \
+        -H 'x-forwarded-base-url: https://shop.amul.com/en/product/amul-chocolate-whey-protein-34-g-or-pack-of-60-sachets' \
+        -H 'x-forwarded-base-path: /en/product/amul-chocolate-whey-protein-34-g-or-pack-of-60-sachets' \
+        -H 'frontend: 1' \
+        -H 'Sec-GPC: 1' \
+        -H 'Connection: keep-alive' \
+        -H 'Cookie: jsessionid=s%3AtylCBu3SSgPUG5CkVpT02S4c.5PLkUwGtiA6lFsquKXPsqpzhh7yDQGzTf1YIFMfp7jo; __cf_bm=_UCXT0U13CBVAYA528REvMLdkCHgbilzymrS5kQGvdc-1794966332.964061-1.0.1.1-ximS7zjukYoc_jnJSuDbIUvO5EqF3xUpnK4Jz.KzRcaYSxVHL9ChYq8sox8flhaNUSuR0AxUCWLMZuE_JREFMALXy.BcXOYJhX6BmH7Tf3QIJ0DN9l68Tus9bxl.Kmc1; cf_clearance=CrjKs9yhyxq77hdG5pPLyknd1AR38osjswYcg6HeWJP5Eiz7wQUPh3wImj7vixWHIrt963RPHTfmBknsd2x0nM-1c_1Fpp7a95h7WmBq4G74BysQmFY46jMBp3ZoHnR16vVjLuZS3GF-Lh-xHV6ycG1eyd_jyqy55lfZAa4OBAPhmi-U3TKh9edMAk7Xna-vNXnvzQpX7PAqFlx53wr777Lb4MToFwvhl1c-KDhq8IQiaOd4RASfC4CaAZWySGYeI-2OROxua4GVY_drjzAYMnAb3HJkud2seVhEgFUTVt9iNe5zSU8P82cvlMwWKjI733D8p6mReHeilsS6a-DjZx4kp_r6iokT; __cf_bm=hlOhijoLfhKjNxoARwS4GIep53BjOVAtjped8CyNJIk-1794966410.9758723-1.0.1.1-wXqUaXs9L1srCWEDLVZctm76l.Mks2rBX7FZW7GmQUeEDwVA.eSQuRyxpiWi8vutHKeGgYLP1UKN5h8c734cnBFZTEQuc2odOAoRtjl9H9qzvPFQBC8YT4dOEsL2VObe; _cfuvid=Y_78_SwH.8LJCe_MoLSDIwv_g24cQDSVnnN2R0v4hKo-1794966563.3190157-1.0.1.1-e3dKMxDExMeGtXJnC0bDZveJAT8w6IMyNnOEqRnTIfY' \
+        -H 'Sec-Fetch-Dest: empty' \
+        -H 'Sec-Fetch-Mode: cors' \
+        -H 'Sec-Fetch-Site: same-origin' \
+        -H 'TE: trailers' |
+            jq -er '.data[0].available | select(type == "number" or type == "boolean")' 2>/dev/null) && break
+
+        echo "Failed to fetch $i. Retrying in 10 seconds..."
+        sleep 10
+    done
+
+    if [ $available -gt  0 ];then
+        notify-send "$i is available"
+    fi
+
+    
+done

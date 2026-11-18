@@ -24,7 +24,7 @@ light_on(){
         sleep 0.1
     done
 
-    wizctl --scene daylight --brightness 60&
+    wizctl --scene daylight --brightness 40&
     ) &
 }
 
