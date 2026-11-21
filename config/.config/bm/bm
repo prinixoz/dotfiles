@@ -61,6 +61,7 @@ prinixoz - kick                 | https://kick.com/prinixoz                     
 prinixoz - kick chat            | https://kick.com/popout/prinixoz/chat                                                 | helium-browser -P prinixoz --app="$url"
 prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | helium-browser -P prinixoz --app="$url"
 prinixoz - channel              | https://studio.youtube.com/                                                           | helium-browser -P prinixoz 
+prinixoz - discord              | https://discord.com/app                                                               | helium-browser -P prinixoz 
 moctale                         | https://moctale.in/                                                                   | helium-browser -P prinixoz --app="$url"
 anime japanese                  | https://nadeshiko.co/                                                                 | helium-browser -P prinixoz --app="$url"
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
