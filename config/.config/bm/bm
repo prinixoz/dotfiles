@@ -46,9 +46,10 @@ prinixos - groww                | https://groww.in/mutual-funds/user/dashboard  
 
 prinixoz - website              | https://blog.prinixoz.com/                                                            
 prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
-prinixoz - gemini               | https://gemini.google.com/app                                                         | librewolf -P prinixoz
-prinixoz - notebooklm           | https://notebooklm.google.com/                                                        | librewolf -P prinixoz
-prinixoz - github website       | https://github.com/prinixoz/website                                                   | librewolf -P prinixoz
+prinixoz - gemini               | https://gemini.google.com/app                                                         | helium-browser -P prinixoz 
+prinixoz - drive                | https://drive.google.com/                                                             | helium-browser -P prinixoz 
+prinixoz - notebooklm           | https://notebooklm.google.com/                                                        | helium-browser -P prinixoz 
+prinixoz - github website       | https://github.com/prinixoz/website                                                   | helium-browser -P prinixoz 
 prinixoz - gmail                | https://mail.google.com/                                                              | helium-browser -P prinixoz 
 prinixoz - calendar             | https://calendar.google.com/                                                          | helium-browser -P prinixoz 
 prinixoz - youtube              | https://youtube.com/                                                                  | helium-browser -P prinixoz 

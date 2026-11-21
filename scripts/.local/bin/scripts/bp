@@ -2,7 +2,7 @@
 files(){
     cd /mnt/PS/Sync/
 
-    rclone -P sync . "drive:Personal" \
+    rclone -P sync . "prinixoz - proton:Personal" \
         --filter "- .*/" \
         --filter "- .*"
 
