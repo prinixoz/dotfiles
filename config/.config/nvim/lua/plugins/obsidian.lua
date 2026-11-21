@@ -44,7 +44,7 @@ return {
                 },
                 {
                     name = "website",
-                    path = "/mnt/PS/Github/website/content",
+                    path = "/mnt/PS/<code>/Github/website/content",
                     overrides = {
                         daily_notes = {
                             folder = "notes",

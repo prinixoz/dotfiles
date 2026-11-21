@@ -18,7 +18,6 @@ neptl                           | https://onlinecourses.nptel.ac.in/e-learning/c
 
 ################################################### JAPANESE ##################################################################################################
 jlpt practice                   | https://www.japanesejlpt.com/learn-japanese/katakana-practice/                        |
-anime japanese                  | https://nadeshiko.co/
 ### tracker                     |                                                                                       |
 habit tracker                   | https://www.lifeofdiscipline.com/my-habits                                            | librewolf -P trackers
 todoist                         | https://app.todoist.com/app/                                                          | librewolf -P trackers
@@ -61,13 +60,14 @@ prinixoz - kick                 | https://kick.com/prinixoz                     
 prinixoz - kick chat            | https://kick.com/popout/prinixoz/chat                                                 | helium-browser -P prinixoz --app="$url"
 prinixoz - live                 | https://studio.youtube.com/channel/UCOyAHzTZxUbH7qUE8X51DkQ/livestreaming/dashboard/  | helium-browser -P prinixoz --app="$url"
 prinixoz - channel              | https://studio.youtube.com/                                                           | helium-browser -P prinixoz 
+moctale                         | https://moctale.in/                                                                   | helium-browser -P prinixoz --app="$url"
+anime japanese                  | https://nadeshiko.co/                                                                 | helium-browser -P prinixoz --app="$url"
 prinixoz - linkedin             | https://linkedin.com/                                                                 | librewolf -P prinixoz
 prinixoz - github               | https://github.com/                                                                   | librewolf -P prinixoz
 
 
 
 ## MEDIA
-moctale                         | https://moctale.in/                                                                   | librewolf -P prinixoz
 wetrackr                        | https://wetrakr.com/                                                                  | librewolf -P prinixoz
 anilist                         | https://anilist.co/                                                                   | librewolf -P prinixoz
 anichart                        | https://anichart.net/                                                                 | librewolf -P prinixoz
