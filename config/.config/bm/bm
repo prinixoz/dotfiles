@@ -47,6 +47,7 @@ prinixos - groww                | https://groww.in/mutual-funds/user/dashboard  
 prinixoz - website              | https://blog.prinixoz.com/                                                            
 prinixoz - leetcode             | https://leetcode.com/                                                                 | librewolf -P prinixoz
 prinixoz - gemini               | https://gemini.google.com/app                                                         | helium-browser -P prinixoz 
+prinixoz - chatgpt              | https://chatgpt.com/?temporary-chat=true                                              | helium-browser -P priyanshu --app="%u"
 prinixoz - drive                | https://drive.google.com/                                                             | helium-browser -P prinixoz 
 prinixoz - notebooklm           | https://notebooklm.google.com/                                                        | helium-browser -P prinixoz 
 prinixoz - github website       | https://github.com/prinixoz/website                                                   | helium-browser -P prinixoz 
@@ -85,7 +86,6 @@ aliasoz - Protonmail            | https://mail.proton.me/u/0/inbox              
 moon.prick - Protonmail         | https://mail.proton.me/u/1/inbox                                                      | librewolf -P proton
 simplelogin                     | https://app.simplelogin.io/dashboard/                                                 | librewolf -P proton
 ### Chatbots                    |                                                                                       |
-chatgpt                         | https://chatgpt.com/?temporary-chat=true                                              | librewolf -P google
 duckai                          | https://duck.ai                                                                       |
 deepseek                        | https://chat.deepseek.com/                                                            | librewolf -P google
 ## Shopping                     |                                                                                       |
@@ -116,7 +116,7 @@ roadmap                         | https://roadmap.sh/                           
 yt                              | https://youtube.com/?theme=dark                                                       | librewolf -P developer
 
 ### Social                      |                                                                                       |
-whatsapp                        | https://web.whatsapp.com/                                                             | librewolf -P meta
+whatsapp                        | https://web.whatsapp.com/                                                             | helium-browser -P personal --app="%u"
 twitter                         | https://x.com/                                                                        | librewolf -P reddit
 pintrest                        | https://pintrest.com/                                                                 | librewolf -P social
 
